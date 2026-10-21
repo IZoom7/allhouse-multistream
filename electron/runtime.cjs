@@ -265,12 +265,12 @@ function syncLegacy(next, prev) {
 }
 async function createRuntime({ dataDir, port = 0 }) {
   await fs.mkdir(dataDir, { recursive:true });
-  const file = path.join(dataDir, 'workspace.json');
-  let state = defaultState(), storageWarning = '';
+  const file = path.join(dataDir, 'workspace.json'), historyFile = path.join(dataDir, 'history.json');
+  let state = defaultState(), storageWarning = '', rawHistory = null;
   try {
     const raw = JSON.parse(await fs.readFile(file, 'utf8'));
     state = validateState(raw);
-    state.history = Array.isArray(raw.history) ? raw.history.slice(-200).map(cleanHistoryEntry).filter(Boolean) : [];
+    rawHistory = raw.history;
   } catch (e) {
     if (e.code !== 'ENOENT') {
       // Keep a copy of the unreadable original before anything (sample chat, queue action, save) can overwrite workspace.json.
@@ -279,6 +279,8 @@ async function createRuntime({ dataDir, port = 0 }) {
       catch { storageWarning = 'Saved workspace could not be read and no backup copy could be made. A default workspace is open; it will replace the unreadable file when anything is saved.'; }
     }
   }
+  try { const h = JSON.parse(await fs.readFile(historyFile, 'utf8')); if (Array.isArray(h)) rawHistory = h; } catch {}
+  state.history = Array.isArray(rawHistory) ? rawHistory.slice(-200).map(cleanHistoryEntry).filter(Boolean) : [];
   let writes=Promise.resolve(), paused=false, muted=false, closed=false;
   // Two independent alert lanes: app-only (preview) alerts never delay OBS alerts.
   const lanes={obs:{current:null,timer:null},preview:{current:null,timer:null}};
@@ -286,9 +288,12 @@ async function createRuntime({ dataDir, port = 0 }) {
   try { token=(await fs.readFile(path.join(dataDir,'overlay-token'),'utf8')).trim(); if(!/^[a-f0-9]{48}$/.test(token))throw new Error('Invalid token') }
   catch { token=crypto.randomBytes(24).toString('hex');await fs.writeFile(path.join(dataDir,'overlay-token'),token,{mode:0o600}) }
   const clients=new Set(); // {res, widget: null (legacy overlay) | widget id}
-  const persist=()=>{const snapshot=JSON.stringify(state,null,2);writes=writes.catch(()=>{}).then(async()=>{await fs.writeFile(file+'.tmp',snapshot,'utf8');await fs.rename(file+'.tmp',file)});return writes};
+  const writeAtomic=(target,text)=>{writes=writes.catch(()=>{}).then(async()=>{await fs.writeFile(target+'.tmp',text,'utf8');await fs.rename(target+'.tmp',target)});return writes};
+  // Chat/alert traffic only rewrites history.json; workspace.json (images and sounds, up to 25 MB) changes on save/import only.
+  const persistHistory=()=>writeAtomic(historyFile,JSON.stringify(state.history));
+  const persist=()=>{const {history,...settings}=state;writeAtomic(file,JSON.stringify(settings,null,2));return persistHistory()};
   let soonTimer=null;
-  const persistSoon=()=>{if(!soonTimer)soonTimer=setTimeout(()=>{soonTimer=null;persist().catch(()=>{})},2000)};
+  const persistSoon=()=>{if(!soonTimer)soonTimer=setTimeout(()=>{soonTimer=null;persistHistory().catch(()=>{})},2000)};
   const send=(c,kind,data)=>c.res.write('event: '+kind+'\ndata: '+JSON.stringify(data)+'\n\n');
   /** to: widget ids that receive the event; the legacy overlay (widget null) receives everything except widget state. */
   const broadcast=(kind,data,to=WIDGET_IDS)=>{for(const c of clients)if(c.widget===null||to.includes(c.widget))send(c,kind,data)};
@@ -297,8 +302,8 @@ async function createRuntime({ dataDir, port = 0 }) {
   const pages=id=>{let n=0;for(const c of clients)if(c.widget===id)n++;return n};
   const legacyPages=()=>pages(null);
   const activeCount=()=>state.history.filter(e=>['playing','queued'].includes(e.status)).length;
-  const pumpLane=name=>{const lane=lanes[name];if(paused||lane.current||closed)return;const next=state.history.find(e=>e.status==='queued'&&e.target===name);if(!next)return;lane.current=next;next.status='playing';if(name==='obs'&&!muted&&state.publishedWidgets[next.type].enabled)broadcast('alert',next,[next.type]);persist().catch(()=>{});
-    const w=(name==='obs'?state.publishedWidgets:state.draftWidgets)[next.type];lane.timer=setTimeout(()=>{next.status='completed';lane.current=null;persist().catch(()=>{});pumpLane(name)},w.durationSec*1000)};
+  const pumpLane=name=>{const lane=lanes[name];if(paused||lane.current||closed)return;const next=state.history.find(e=>e.status==='queued'&&e.target===name);if(!next)return;lane.current=next;next.status='playing';if(name==='obs'&&!muted&&state.publishedWidgets[next.type].enabled)broadcast('alert',next,[next.type]);persistHistory().catch(()=>{});
+    const w=(name==='obs'?state.publishedWidgets:state.draftWidgets)[next.type];lane.timer=setTimeout(()=>{next.status='completed';lane.current=null;persistHistory().catch(()=>{});pumpLane(name)},w.durationSec*1000)};
   const pump=()=>{pumpLane('obs');pumpLane('preview')};
   const stopLane=lane=>{clearTimeout(lane.timer);const was=lane.current;if(was)was.status='skipped';lane.current=null;return was};
   const server=http.createServer(async(req,res)=>{
@@ -369,7 +374,7 @@ async function createRuntime({ dataDir, port = 0 }) {
       const event={id:crypto.randomUUID(),platform:input.platform,type:input.type,name:input.name.trim(),message:input.message.trim(),target:input.target,sourceMode:'test',createdAt:new Date().toISOString(),status:input.type==='chat'?'completed':'queued'};
       if(event.type==='gift')event.gift=cleanGift(input.gift||{name:'Rose',count:1,coins:1}); // test gifts ignore the minimum-coins filter
       state.history.push(event);while(state.history.length>200){const idx=state.history.findIndex(e=>!['queued','playing'].includes(e.status));if(idx<0)break;state.history.splice(idx,1)}
-      await persist();if(event.type==='chat'&&event.target==='obs')broadcast('chat',event,['chat']);pump();
+      await persistHistory();if(event.type==='chat'&&event.target==='obs')broadcast('chat',event,['chat']);pump();
       return {...structuredClone(event),delivery:deliveryOf(event)} // delivery: what the OBS overlay will actually show (UI toasts)
     },
     /** Real platform events (chat can arrive many per second): trimmed instead of rejected, always target OBS, persisted lazily. */
@@ -405,9 +410,9 @@ async function createRuntime({ dataDir, port = 0 }) {
         state.history.forEach(e=>{if(e.status==='queued')e.status='skipped'});
         if(action==='clearHistory'){state.history=[];broadcast('clear',{})}else if(hadObs)broadcast('hide-alert',{},[hadObs.type]);
       }
-      await persist();return this.getStatus()
+      await persistHistory();return this.getStatus()
     },
-    async close(){closed=true;clearTimeout(lanes.obs.timer);clearTimeout(lanes.preview.timer);clearInterval(heartbeat);for(const c of clients)c.res.end();if(soonTimer){clearTimeout(soonTimer);soonTimer=null;persist().catch(()=>{})}await writes;await new Promise(resolve=>server.close(resolve))}
+    async close(){closed=true;clearTimeout(lanes.obs.timer);clearTimeout(lanes.preview.timer);clearInterval(heartbeat);for(const c of clients)c.res.end();if(soonTimer){clearTimeout(soonTimer);soonTimer=null;persistHistory().catch(()=>{})}await writes;await new Promise(resolve=>server.close(resolve))}
   };
 }
 module.exports={createRuntime,validateState,defaultState,defaultWidgets,validateWidgets,widgetsFromScene,cleanHistoryEntry,WIDGET_IDS};

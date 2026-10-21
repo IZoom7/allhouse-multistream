@@ -15,7 +15,7 @@ export function HomeStats({t,state,status,conns,desktop,speaking,pending,dirty,o
   // the activity window slides even when nothing new arrives
   const [now,setNow]=useState(()=>Date.now());
   useEffect(()=>{const iv=setInterval(()=>setNow(Date.now()),15000);return()=>clearInterval(iv)},[]);
-  useEffect(()=>setNow(Date.now()),[state.history.length]);
+  useEffect(()=>setNow(Date.now()),[state.history.at(-1)?.id]); // last id, not length: history stops growing at 200
 
   // ---- 1. connections
   const online=conns?TTS_PLATFORMS.filter(p=>conns[p]?.state==='connected').length:0;

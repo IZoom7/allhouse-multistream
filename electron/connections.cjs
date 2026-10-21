@@ -10,7 +10,7 @@ const CONNECTORS = {
 };
 const PLATFORMS = Object.keys(CONNECTORS);
 
-function createConnections({ dataDir, fetch, onEvent, onChange }) {
+function createConnections({ dataDir, fetch, onEvent, onChange, connectors = CONNECTORS }) {
   const file = path.join(dataDir, 'connections.json');
   let saved = {};
   const live = {};   // platform -> { close }
@@ -25,7 +25,7 @@ function createConnections({ dataDir, fetch, onEvent, onChange }) {
     stop(platform, false);
     const cfg = saved[platform];
     try {
-      live[platform] = CONNECTORS[platform].connect({
+      live[platform] = connectors[platform].connect({
         channel: cfg.channel, fetch, fetchJson,
         onEvent: e => { counts[platform]++; onEvent({ ...e, platform }); },
         onStatus: s => { status[platform] = s; changed(); },

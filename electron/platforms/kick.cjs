@@ -53,17 +53,24 @@ function connect({ channel, fetchJson, WebSocket = globalThis.WebSocket, fetch =
   return reconnecting({
     label: 'Kick', onStatus,
     open(ready, fail) {
-      let ws = null, dead = false;
+      let ws = null, dead = false, refreshTimer = null;
+      const clientId = 'allhouse-' + Date.now().toString(36); // a refresh token must be for the same guest (verified Oct 2026)
+      const guestToken = async () => {
+        const r = await fetch(API + '/auth/connection', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://kick.com', 'User-Agent': UA }, body: JSON.stringify({ client_id: clientId }) });
+        const token = r.ok && (await r.json()).data?.token;
+        if (!token) throw new Error('Kick refused a guest connection');
+        return token;
+      };
       (async () => {
         if (!ids) {
           try { ids = await lookup(slug, fetchJson); }
           catch (e) { return fail(new Error(e.message === 'Kick channel not found' ? `Kick channel "${slug}" was not found` : 'Could not reach kick.com'), e.message === 'Kick channel not found'); }
         }
-        const r = await fetch(API + '/auth/connection', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://kick.com', 'User-Agent': UA }, body: JSON.stringify({ client_id: 'allhouse-' + Date.now().toString(36) }) });
-        const token = r.ok && (await r.json()).data?.token;
-        if (!token) throw new Error('Kick refused a guest connection');
+        const token = await guestToken();
         if (dead) return;
         ws = new WebSocket('wss://realtime.us-west-2.platform.kick.com/connection/websocket', { headers: { Origin: 'https://kick.com', 'User-Agent': UA } });
+        const armRefresh = c => { clearTimeout(refreshTimer); const ttl = c && c.expires && c.ttl;
+          if (ttl > 120) refreshTimer = setTimeout(() => guestToken().then(t => { if (!dead) ws.send(JSON.stringify({ id: 4, refresh: { token: t } })); }).catch(() => {}), (ttl - 60) * 1000); };
         ws.onopen = () => ws.send(JSON.stringify({ id: 1, connect: { token, name: 'js' } }));
         ws.onmessage = ev => {
           for (const line of String(ev.data).split('\n')) {
@@ -72,8 +79,12 @@ function connect({ channel, fetchJson, WebSocket = globalThis.WebSocket, fetch =
             let m; try { m = JSON.parse(line); } catch { continue; }
             if (m.id === 1) {
               if (m.error) return fail(new Error('Kick: ' + m.error.message));
+              // The guest token expires (ttl ~45 min): refresh it on the same socket a minute early so no chat is missed.
+              // If the refresh fails, Kick closes the socket and the normal reconnect takes over.
+              armRefresh(m.connect);
               ws.send(JSON.stringify({ id: 2, subscribe: { channel: `chatrooms.${ids.chatroomId}.v2` } }));
               ws.send(JSON.stringify({ id: 3, subscribe: { channel: `channel.${ids.channelId}` } }));
+            } else if (m.id === 4) { armRefresh(m.refresh); // each refresh returns the next ttl
             } else if (m.id === 2) {
               if (m.error) return fail(new Error('Kick chat: ' + m.error.message));
               ready('kick.com/' + slug);
@@ -83,7 +94,7 @@ function connect({ channel, fetchJson, WebSocket = globalThis.WebSocket, fetch =
         ws.onerror = () => {};
         ws.onclose = () => fail(new Error('Connection closed'));
       })().catch(e => fail(e));
-      return () => { dead = true; try { ws && ws.close(); } catch {} };
+      return () => { dead = true; clearTimeout(refreshTimer); try { ws && ws.close(); } catch {} };
     },
   });
 }

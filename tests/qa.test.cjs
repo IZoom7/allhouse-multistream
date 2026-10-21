@@ -274,8 +274,11 @@ test('GATE export: exported workspace (getState + history cleared, as in main.cj
   const exported = setup.runtime.getState(); exported.history = []; // mirrors main.cjs 'export' handler
   const json = JSON.stringify(exported, null, 2);
   assert.ok(!json.includes(token)); assert.ok(!json.includes('/overlay/')); assert.ok(!json.includes('secret history'));
-  const ws = await fs.readFile(path.join(setup.dir, 'workspace.json'), 'utf8');
-  assert.ok(!ws.includes(token), 'workspace.json does not store the token either');
+  await setup.runtime.saveState(setup.runtime.getState()); // events only write history.json; a save writes workspace.json
+  for (const f of ['workspace.json', 'history.json']) {
+    const disk = await fs.readFile(path.join(setup.dir, f), 'utf8');
+    assert.ok(!disk.includes(token), f + ' does not store the token either');
+  }
   // Round trip: an exported file is importable.
   await setup.runtime.importState(JSON.parse(json));
   const main = await fs.readFile(path.join(__dirname, '../electron/main.cjs'), 'utf8');

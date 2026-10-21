@@ -113,7 +113,8 @@ function App(){
     }catch(e){if(generation===speechGeneration.current){speechQueue.current=[];setSpeechError(errorText(e));notify(errorText(e),true)}}
     finally{if(generation===speechGeneration.current){speechActive.current=false;setSpeaking(false);void playSpeech()}}
   };
-  const enqueueSpeech=(text:string)=>{if(speechQueue.current.length>=20){notify(t('คิวเสียงเต็มแล้ว กรุณารอสักครู่','Speech queue is full. Please wait.'));return}speechQueue.current.push(text);void playSpeech()};
+  // Chat (live or test) keeps the newest 20 lines: when full, the oldest waiting line is dropped silently so the bot stays close to the chat.
+const enqueueSpeech=(text:string,chat=false)=>{if(speechQueue.current.length>=20){if(!chat){notify(t('คิวเสียงเต็มแล้ว กรุณารอสักครู่','Speech queue is full. Please wait.'));return}speechQueue.current.shift()}speechQueue.current.push(text);void playSpeech()};
   const alertText=(type:HouseEvent['type'])=>type==='follow'?t('ติดตามช่องแล้ว!','just followed!'):type==='gift'?'Rose ×1':t('สมัครสมาชิกแล้ว!','just subscribed!');
   /** What actually happened on the OBS side — never claim OBS received something it could not. */
   const widgetName=(type:HouseEvent['type'])=>type==='chat'?t('กล่องแชท','Chat box'):type==='follow'?t('แจ้งเตือนผู้ติดตาม','Follow alert'):type==='gift'?t('แจ้งเตือนของขวัญ','Gift alert'):t('แจ้งเตือนสมาชิก','Subscription alert');
@@ -165,10 +166,10 @@ function App(){
     else if(c.cmd==='set'){if(c.patch.enabled===false)stopSpeech();const {platforms,...rest}=c.patch;const base=stateRef.current;if(base)updateTts({...rest,...(platforms?{rules:{...rulesOf(base.tts),platforms}}:{})})}
   };
   useEffect(()=>api.onSpeechCommand?.(c=>commandRef.current(c)),[]);
-  const [liveCount,setLiveCount]=useState(0),[conns,setConns]=useState<Connections|null>(null);
-  useEffect(()=>{const count=(c:Connections)=>{setConns(c);setLiveCount(Object.values(c).filter(x=>x.state==='connected').length)};api.getConnections?.().then(count).catch(()=>{});return api.onConnections?.(count)},[]);
+  const [conns,setConns]=useState<Connections|null>(null);
+  useEffect(()=>{const count=(c:Connections)=>setConns(c);api.getConnections?.().then(count).catch(()=>{});return api.onConnections?.(count)},[]);
   /** Chat → speech through the reading rules (platform on/off, ignored names, !commands, max length, read name). */
-  const speakChat=(e:Pick<HouseEvent,'platform'|'name'|'message'>)=>{const s=stateRef.current;if(!s?.tts.enabled)return;const r=speechFor(e,rulesOf(s.tts));if('text' in r)enqueueSpeech(r.text)};
+  const speakChat=(e:Pick<HouseEvent,'platform'|'name'|'message'>)=>{const s=stateRef.current;if(!s?.tts.enabled)return;const r=speechFor(e,rulesOf(s.tts));if('text' in r)enqueueSpeech(r.text,true)};
   const liveRef=useRef((e:HouseEvent)=>{});liveRef.current=e=>{if(e.type==='chat')speakChat(e)};
   useEffect(()=>api.onLiveEvent?.(e=>liveRef.current(e)),[]);
   const speechStatus=():SpeechStatus|null=>{const s=stateRef.current;return s?{speaking,enabled:s.tts.enabled,volume:s.tts.volume,rate:s.tts.rate,pending:speechQueue.current.length,engine:s.tts.engine==='online'?'online':'windows',platforms:rulesOf(s.tts).platforms}:null};

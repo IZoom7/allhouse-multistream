@@ -232,3 +232,11 @@ The 9 `todo` tests in `tests/qa.test.cjs` are now real tests (flags removed). On
 
 ## Round 11 — home status board (2026-10-21)
 - Replaced the three home stat cards (incl. the not-useful "overlays 5/4") with `src/HomeStats.tsx`: four clickable tiles in the controller colours — Connections (per-platform LED: online/connecting/problem/off + events received), Last 15 minutes (per-minute bar chart on an LCD + chat/follow/sub/gift counts, notes test events), Chat TTS (equalizer animates while reading, inline on/off switch, which platforms are read, queue size), Widgets in OBS (which of the 5 widgets OBS actually has open, unpublished-edit / paused-queue warnings). Styles in retro.css; respects reduced motion. Manual screenshots recaptured.
+
+## Round 12 — review fixes (2026-10-21)
+- History moved to `history.json` (≤200 rows). Chat/alert traffic and queue actions rewrite only that file; `workspace.json` (with images/sounds, up to 25 MB) is written on save/import only. Old workspaces with embedded history still load.
+- Speech queue: chat keeps the newest 20 lines (oldest dropped silently) instead of refusing new ones with a toast per message.
+- Kick: guest token refreshed on the same socket a minute before it expires (Centrifugo `refresh`; must reuse the same client_id — verified live), re-armed after each refresh.
+- `connections.cjs` takes injectable `connectors`; new `tests/connections.test.cjs` covers save → auto-reconnect → disconnect stays off, bad input, broken file.
+- Home chart refreshes on the newest event id (history length stops at 200); removed the redundant `liveCount` state.
+- Skipped: merging the browser-fallback validation in `src/api.ts` with `runtime.cjs` (refactor, needs the R2-BUG-3 test reworked).
