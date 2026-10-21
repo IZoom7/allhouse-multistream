@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>แก้ปัญหาและข้อมูล · คู่มือ Allhouse</title>
+<meta name="description" content="วิธีแก้ปัญหาที่พบบ่อย สำรองและนำเข้าข้อมูล และเรื่องความเป็นส่วนตัว">
+<meta name="theme-color" content="#8d2832">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Noto+Sans+Thai:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&display=swap">
+<link rel="stylesheet" href="assets/guide.css">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-head"><div class="in">
+  <a class="brand" href="index.html"><img src="assets/favicon.png" alt=""><span>allhouse <small>MANUAL</small></span></a>
+  <nav class="site-nav" aria-label="หน้าในคู่มือ"><a href="index.html">หน้าแรก</a><a href="start.html">เริ่มต้นใช้งาน</a><a href="connections.html">เชื่อมต่อแพลตฟอร์ม</a><a href="obs-widgets.html">วิดเจ็ต OBS</a><a href="chat-tts.html">แชทและบอทอ่านแชท</a><a href="custom-css.html">CSS กำหนดเอง</a><a href="help.html" aria-current="page">แก้ปัญหาและข้อมูล</a></nav>
+</div></header>
+<div class="wrap">
+
+<section class="page-intro"><span class="crumb">06 · HELP</span><h1>แก้ปัญหาและข้อมูล</h1><p>อาการที่เจอบ่อยและวิธีแก้ การสำรองข้อมูล และข้อมูลของคุณไปที่ไหนบ้าง</p></section>
+<section class="cart" id="faq"><header><span class="no">01</span><h2>อาการที่เจอบ่อย</h2></header><div class="legend"><div><code>OBS ไม่เห็นอะไร</code><span>เช็กว่าแอพเปิดอยู่ ลิงก์ถูกวาง และกด “เผยแพร่ทุกวิดเจ็ต” แล้ว ลองกดปุ่มทดสอบของวิดเจ็ตนั้น</span></div><div><code>ทดสอบแล้วไม่ขึ้น</code><span>ดูข้อความแจ้งในแอพ: วิดเจ็ตอาจปิดอยู่ คิวพักอยู่ หรือยังไม่มีหน้าวิดเจ็ตเปิดใน OBS</span></div><div><code>เสียงแจ้งเตือนไม่ออกในไลฟ์</code><span>ติ๊ก “Control audio via OBS” ใน Browser Source แล้วดูแถบเสียงใน OBS Audio Mixer</span></div><div><code>ไม่มีเสียงไทย</code><span>เพิ่มเสียงไทยใน Windows (Settings → Time & language → Speech) หรือใช้เสียงออนไลน์ในหน้าบอทอ่านแชท</span></div><div><code>YouTube “กำลังลองใหม่”</code><span>ช่องยังไม่ได้ไลฟ์ แอพจะต่อให้เองเมื่อเริ่มไลฟ์</span></div><div><code>TikTok “TikFinity is not running”</code><span>เปิด TikFinity Desktop และล็อกอิน TikTok ไว้ก่อน แล้วกดเชื่อมต่อใหม่</span></div><div><code>เปิดแอพไม่ขึ้น: Port 19324</code><span>มี Allhouse อีกตัวเปิดอยู่ ปิดตัวนั้นก่อนแล้วเปิดใหม่</span></div><div><code>แชทจริงไม่ถูกอ่าน</code><span>เช็กว่าบอทเปิดอยู่ แพลตฟอร์มนั้นไม่ได้ปิดเสียง และชื่อไม่ได้อยู่ในรายชื่อที่ไม่อ่าน</span></div></div></section>
+<section class="cart" id="backup"><header><span class="no">02</span><h2>สำรองและนำเข้า</h2></header><figure class="shot"><div class="bezel"><img src="img/settings.jpg" alt="หน้า “ตั้งค่า”: ส่งออก/นำเข้าไฟล์สำรอง และล้างประวัติ" loading="lazy" width="1440" height="761"></div><figcaption>หน้า “ตั้งค่า”: ส่งออก/นำเข้าไฟล์สำรอง และล้างประวัติ</figcaption></figure>
+<ul class="plain"><li><b>ส่งออกไฟล์สำรอง:</b> เก็บการตั้งค่า วิดเจ็ต รูป และเสียงไว้ในไฟล์เดียว ไม่รวมประวัติแชทและลิงก์ OBS ส่วนตัว</li>
+<li><b>นำเข้า:</b> ข้อมูลจากไฟล์จะเข้ามาเป็น <b>ฉบับร่าง</b> OBS ยังแสดงแบบเดิมจนกว่าจะกดเผยแพร่ บอทอ่านแชทจะถูกปิดไว้ก่อนเพื่อความปลอดภัย</li>
+<li><b>ล้างประวัติ:</b> ลบแชทและกิจกรรมที่เก็บไว้ (เก็บล่าสุดสูงสุด 200 รายการ) และล้างคิวการแจ้งเตือน</li></ul></section>
+<section class="cart" id="privacy"><header><span class="no">03</span><h2>ข้อมูลของคุณไปที่ไหน</h2></header><div class="legend"><div><code>ในเครื่อง</code><span>การตั้งค่า ประวัติ รูป เสียง และลิงก์ OBS เก็บในเครื่องนี้เท่านั้น</span></div><div><code>เสียงออนไลน์</code><span>ถ้าเลือกเสียงออนไลน์ ข้อความที่จะอ่านจะถูกส่งไป Microsoft (เสียงของ Windows ไม่ส่งออกไปไหน)</span></div><div><code>การเชื่อมแพลตฟอร์ม</code><span>แอพอ่านแชทสาธารณะของช่องที่คุณใส่ ไม่ได้ขอรหัสผ่านหรือ API key ใดๆ</span></div><div><code>คู่มือนี้</code><span>เป็นไฟล์ในเครื่อง โหลดเฉพาะฟอนต์จาก Google Fonts ถ้าไม่มีเน็ตจะใช้ฟอนต์ในเครื่องแทน</span></div></div></section>
+<section class="cart" id="obs-check"><header><span class="no">04</span><h2>เช็กลิสต์ทดสอบกับ OBS จริงก่อนไลฟ์ครั้งแรก</h2></header><ul class="plain">
+<li>☐ เพิ่มวิดเจ็ตครบตามที่ใช้ ใส่ Width/Height ตรงกับในแอพ</li>
+<li>☐ กดทดสอบทุกวิดเจ็ต เห็นใน OBS และมีป้าย TEST</li>
+<li>☐ แจ้งเตือนที่มีเสียง: ติ๊ก Control audio via OBS และเห็นแถบเสียงขยับใน Audio Mixer</li>
+<li>☐ แก้ข้อความแจ้งเตือนแล้วกดเผยแพร่ OBS เปลี่ยนตามโดยไม่ต้องรีเฟรช</li>
+<li>☐ ปิดแล้วเปิดแอพใหม่ การตั้งค่ายังอยู่ และ OBS กลับมาแสดงเอง</li>
+</ul></section>
+
+<nav class="pager" aria-label="หน้าก่อนและหน้าถัดไป"><a href="custom-css.html"><small>◀ ก่อนหน้า</small><b>CSS กำหนดเอง</b></a></nav>
+<p class="foot">Allhouse 0.1.0 · Local alpha · คู่มือนี้อยู่ในเครื่องของคุณ เปิดได้โดยไม่ต้องใช้อินเทอร์เน็ต</p>
+</div>
+<script src="assets/guide.js" defer></script>
+</body>
+</html>
+

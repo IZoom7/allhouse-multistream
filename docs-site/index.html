@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>คู่มือ Allhouse</title>
+<meta name="description" content="คู่มือการใช้งาน Allhouse ทั้งระบบ: เชื่อมแพลตฟอร์ม วิดเจ็ต OBS แชท บอทอ่านแชท และ CSS กำหนดเอง">
+<meta name="theme-color" content="#8d2832">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Noto+Sans+Thai:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&display=swap">
+<link rel="stylesheet" href="assets/guide.css">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-head"><div class="in">
+  <a class="brand" href="index.html"><img src="assets/favicon.png" alt=""><span>allhouse <small>MANUAL</small></span></a>
+  <nav class="site-nav" aria-label="หน้าในคู่มือ"><a href="index.html" aria-current="page">หน้าแรก</a><a href="start.html">เริ่มต้นใช้งาน</a><a href="connections.html">เชื่อมต่อแพลตฟอร์ม</a><a href="obs-widgets.html">วิดเจ็ต OBS</a><a href="chat-tts.html">แชทและบอทอ่านแชท</a><a href="custom-css.html">CSS กำหนดเอง</a><a href="help.html">แก้ปัญหาและข้อมูล</a></nav>
+</div></header>
+<div class="wrap">
+
+<section class="page-intro"><span class="crumb">ALLHOUSE · USER MANUAL</span><h1>คู่มือ Allhouse</h1><p>Allhouse รวมแชทและการแจ้งเตือนจาก Twitch, YouTube, Kick และ TikTok ไว้ที่เดียว แล้วส่งขึ้น OBS เป็นวิดเจ็ตที่แต่งได้เอง พร้อมบอทอ่านแชทภาษาไทยและอังกฤษ ทุกอย่างทำงานในเครื่องของคุณ</p></section>
+<figure class="shot"><div class="bezel"><img src="img/home.jpg" alt="หน้า “ห้องสตรีม” หน้าแรกของแอพ" loading="lazy" width="1440" height="761"></div><figcaption>หน้า “ห้องสตรีม” หน้าแรกของแอพ</figcaption></figure>
+<section class="cart" id="map"><header><span class="no">00</span><h2>อยากทำอะไร เลือกหัวข้อได้เลย</h2></header><nav class="map" aria-label="หัวข้อในคู่มือ">
+  <a href="start.html"><b>เริ่มต้นใช้งาน</b><span>เปิดแอพ รู้จักหน้าจอ บันทึกอัตโนมัติ ข้อมูลทดสอบกับของจริง</span></a>
+  <a href="connections.html"><b>เชื่อมต่อแพลตฟอร์ม</b><span>Twitch, YouTube, Kick และ TikTok ผ่าน TikFinity</span></a>
+  <a href="obs-widgets.html"><b>วิดเจ็ต OBS</b><span>เพิ่มแชท แจ้งเตือน ของขวัญ แบนเนอร์ เข้า OBS และตั้งค่าแต่ละตัว</span></a>
+  <a href="chat-tts.html"><b>แชทและบอทอ่านแชท</b><span>ห้องแชท หน้าต่างแชทแยก เสียงไทย เลือกแพลตฟอร์มที่จะอ่าน</span></a>
+  <a href="custom-css.html"><b>CSS กำหนดเอง</b><span>แต่งวิดเจ็ตเอง: สี ขอบ ไล่สี เงา แอนิเมชัน + สนามทดลอง</span></a>
+  <a href="help.html"><b>แก้ปัญหาและข้อมูล</b><span>OBS ไม่ขึ้น เสียงไม่ออก สำรองข้อมูล ความเป็นส่วนตัว</span></a>
+</nav></section>
+<section class="cart" id="quick"><header><span class="no">01</span><h2>เริ่มไลฟ์ได้ใน 5 ขั้น</h2></header><ol class="steps" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))"><li><b>เปิดแอพ</b><span>ดับเบิลคลิก Start Allhouse.cmd ในโฟลเดอร์โปรแกรม</span></li><li><b>เชื่อมช่องของคุณ</b><span>หน้า “เชื่อมต่อแพลตฟอร์ม” ใส่ชื่อช่องแล้วกดเชื่อมต่อ</span></li><li><b>เพิ่มวิดเจ็ตเข้า OBS</b><span>หน้า “วิดเจ็ต OBS” คัดลอกลิงก์ไปเป็น Browser Source</span></li><li><b>ส่งทดสอบ</b><span>กดปุ่มทดสอบของแต่ละวิดเจ็ต ต้องเห็นใน OBS ทันที</span></li><li><b>เปิดบอทอ่านแชท</b><span>หน้า “บอทอ่านแชท” เลือกเสียงและแพลตฟอร์มที่จะอ่าน</span></li></ol>
+<div class="callout"><p>ในแอพ กดปุ่ม <b>คู่มือ</b> ที่แถบด้านบนได้ทุกเมื่อ แอพจะเปิดหน้าคู่มือที่ตรงกับหน้าที่คุณดูอยู่</p></div></section>
+
+<nav class="pager" aria-label="หน้าก่อนและหน้าถัดไป"><a class="next" href="start.html"><small>ถัดไป ▶</small><b>เริ่มต้นใช้งาน</b></a></nav>
+<p class="foot">Allhouse 0.1.0 · Local alpha · คู่มือนี้อยู่ในเครื่องของคุณ เปิดได้โดยไม่ต้องใช้อินเทอร์เน็ต</p>
+</div>
+<script src="assets/guide.js" defer></script>
+</body>
+</html>
+

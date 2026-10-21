@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+dist/
+release/
+test-results/
+.cache/
+*.log
+*.tmp
+tsconfig.tsbuildinfo

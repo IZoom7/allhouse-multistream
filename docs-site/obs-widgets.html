@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>วิดเจ็ต OBS · คู่มือ Allhouse</title>
+<meta name="description" content="เพิ่มวิดเจ็ต Allhouse เข้า OBS และตั้งค่าแชท แจ้งเตือน ของขวัญ แบนเนอร์">
+<meta name="theme-color" content="#8d2832">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Noto+Sans+Thai:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&display=swap">
+<link rel="stylesheet" href="assets/guide.css">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-head"><div class="in">
+  <a class="brand" href="index.html"><img src="assets/favicon.png" alt=""><span>allhouse <small>MANUAL</small></span></a>
+  <nav class="site-nav" aria-label="หน้าในคู่มือ"><a href="index.html">หน้าแรก</a><a href="start.html">เริ่มต้นใช้งาน</a><a href="connections.html">เชื่อมต่อแพลตฟอร์ม</a><a href="obs-widgets.html" aria-current="page">วิดเจ็ต OBS</a><a href="chat-tts.html">แชทและบอทอ่านแชท</a><a href="custom-css.html">CSS กำหนดเอง</a><a href="help.html">แก้ปัญหาและข้อมูล</a></nav>
+</div></header>
+<div class="wrap">
+
+<section class="page-intro"><span class="crumb">03 · OBS WIDGETS</span><h1>วิดเจ็ต OBS</h1><p>แต่ละส่วนเป็น Browser Source แยกกันใน OBS มีลิงก์ ขนาด และการตั้งค่าของตัวเอง ลากวางและย่อขยายใน OBS ได้อิสระ</p></section>
+<figure class="shot"><div class="bezel"><img src="img/widgets.jpg" alt="หน้า “วิดเจ็ต OBS”: แท็บด้านบนเลือกวิดเจ็ต จอเขียวบอกขนาดที่ต้องตั้งใน OBS" loading="lazy" width="1440" height="761"></div><figcaption>หน้า “วิดเจ็ต OBS”: แท็บด้านบนเลือกวิดเจ็ต จอเขียวบอกขนาดที่ต้องตั้งใน OBS</figcaption></figure>
+<section class="cart" id="list"><header><span class="no">01</span><h2>วิดเจ็ตทั้ง 5 ตัว</h2></header><div class="tbl-wrap"><table class="tbl"><thead><tr><th>วิดเจ็ต</th><th>แสดงอะไร</th><th>ขนาดตั้งต้น</th></tr></thead><tbody>
+<tr><td>กล่องแชท</td><td>แชทล่าสุดจากทุกแพลตฟอร์ม</td><td class="num">800 × 1080</td></tr>
+<tr><td>แจ้งเตือนผู้ติดตาม</td><td>ขึ้นเมื่อมีคนกดติดตาม</td><td class="num">1920 × 1080</td></tr>
+<tr><td>แจ้งเตือนสมาชิก</td><td>ขึ้นเมื่อมีคนซับ/สมัครสมาชิก</td><td class="num">1920 × 1080</td></tr>
+<tr><td>แจ้งเตือนของขวัญ</td><td>ของขวัญ TikTok LIVE</td><td class="num">1920 × 1080</td></tr>
+<tr><td>แบนเนอร์หัวข้อ</td><td>หัวข้อ ข้อความรอง และรูปของห้อง</td><td class="num">1920 × 1080</td></tr>
+</tbody></table></div></section>
+<section class="cart" id="add"><header><span class="no">02</span><h2>เพิ่มวิดเจ็ตเข้า OBS</h2></header><ol class="steps"><li><b>คัดลอกลิงก์</b><span>เลือกแท็บวิดเจ็ต แล้วกด “คัดลอกลิงก์”</span></li><li><b>สร้าง Browser Source</b><span>ใน OBS: Sources → + → Browser ตั้งชื่อ แล้ววางลิงก์ในช่อง URL</span></li><li><b>ตั้งขนาด</b><span>ใส่ Width/Height ตามที่จอเขียวในแอพบอก</span></li><li><b>ทดสอบ</b><span>กดปุ่ม “ส่ง…ทดสอบ” ในแอพ ต้องเห็นใน OBS ทันที</span></li></ol>
+<div class="callout"><p>วิดเจ็ตแจ้งเตือนที่ใส่เสียง ให้ติ๊ก <b>Control audio via OBS</b> ใน Browser Source เสียงจะเข้าไลฟ์และปรับความดังใน OBS Audio Mixer ได้ แนะนำให้เพิ่มแบนเนอร์ก่อน แล้วค่อยเพิ่มแจ้งเตือน การแจ้งเตือนจะได้อยู่ชั้นบนสุด</p></div>
+<div class="callout warn"><p>ลิงก์วิดเจ็ตใช้ได้เฉพาะเครื่องนี้ และควรเก็บเป็นความลับ “เปิดอยู่ 1 หน้า” แปลว่า OBS เปิดหน้าวิดเจ็ตอยู่ ไม่ได้แปลว่ากำลังไลฟ์</p></div></section>
+<section class="cart" id="publish"><header><span class="no">03</span><h2>ฉบับร่าง และ เผยแพร่</h2></header><p>แก้อะไรในหน้านี้ พรีวิวจะเปลี่ยนทันที แต่ OBS ยังแสดงฉบับเดิมจนกว่าจะกด <b>เผยแพร่ทุกวิดเจ็ต</b> แท็บที่มีป้ายเหลือง “ยังไม่เผยแพร่” คือวิดเจ็ตที่มีการแก้ค้างอยู่ ไม่ต้องรีเฟรช Browser Source ใน OBS</p></section>
+<section class="cart" id="alerts"><header><span class="no">04</span><h2>ตั้งค่าการแจ้งเตือน</h2></header><figure class="shot"><div class="bezel"><img src="img/widget-editor.jpg" alt="การ์ดของวิดเจ็ตแจ้งเตือน: ขนาด ลิงก์ ขั้นตอน ปุ่มทดสอบ และด้านล่างคือพรีวิวกับการตั้งค่า" loading="lazy" width="1440" height="761"></div><figcaption>การ์ดของวิดเจ็ตแจ้งเตือน: ขนาด ลิงก์ ขั้นตอน ปุ่มทดสอบ และด้านล่างคือพรีวิวกับการตั้งค่า</figcaption></figure>
+<div class="legend"><div><code>ข้อความแจ้งเตือน</code><span>ใช้ {name} = ชื่อผู้ชม, {platform} = แพลตฟอร์ม, {message} = ข้อความ เช่น “{name} ได้กดติดตามผึ้งน้อย”</span></div><div><code>แสดงนาน</code><span>2–30 วินาทีต่อการแจ้งเตือน</span></div><div><code>ขนาด / สี</code><span>ขนาดตัวอักษร สีหลัก สีข้อความ ความทึบพื้นหลัง</span></div><div><code>แอนิเมชัน</code><span>เด้งขึ้น ค่อยๆ ปรากฏ เลื่อนเข้า หรือไม่มี</span></div><div><code>รูป / GIF</code><span>PNG, JPG, WebP หรือ GIF เคลื่อนไหว ไม่เกิน 3 MB แสดงเต็มรูปไม่ถูกตัด</span></div><div><code>เสียงแจ้งเตือน</code><span>MP3, WAV หรือ OGG ไม่เกิน 3 MB กด “ฟังในแอพ” เพื่อลองฟัง และปรับความดังได้</span></div></div>
+<div class="callout"><p>การแจ้งเตือนเข้าคิวทีละอัน ถ้ามีหลายคนติดตามพร้อมกันจะขึ้นต่อกันตามลำดับ จัดการคิวได้ที่หน้า “แชทและกิจกรรม”</p></div></section>
+<section class="cart" id="gift"><header><span class="no">05</span><h2>แจ้งเตือนของขวัญ TikTok</h2></header><figure class="shot"><div class="bezel"><img src="img/widget-gift.jpg" alt="วิดเจ็ตของขวัญ: ใส่ {gift} {count} {coins} ในข้อความ และตั้งเหรียญขั้นต่ำ" loading="lazy" width="1440" height="761"></div><figcaption>วิดเจ็ตของขวัญ: ใส่ {gift} {count} {coins} ในข้อความ และตั้งเหรียญขั้นต่ำ</figcaption></figure>
+<div class="legend"><div><code>{gift} {count} {coins}</code><span>ชื่อของขวัญ จำนวน และเหรียญรวม เช่น “{name} ส่ง {gift} ×{count}”</span></div><div><code>เหรียญขั้นต่ำ</code><span>ของขวัญที่มูลค่ารวมน้อยกว่านี้จะขึ้นแค่ในห้องแชท ไม่ขึ้นบน OBS (0 = ขึ้นทุกชิ้น)</span></div><div><code>คอมโบ</code><span>ส่งกุหลาบรัวๆ จะแจ้งเตือนครั้งเดียวตอนคอมโบจบ พร้อมจำนวนรวม</span></div><div><code>รูปของขวัญ</code><span>เปิด/ปิดการแสดงรูปของขวัญจาก TikTok บนการแจ้งเตือน</span></div></div></section>
+<section class="cart" id="chatbox"><header><span class="no">06</span><h2>กล่องแชท และ แบนเนอร์</h2></header><div class="legend"><div><code>กล่องแชท</code><span>ขนาดตัวอักษร, จำนวนข้อความบนจอ, ซ่อนข้อความหลังกี่วินาที, ข้อความใหม่อยู่บนหรือล่าง, สีชื่อ, ความทึบพื้นหลัง, ไอคอนแพลตฟอร์ม</span></div><div><code>แบนเนอร์</code><span>รูปแบบ (Studio / Minimal / Neon), หัวข้อ, ข้อความรอง, สีหลัก, รูป</span></div></div></section>
+<section class="cart" id="css"><header><span class="no">07</span><h2>อยากแต่งเองมากกว่านี้: CSS กำหนดเอง</h2></header><figure class="shot"><div class="bezel"><img src="img/widget-css.jpg" alt="เปิดสวิตช์ “ใช้ CSS กำหนดเอง” ใต้พรีวิว แล้วเขียนหรือวางโค้ด" loading="lazy" width="1440" height="761"></div><figcaption>เปิดสวิตช์ “ใช้ CSS กำหนดเอง” ใต้พรีวิว แล้วเขียนหรือวางโค้ด</figcaption></figure>
+<p>ทุกวิดเจ็ตเขียน CSS เองได้ เปลี่ยนสี ขอบ ไล่สี เงา หรือใส่แอนิเมชัน อ่านวิธีทั้งหมดได้ที่ <a href="custom-css.html">คู่มือ CSS กำหนดเอง</a> ถ้าทำพัง ปิดสวิตช์แล้ววิดเจ็ตจะกลับเป็นแบบเดิมทันที</p></section>
+<section class="cart" id="legacy"><header><span class="no">08</span><h2>โอเวอร์เลย์รวมแบบเดิม (ขั้นสูง)</h2></header><p>ใต้หน้าวิดเจ็ตมีส่วน “ขั้นสูง” เป็นลิงก์เดียวที่รวมแบนเนอร์ แชท และการแจ้งเตือนไว้ในหน้า 1920 × 1080 เดียว ยังใช้ได้ แต่แนะนำให้ใช้วิดเจ็ตแยกเพราะจัดวางใน OBS ได้อิสระกว่า</p></section>
+
+<nav class="pager" aria-label="หน้าก่อนและหน้าถัดไป"><a href="connections.html"><small>◀ ก่อนหน้า</small><b>เชื่อมต่อแพลตฟอร์ม</b></a><a class="next" href="chat-tts.html"><small>ถัดไป ▶</small><b>แชทและบอทอ่านแชท</b></a></nav>
+<p class="foot">Allhouse 0.1.0 · Local alpha · คู่มือนี้อยู่ในเครื่องของคุณ เปิดได้โดยไม่ต้องใช้อินเทอร์เน็ต</p>
+</div>
+<script src="assets/guide.js" defer></script>
+</body>
+</html>
+

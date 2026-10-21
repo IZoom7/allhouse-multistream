@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>เชื่อมต่อแพลตฟอร์ม · คู่มือ Allhouse</title>
+<meta name="description" content="วิธีเชื่อม Twitch, YouTube, Kick และ TikTok (TikFinity) กับ Allhouse">
+<meta name="theme-color" content="#8d2832">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Noto+Sans+Thai:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&display=swap">
+<link rel="stylesheet" href="assets/guide.css">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-head"><div class="in">
+  <a class="brand" href="index.html"><img src="assets/favicon.png" alt=""><span>allhouse <small>MANUAL</small></span></a>
+  <nav class="site-nav" aria-label="หน้าในคู่มือ"><a href="index.html">หน้าแรก</a><a href="start.html">เริ่มต้นใช้งาน</a><a href="connections.html" aria-current="page">เชื่อมต่อแพลตฟอร์ม</a><a href="obs-widgets.html">วิดเจ็ต OBS</a><a href="chat-tts.html">แชทและบอทอ่านแชท</a><a href="custom-css.html">CSS กำหนดเอง</a><a href="help.html">แก้ปัญหาและข้อมูล</a></nav>
+</div></header>
+<div class="wrap">
+
+<section class="page-intro"><span class="crumb">02 · CONNECTIONS</span><h1>เชื่อมต่อแพลตฟอร์ม</h1><p>ใส่ชื่อช่องแล้วกดเชื่อมต่อ แชทและการแจ้งเตือนจริงจะเข้ามาที่ห้องแชทและ OBS แอพจำไว้และต่อให้เองทุกครั้งที่เปิด</p></section>
+<figure class="shot"><div class="bezel"><img src="img/connections.jpg" alt="การ์ดของแต่ละแพลตฟอร์ม: ✓ สีเขียวคือสิ่งที่ได้รับ ขีดสีเทาคือยังไม่รองรับ" loading="lazy" width="1440" height="761"></div><figcaption>การ์ดของแต่ละแพลตฟอร์ม: ✓ สีเขียวคือสิ่งที่ได้รับ ขีดสีเทาคือยังไม่รองรับ</figcaption></figure>
+<section class="cart" id="what"><header><span class="no">01</span><h2>แต่ละแพลตฟอร์มได้อะไร</h2></header><div class="tbl-wrap"><table class="tbl"><thead><tr><th>แพลตฟอร์ม</th><th>ใส่อะไร</th><th>แชท</th><th>สมาชิก/ซับ</th><th>ผู้ติดตาม</th><th>ของขวัญ</th></tr></thead><tbody>
+<tr><td>Twitch</td><td>ชื่อช่อง เช่น <code>twitch.tv/ชื่อ</code></td><td class="yes">✓</td><td class="yes">✓</td><td class="no">เร็วๆ นี้ (ต้องล็อกอิน)</td><td class="no">—</td></tr>
+<tr><td>YouTube</td><td><code>@ชื่อช่อง</code> หรือลิงก์ไลฟ์</td><td class="yes">✓ + Super Chat</td><td class="yes">✓ สมาชิก</td><td class="no">YouTube ไม่ส่งให้</td><td class="no">—</td></tr>
+<tr><td>Kick</td><td>ชื่อช่อง <code>kick.com/ชื่อ</code></td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td></tr>
+<tr><td>TikTok</td><td>เปิด TikFinity ไว้ แล้วกดเชื่อมต่อ</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+</tbody></table></div></section>
+<section class="cart" id="twitch"><header><span class="no">02</span><h2>Twitch</h2></header><p>ใส่ชื่อช่อง (ที่อยู่หลัง twitch.tv/) แล้วกดเชื่อมต่อ ไม่ต้องล็อกอิน อ่านแชทและการซับ/ซับต่อ/ของขวัญซับได้ทันที การแจ้งเตือนผู้ติดตามใหม่ของ Twitch ต้องล็อกอิน จะเปิดให้ใช้ในรุ่นถัดไป</p></section>
+<section class="cart" id="youtube"><header><span class="no">03</span><h2>YouTube</h2></header><p>ใส่ <code>@ชื่อช่อง</code> ถ้ายังไม่ได้เริ่มไลฟ์ แอพจะรอแล้วต่อให้เองเมื่อช่องเริ่มไลฟ์ หรือใส่ลิงก์ไลฟ์ตรงๆ ก็ได้ แชทอาจช้ากว่าจริงประมาณ 5 วินาที</p>
+<div class="callout warn"><p>YouTube ไม่มีช่องทางอ่านแชทสำหรับแอพในเครื่องแบบง่าย Allhouse ใช้ช่องทางเดียวกับหน้าต่างแชทของ YouTube (ไม่ใช่ API ทางการ) อาจหยุดทำงานได้ถ้า YouTube เปลี่ยนระบบ</p></div></section>
+<section class="cart" id="kick"><header><span class="no">04</span><h2>Kick</h2></header><p>ใส่ชื่อช่องจาก <code>kick.com/ชื่อ</code> ได้ทั้งแชท ซับ ของขวัญซับ และผู้ติดตามใหม่</p>
+<div class="callout warn"><p>Kick ไม่มี API แชทสาธารณะ Allhouse ใช้ช่องทางเดียวกับเว็บ kick.com อาจหยุดทำงานได้ถ้า Kick เปลี่ยนระบบ</p></div></section>
+<section class="cart" id="tiktok"><header><span class="no">05</span><h2>TikTok (ผ่าน TikFinity)</h2></header><ol class="steps"><li><b>ติดตั้ง TikFinity</b><span>ดาวน์โหลด TikFinity Desktop (ฟรี) จาก tikfinity.zerody.one</span></li><li><b>ล็อกอิน TikTok</b><span>ใน TikFinity ใส่ชื่อบัญชี TikTok ของคุณ</span></li><li><b>เปิดค้างไว้</b><span>TikFinity ต้องเปิดอยู่ตลอดเวลาที่ไลฟ์</span></li><li><b>กดเชื่อมต่อ</b><span>ใน Allhouse การ์ด TikTok → เชื่อมต่อ</span></li></ol>
+<div class="callout"><p>TikFinity ส่งข้อมูลมาให้เฉพาะตอนที่บัญชีไลฟ์อยู่ ถ้ายังไม่ได้ไลฟ์ สถานะจะ “เชื่อมแล้ว” แต่ยังไม่มีแชทเข้ามา เป็นเรื่องปกติ</p></div></section>
+<section class="cart" id="status"><header><span class="no">06</span><h2>สถานะบนการ์ด</h2></header><div class="legend"><div><code>ปิดอยู่</code><span>ยังไม่ได้เชื่อม หรือกดตัดการเชื่อมต่อแล้ว</span></div><div><code>กำลังเชื่อม…</code><span>กำลังติดต่อแพลตฟอร์ม</span></div><div><code>เชื่อมแล้ว</code><span>รับข้อมูลได้ จอเขียวบอกช่องที่ต่ออยู่และจำนวนรายการที่รับมา</span></div><div><code>กำลังลองใหม่</code><span>หลุดหรือยังไม่ได้ไลฟ์ แอพจะลองใหม่เองทุก 2–60 วินาที</span></div><div><code>เชื่อมไม่ได้</code><span>ชื่อช่องผิดหรือไม่มีช่องนี้ แก้ชื่อแล้วกดเชื่อมต่อใหม่</span></div></div></section>
+
+<nav class="pager" aria-label="หน้าก่อนและหน้าถัดไป"><a href="start.html"><small>◀ ก่อนหน้า</small><b>เริ่มต้นใช้งาน</b></a><a class="next" href="obs-widgets.html"><small>ถัดไป ▶</small><b>วิดเจ็ต OBS</b></a></nav>
+<p class="foot">Allhouse 0.1.0 · Local alpha · คู่มือนี้อยู่ในเครื่องของคุณ เปิดได้โดยไม่ต้องใช้อินเทอร์เน็ต</p>
+</div>
+<script src="assets/guide.js" defer></script>
+</body>
+</html>
+

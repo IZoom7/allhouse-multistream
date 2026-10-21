@@ -1,0 +1,33 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "allhouse-preview",
+      "runtimeExecutable": "C:/Program Files/Adobe/Adobe Creative Cloud Experience/libs/node.exe",
+      "runtimeArgs": [
+        "node_modules/vite/bin/vite.js",
+        "preview",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "4173",
+        "--strictPort"
+      ],
+      "port": 4173
+    },
+    {
+      "name": "docs-site",
+      "runtimeExecutable": "C:/Program Files/Adobe/Adobe Creative Cloud Experience/libs/node.exe",
+      "runtimeArgs": [
+        "node_modules/vite/bin/vite.js",
+        "docs-site",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "4180",
+        "--strictPort"
+      ],
+      "port": 4180
+    }
+  ]
+}
