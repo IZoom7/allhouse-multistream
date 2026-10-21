@@ -1,0 +1,25 @@
+Copyright (c) 2026 IZoom7. All rights reserved.
+
+This repository and everything in it — source code, documentation, designs,
+images, and other files (the "Software") — are the proprietary property of
+the copyright holder.
+
+No license is granted. Without prior written permission from the copyright
+holder, you may not copy, modify, merge, publish, distribute, sublicense,
+sell, or create derivative works from the Software, in whole or in part, nor
+use it in any other product or service.
+
+Viewing the Software where it is hosted, and any copying that the hosting
+service's own terms require for that viewing, does not grant any of the
+rights above.
+
+Third-party components keep their own licenses: npm dependencies under their
+respective licenses, and the platform icons from Simple Icons (CC0 1.0).
+Platform names and logos are trademarks of their respective owners.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
+
+For permission requests, contact the copyright holder through
+https://github.com/IZoom7
