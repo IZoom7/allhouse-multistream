@@ -20,6 +20,8 @@ Chat, alerts and OBS widgets from every platform, together in one house.</p>
   <a href="https://github.com/IZoom7/allhouse-multistream/releases/download/v0.1.0/Allhouse-Setup-0.1.0.exe.sha256">SHA-256</a>
   &nbsp;·&nbsp;
   <a href="https://github.com/IZoom7/allhouse-multistream/releases">ทุกเวอร์ชัน · All releases</a>
+  &nbsp;·&nbsp;
+  <a href="https://allhouse-app.vercel.app">เว็บไซต์ · Website</a>
 </p>
 
 <p align="center"><sub>ดับเบิลคลิกเพื่อติดตั้ง ไม่ต้องใช้สิทธิ์แอดมิน • ถ้า Windows ขึ้น “Windows protected your PC” ให้กด <b>More info → Run anyway</b><br>

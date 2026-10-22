@@ -55,6 +55,10 @@ docs-site/
 - ภาพหน้าจอ: ถ่ายจากแอพโหมดสว่าง ขนาด 1440 × 761 แล้วบันทึกเป็น JPEG ใน `img/` ใช้ชื่อเดิมทับได้
 - ถ้าเปลี่ยน selector หรือโครงสร้างวิดเจ็ตในแอพ (`electron/runtime.cjs` → `widgetDocument`) ต้องอัปเดตหัวข้อ “ตรงไหนเป็นตรงไหน” ใน `custom-css.html`
 
-## ถ้าวันหนึ่งอยากขึ้นเว็บ
+## เว็บจริง
+
+Deploy บน Vercel (โปรเจกต์ `allhouse`, ทีม SweetHive, Root Directory = `docs-site`, preset Other ไม่มี build) ทุกครั้งที่ push `main` จะ deploy เองอัตโนมัติ: https://allhouse-app.vercel.app (สำรอง: allhouse-kappa.vercel.app) header ความปลอดภัยตั้งใน `vercel.json` ไฟล์ใน `.vercelignore` ไม่ถูกเผยแพร่
+
+## ถ้าอยากย้ายไปที่อื่น
 
 โฟลเดอร์นี้ deploy ได้ทันทีโดยไม่ต้องแก้: ลากทั้งโฟลเดอร์ไปที่ Netlify Drop (https://app.netlify.com/drop) หรือ Cloudflare Pages → Upload assets ทั้งสองที่อ่าน `_headers` ได้เลย ส่วน Vercel ใช้ `vercel.json`
