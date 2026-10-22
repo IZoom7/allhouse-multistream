@@ -6,6 +6,8 @@ const { reconnecting } = require('./common.cjs');
 
 const DEFAULT_URL = 'ws://127.0.0.1:21213/';
 
+/** Profile picture: flat (TikTok-Live-Connector v1) or nested (v2) field names. */
+const pic = d => { const u = d && (d.profilePictureUrl || (d.user && (d.user.profilePictureUrl || (d.user.avatarThumb && (d.user.avatarThumb.urlList || d.user.avatarThumb.url_list || [])[0])))); return u ? { avatar: String(u) } : {}; };
 const who = d => (d && (d.nickname || (d.user && d.user.nickname) || d.uniqueId || (d.user && d.user.uniqueId))) || '';
 
 /** One TikFinity message -> Allhouse event or null. */
@@ -13,7 +15,7 @@ function toEvent(msg) {
   if (!msg || typeof msg.event !== 'string') return null;
   const d = msg.data || {};
   switch (msg.event) {
-    case 'chat': return d.comment ? { type: 'chat', name: who(d), message: String(d.comment) } : null;
+    case 'chat': return d.comment ? { type: 'chat', name: who(d), message: String(d.comment), ...pic(d) } : null;
     case 'follow': return { type: 'follow', name: who(d), message: 'followed' };
     case 'subscribe': return { type: 'subscription', name: who(d), message: 'subscribed' };
     case 'social': return /follow/i.test(String(d.displayType || '')) ? { type: 'follow', name: who(d), message: 'followed' } : null;

@@ -322,7 +322,8 @@ test('components.tsx: preview uses the same capitalised names / TEST labels and 
   const src = await fs.readFile(path.join(__dirname, '../src/components.tsx'), 'utf8');
   assert.match(src, /TEST ALERT · \{platformNames\[/);
   assert.match(src, /TEST CHAT/);
-  assert.doesNotMatch(src, /toUpperCase\(\)/);
+  // platform names keep their real capitalisation (the avatar initial letter may be uppercased)
+  assert.doesNotMatch(src, /platform[^;\n]{0,40}\.toUpperCase\(\)/i);
   assert.match(src, /<img[^>]*draggable=\{false\}/);
   assert.match(src, /<svg[^>]*\{\.\.\.noDrag\}/);
 });

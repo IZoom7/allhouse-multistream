@@ -545,6 +545,14 @@ html[data-theme='light'] .preview-checker { background-color: #e7e9ef; backgroun
 .modal { width: min(480px, 100%); display: flex; flex-direction: column; gap: 12px; padding: 28px; box-shadow: var(--shadow); animation: rise 180ms var(--ease); }
 .modal .platform-mark { width: 44px; height: 44px; font-size: 20px; }
 .modal p { color: var(--text-2); font-size: 14.5px; margin-bottom: 6px; }
+.confirm-dialog { width: min(440px, 100%); }
+.confirm-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.confirm-icon svg { width: 22px; height: 22px; }
+.confirm-dialog.danger .confirm-icon { color: var(--danger); background: var(--danger-soft); }
+.confirm-dialog h2 { font-size: 20px; }
+.confirm-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.button.primary.danger-fill { background: var(--danger); color: var(--surface); }
+.button.primary.danger-fill:hover:not(:disabled) { background: color-mix(in srgb, var(--danger) 88%, var(--text)); }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1280px) {
@@ -817,7 +825,14 @@ input[type='number']::-webkit-inner-spin-button { opacity: 1; }
 :where(.wp-stage) #box { position: absolute; inset: 24px; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; font-size: var(--fs); }
 :where(.wp-stage) #box.top { flex-direction: column-reverse; }
 :where(.wp-stage) .chat { background: var(--bg); border-radius: .7em; padding: .55em .8em; overflow-wrap: anywhere; line-height: 1.35; }
-:where(.wp-stage) .chat b { color: var(--accent); font-size: .82em; }
+:where(.wp-stage) .chat b { color: var(--name, var(--accent)); font-size: .82em; }
+:where(.wp-stage) .chat .pf { font-weight: 400; opacity: .75; }
+:where(.wp-stage) .chat.inline span { display: inline; margin: 0 0 0 .45em; }
+:where(.wp-stage) .chat.has-av { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: .6em; align-items: start; }
+:where(.wp-stage) .chat.has-av > .av { grid-row: 1 / 3; }
+:where(.wp-stage) .chat.inline.has-av { grid-template-columns: auto auto minmax(0, 1fr); align-items: baseline; }
+:where(.wp-stage) .chat.inline.has-av > .av { grid-row: auto; align-self: center; }
+:where(.wp-stage) .chat .av { font-style: normal; margin: 0; width: 1.8em; height: 1.8em; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: .95em; color: #fff; background: var(--name, var(--accent)); }
 :where(.wp-stage) .chat span { display: block; margin-top: .15em; }
 :where(.wp-stage) #wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
 :where(.wp-stage) #card { max-width: 80%; text-align: center; padding: .6em 1em; border: 4px solid var(--accent); background: var(--bg); border-radius: .5em; font-size: var(--fs); overflow-wrap: anywhere; line-height: 1.25; }

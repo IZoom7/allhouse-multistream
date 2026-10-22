@@ -15,7 +15,7 @@ const alertDefaults = template => ({ ...CSS_DEFAULTS, enabled: true, width: 1920
 function defaultWidgets() { return validateWidgets(rawDefaultWidgets()); }
 function rawDefaultWidgets() {
   return {
-    chat: { ...CSS_DEFAULTS, enabled: true, width: 800, height: 1080, fontSize: 28, maxMessages: 6, lifetimeSec: 60, showPlatformIcon: true, bgOpacity: 0.85, accent: scene.accent, textColor: '#ffffff', newestAt: 'bottom', animation: 'slide' },
+    chat: { ...CSS_DEFAULTS, enabled: true, width: 800, height: 1080, fontSize: 28, maxMessages: 6, lifetimeSec: 60, showPlatformIcon: true, bgOpacity: 0.85, accent: scene.accent, textColor: '#ffffff', newestAt: 'bottom', animation: 'slide', showAvatar: false, showPlatformName: true, nameColor: 'accent', layout: 'stacked' },
     follow: alertDefaults('{name} followed!'),
     subscription: alertDefaults('{name} subscribed!'),
     gift: { ...alertDefaults('{name} sent {gift} ×{count}'), minCoins: 1, showGiftImage: true },
@@ -53,7 +53,11 @@ function validateWidgets(w) {
   const chat = base(c, 'chat');
   if (!int(c.fontSize, 14, 72) || !int(c.maxMessages, 1, 20) || !(c.lifetimeSec === 0 || int(c.lifetimeSec, 5, 600)) || typeof c.showPlatformIcon !== 'boolean'
     || !num(c.bgOpacity, 0, 1) || !hex(c.accent) || !hex(c.textColor) || !['bottom', 'top'].includes(c.newestAt) || !ANIMS.includes(c.animation)) bad('chat');
-  Object.assign(chat, { fontSize: c.fontSize, maxMessages: c.maxMessages, lifetimeSec: c.lifetimeSec, showPlatformIcon: c.showPlatformIcon, bgOpacity: c.bgOpacity, accent: c.accent, textColor: c.textColor, newestAt: c.newestAt, animation: c.animation });
+  // Round 13 (optional): avatar, platform name, name colour mode, one-line layout.
+  const opt = (v, d) => (v === undefined ? d : v);
+  const showAvatar = opt(c.showAvatar, false), showPlatformName = opt(c.showPlatformName, true), nameColor = opt(c.nameColor, 'accent'), layout = opt(c.layout, 'stacked');
+  if (typeof showAvatar !== 'boolean' || typeof showPlatformName !== 'boolean' || !['accent', 'platform', 'user'].includes(nameColor) || !['stacked', 'inline'].includes(layout)) bad('chat');
+  Object.assign(chat, { fontSize: c.fontSize, maxMessages: c.maxMessages, lifetimeSec: c.lifetimeSec, showPlatformIcon: c.showPlatformIcon, bgOpacity: c.bgOpacity, accent: c.accent, textColor: c.textColor, newestAt: c.newestAt, animation: c.animation, showAvatar, showPlatformName, nameColor, layout });
   const alert = id => {
     const a = w[id], out = base(a, id);
     if (!int(a.durationSec, 2, 30) || !str(a.template, 120) || !int(a.fontSize, 20, 160) || !hex(a.accent) || !hex(a.textColor) || !num(a.bgOpacity, 0, 1)
@@ -118,19 +122,21 @@ function validateState(input) {
   const hasEngine = t.engine !== undefined;
   if (hasEngine && (!['windows', 'online'].includes(t.engine) || !text(t.onlineThaiVoice ?? '', 200) || !text(t.onlineEnglishVoice ?? '', 200))) throw new Error('Invalid speech settings');
   // Optional chat reading rules (round 9): per-platform on/off, read the name, skip !commands, ignored names, max length.
+  if (t.singleVoice !== undefined && typeof t.singleVoice !== 'boolean') throw new Error('Invalid speech settings');
   let rules = null;
   if (t.rules !== undefined) {
     const r = t.rules, p = r && r.platforms;
     if (!r || typeof r !== 'object' || !p || typeof p !== 'object' || !PLATFORMS.every(k => typeof p[k] === 'boolean')
-      || typeof r.readName !== 'boolean' || typeof r.skipCommands !== 'boolean' || !text(r.ignoreNames, 2000) || !int(r.maxChars, 20, 500)) throw new Error('Invalid chat reading rules');
-    rules = { platforms: Object.fromEntries(PLATFORMS.map(k => [k, p[k]])), readName: r.readName, skipCommands: r.skipCommands, ignoreNames: r.ignoreNames, maxChars: r.maxChars };
+      || typeof r.readName !== 'boolean' || (r.nameTemplate !== undefined && !text(r.nameTemplate, 200))
+      || typeof r.skipCommands !== 'boolean' || !text(r.ignoreNames, 2000) || !int(r.maxChars, 20, 500)) throw new Error('Invalid chat reading rules');
+    rules = { platforms: Object.fromEntries(PLATFORMS.map(k => [k, p[k]])), readName: r.readName, ...(r.nameTemplate !== undefined ? { nameTemplate: r.nameTemplate } : {}), skipCommands: r.skipCommands, ignoreNames: r.ignoreNames, maxChars: r.maxChars };
   }
   return { schemaVersion:2, workspaceName:input.workspaceName.trim(), language:input.language, theme:input.theme, onboarded:!!input.onboarded,
     draft, published,
     ...(input.importedPublished ? { importedPublished: cleanScene(input.importedPublished) } : {}), publishedAt: typeof input.publishedAt === 'string' ? input.publishedAt.slice(0,40) : null,
     draftWidgets, publishedWidgets, widgetsPublishedAt, ...(importedPublishedWidgets ? { importedPublishedWidgets } : {}),
     tts: { enabled:t.enabled, rate:t.rate, volume:t.volume, thaiVoice:t.thaiVoice, englishVoice:t.englishVoice,
-      ...(hasEngine ? { engine:t.engine, onlineThaiVoice:t.onlineThaiVoice ?? '', onlineEnglishVoice:t.onlineEnglishVoice ?? '' } : {}), ...(rules ? { rules } : {}) }, history: [] };
+      ...(hasEngine ? { engine:t.engine, onlineThaiVoice:t.onlineThaiVoice ?? '', onlineEnglishVoice:t.onlineEnglishVoice ?? '' } : {}), ...(rules ? { rules } : {}), ...(t.singleVoice !== undefined ? { singleVoice: t.singleVoice } : {}) }, history: [] };
 }
 // Simple Icons 16.34.0 glyphs (CC0) from src/assets/platforms, drawn on their brand colour, inlined as data: images.
 const PLATFORM_TILES = { twitch: ['#9146FF', '#FFFFFF'], youtube: ['#FF0000', '#FFFFFF'], kick: ['#53FC19', '#0B1A03'], tiktok: ['#000000', '#FFFFFF'] };
@@ -149,6 +155,7 @@ function platformIconUris() {
 }
 const PLATFORM_ICONS = platformIconUris();
 const CSP_GIFT = "default-src 'none'; script-src 'nonce-allhouse'; style-src 'unsafe-inline'; img-src data: https://*.tiktokcdn.com https://*.tiktokcdn-us.com https://*.tiktokcdn-eu.com https://*.ibyteimg.com https://*.byteimg.com; media-src data:; connect-src 'self'; font-src 'self'";
+const CSP_CHAT = "default-src 'none'; script-src 'nonce-allhouse'; style-src 'unsafe-inline'; img-src data: https://static-cdn.jtvnw.net https://files.kick.com https://*.ggpht.com https://*.googleusercontent.com https://*.tiktokcdn.com https://*.tiktokcdn-us.com https://*.tiktokcdn-eu.com https://*.ibyteimg.com https://*.byteimg.com; media-src data:; connect-src 'self'; font-src 'self'";
 const CSP = "default-src 'none'; script-src 'nonce-allhouse'; style-src 'unsafe-inline'; img-src data:; media-src data:; connect-src 'self'; font-src 'self'";
 /**
  * One OBS Browser Source per widget: transparent large canvas (config width × height, scaled to the window),
@@ -166,7 +173,10 @@ html,body{margin:0;background:transparent;overflow:hidden;cursor:default;font-fa
 @media (prefers-reduced-motion:reduce){.anim-fade,.anim-slide,.anim-pop{animation:none}}`;
   const css = {
     chat: `#box{position:absolute;inset:24px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;font-size:var(--fs)}#box.top{flex-direction:column-reverse}
-.chat{background:var(--bg);border-radius:.7em;padding:.55em .8em;overflow-wrap:anywhere;line-height:1.35}.chat b{color:var(--accent);font-size:.82em}.chat span{display:block;margin-top:.15em}`,
+.chat{background:var(--bg);border-radius:.7em;padding:.55em .8em;overflow-wrap:anywhere;line-height:1.35}.chat b{color:var(--name,var(--accent));font-size:.82em}.chat span{display:block;margin-top:.15em}
+.chat .pf{font-weight:400;opacity:.75}.chat.inline span{display:inline;margin:0 0 0 .45em}
+.chat.has-av{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:.6em;align-items:start}.chat.has-av>.av{grid-row:1/3}.chat.inline.has-av{grid-template-columns:auto auto minmax(0,1fr);align-items:baseline}.chat.inline.has-av>.av{grid-row:auto;align-self:center}
+.chat .av{font-style:normal;margin:0;width:1.8em;height:1.8em;border-radius:50%;object-fit:cover;display:grid;place-items:center;font-weight:700;font-size:.95em;color:#fff;background:var(--name,var(--accent))}`,
     alert: `#wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 #card{max-width:80%;text-align:center;padding:.6em 1em;border:4px solid var(--accent);background:var(--bg);border-radius:.5em;font-size:var(--fs);overflow-wrap:anywhere;line-height:1.25}
 #card img.art{display:block;max-width:100%;max-height:40vh;margin:0 auto .3em}#card small{display:block;color:var(--accent);font-size:.32em;letter-spacing:.08em;margin-bottom:.3em}#card .ph{color:var(--accent)}#card .msg{display:block;font-size:.5em;opacity:.9;margin-top:.3em}#card img.gimg{display:block;width:1.6em;height:1.6em;margin:0 auto .2em}`,
@@ -176,8 +186,14 @@ h1{margin:0;font-size:44px}p{margin:10px 0 0;font-size:28px;color:#ccd3d0}#art{p
   const kind = id === 'chat' ? 'chat' : id === 'banner' ? 'banner' : 'alert';
   const body = { chat: '<div id="box"></div>', alert: '<div id="wrap" class="hidden"><div id="card"></div></div>', banner: '<div id="brand"><h1 id="title"></h1><p id="subtitle"></p></div><img id="art" alt="" class="hidden">' }[kind];
   const script = {
-    chat: `events.addEventListener('chat',e=>{if(!c||!c.enabled)return;const v=JSON.parse(e.data);const row=document.createElement('div');row.className='chat'+(c.animation==='none'?'':' anim-'+c.animation);if(c.showPlatformIcon){const pi=icon(v.platform);if(pi)row.append(pi)}const b=document.createElement('b');b.textContent=v.name+' · '+(NAMES[v.platform]||v.platform);if(v.sourceMode!=='live'){const tag=document.createElement('i');tag.className='tag';tag.textContent='TEST CHAT';b.append(tag)}const t=document.createElement('span');t.textContent=v.message;row.append(b,t);const box=el('box');box.append(row);while(box.children.length>c.maxMessages)box.firstChild.remove();if(c.lifetimeSec>0)setTimeout(()=>row.remove(),c.lifetimeSec*1000)});
+    chat: `events.addEventListener('chat',e=>{if(!c||!c.enabled)return;const v=JSON.parse(e.data);const row=document.createElement('div');row.className='chat'+(c.animation==='none'?'':' anim-'+c.animation);const nc=c.nameColor==='platform'?PCOL[v.platform]:c.nameColor==='user'?(v.color||hashColor(v.name)):'';if(nc)row.style.setProperty('--name',nc);if(c.layout==='inline')row.classList.add('inline');if(c.showAvatar){row.classList.add('has-av');row.append(avatar(v))}const b=document.createElement('b');if(c.showPlatformIcon){const pi=icon(v.platform);if(pi)b.append(pi)}b.append(document.createTextNode(v.name));if(c.showPlatformName!==false){const pf=document.createElement('small');pf.className='pf';pf.textContent=' · '+(NAMES[v.platform]||v.platform);b.append(pf)}if(v.sourceMode!=='live'){const tag=document.createElement('i');tag.className='tag';tag.textContent='TEST CHAT';b.append(tag)}const t=document.createElement('span');t.textContent=v.message;row.append(b,t);const box=el('box');box.append(row);while(box.children.length>c.maxMessages)box.firstChild.remove();if(c.lifetimeSec>0)setTimeout(()=>row.remove(),c.lifetimeSec*1000)});
 events.addEventListener('clear',()=>el('box').replaceChildren());
+const PCOL={twitch:'#a970ff',youtube:'#ff4e45',kick:'#53fc18',tiktok:'#25f4ee'};
+const PAL=['#ff6b6b','#ffa94d','#ffd43b','#69db7c','#38d9a9','#4dabf7','#9775fa','#f783ac'];
+function hashColor(n){let h=0;for(const ch of String(n))h=(h*31+ch.codePointAt(0))>>>0;return PAL[h%PAL.length]}
+/** Real picture when the platform sends one (YouTube, TikTok), otherwise the first letter on the name colour. */
+function avatar(v){const ini=()=>{const s=document.createElement('i');s.className='av';s.textContent=(Array.from(String(v.name).replace(/^@/,''))[0]||'?').toUpperCase();if(c.nameColor==='accent')s.style.background=hashColor(v.name);return s};
+  if(!v.avatar)return ini();const i=document.createElement('img');i.className='av';i.alt='';i.draggable=false;i.referrerPolicy='no-referrer';i.src=v.avatar;i.onerror=()=>i.replaceWith(ini());return i}
 function render(s){el('box').classList.toggle('hidden',!s.enabled);el('box').classList.toggle('top',s.newestAt==='top');el('scene').style.setProperty('--fs',s.fontSize+'px');while(el('box').children.length>s.maxMessages)el('box').firstChild.remove()}`,
     alert: `let timer,audio=null;const stop=()=>{el('wrap').classList.add('hidden');clearTimeout(timer);if(audio){try{audio.pause()}catch(_){}audio=null}};
 /** Template → text nodes; placeholders become spans. Nothing is ever parsed as HTML. */
@@ -187,7 +203,7 @@ events.addEventListener('hide-alert',stop);events.addEventListener('clear',stop)
 function render(s){el('scene').style.setProperty('--fs',s.fontSize+'px');if(!s.enabled)stop()}`,
     banner: `function render(s){el('scene').className=s.template;el('brand').classList.toggle('hidden',!s.enabled);el('title').textContent=s.title;el('subtitle').textContent=s.subtitle;el('art').src=s.image||'';el('art').classList.toggle('hidden',!s.enabled||!s.image)}`,
   }[kind];
-  return `<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="${id==='gift'?CSP_GIFT:CSP}"><title>Allhouse ${id}</title><style>${common}${css[kind]}</style></head>
+  return `<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="${id==='gift'?CSP_GIFT:id==='chat'?CSP_CHAT:CSP}"><title>Allhouse ${id}</title><style>${common}${css[kind]}</style></head>
 <body><div id="scene" data-widget="${id}">${body}</div>
 <script nonce="allhouse">
 let c=null; const el=id=>document.getElementById(id); const ICONS=${JSON.stringify(PLATFORM_ICONS)}; const NAMES={youtube:'YouTube',twitch:'Twitch',kick:'Kick',tiktok:'TikTok'};
@@ -231,6 +247,7 @@ events.addEventListener('clear',()=>{el('alert').classList.add('hidden');el('cha
 }
 const PLATFORMS = ['youtube', 'twitch', 'kick', 'tiktok'], TYPES = ['chat', 'follow', 'subscription', 'gift'], TARGETS = ['preview', 'obs'];
 const GIFT_IMAGE_RE = /^https:\/\/[a-z0-9.-]+\.(tiktokcdn|tiktokcdn-us|tiktokcdn-eu|ibyteimg|byteimg)\.com\/[^\s"'<>]{1,500}$/i;
+const AVATAR_RE = /^https:\/\/([a-z0-9-]+\.)*(ggpht\.com|googleusercontent\.com|tiktokcdn\.com|tiktokcdn-us\.com|tiktokcdn-eu\.com|ibyteimg\.com|byteimg\.com|jtvnw\.net|kick\.com)\/[^\s"'<>]{1,800}$/i;
 /** Gift details carried on gift events (not stored in history beyond the message text). */
 function cleanGift(g) {
   if (!g || typeof g !== 'object') return { name: 'Gift', count: 1, coins: 0, image: '' };
@@ -246,7 +263,9 @@ function cleanHistoryEntry(e) {
     || typeof e.name !== 'string' || e.name.length > 80 || typeof e.message !== 'string' || e.message.length > 500 || !TARGETS.includes(e.target)) return null;
   const status = ['queued', 'playing'].includes(e.status) ? 'interrupted' : STATUSES.includes(e.status) ? e.status : 'completed';
   return { id: e.id, platform: e.platform, type: e.type, name: e.name, message: e.message, target: e.target, sourceMode: e.sourceMode === 'live' ? 'live' : 'test',
-    createdAt: typeof e.createdAt === 'string' ? e.createdAt.slice(0, 40) : new Date(0).toISOString(), status };
+    createdAt: typeof e.createdAt === 'string' ? e.createdAt.slice(0, 40) : new Date(0).toISOString(), status,
+    // profile picture + name colour survive a restart (re-checked: https YouTube/TikTok image hosts, #rrggbb)
+    ...(typeof e.avatar === 'string' && AVATAR_RE.test(e.avatar) ? { avatar: e.avatar } : {}), ...(hex(e.color) ? { color: e.color } : {}) };
 }
 const IMPORTED = ' (imported)';
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -385,6 +404,8 @@ async function createRuntime({ dataDir, port = 0 }) {
       if(!name||(input.type==='chat'&&!message))return null;
       if(input.type!=='chat'&&activeCount()>=50)return null; // alert flood: drop rather than grow the queue without bound
       const event={id:crypto.randomUUID(),platform:input.platform,type:input.type,name,message,target:'obs',sourceMode:'live',createdAt:new Date().toISOString(),status:input.type==='chat'?'completed':'queued'};
+      if(typeof input.avatar==='string'&&AVATAR_RE.test(input.avatar))event.avatar=input.avatar;
+      if(hex(input.color))event.color=input.color;
       if(event.type==='gift'){
         event.gift=cleanGift(input.gift);
         // Small gifts stay in the activity feed but never pop an OBS alert (the gift widget's "minimum coins").

@@ -10,6 +10,10 @@ export const DEFAULT_TTS_RULES:TtsRules={
   maxChars:200,
 };
 export const MAX_IGNORE_CHARS=2000;
+export const MAX_TEMPLATE_CHARS=200;
+/** Variables the "read the name" template understands. Blank template = automatic "X บอกว่า …" / "X says …". */
+export const TEMPLATE_VARS=['{user}','{message}','{platform}'];
+const PLATFORM_SPOKEN:Record<Platform,string>={twitch:'Twitch',youtube:'YouTube',kick:'Kick',tiktok:'TikTok'};
 
 /** Saved rules merged over the defaults (workspaces saved before round 9 have none). */
 export function rulesOf(tts:Pick<TtsSettings,'rules'>|undefined):TtsRules{
@@ -40,6 +44,10 @@ export function speechFor(e:{platform:Platform;name:string;message:string},rules
     msg=chars.slice(0,cut).join('');
   }
   if(!rules.readName)return {text:msg};
-  const thai=/[฀-๿]/.test(msg);
-  return {text:thai?`${name} บอกว่า ${msg}`:`${name} says ${msg}`};
+  const tpl=(rules.nameTemplate||'').trim();
+  if(!tpl){const thai=/[฀-๿]/.test(msg);return {text:thai?`${name} บอกว่า ${msg}`:`${name} says ${msg}`};}
+  // one pass, so a chat message that contains "{user}" is never expanded again; no {message} → the message goes at the end
+  const vars:Record<string,string>={user:name,message:msg,platform:PLATFORM_SPOKEN[e.platform]};
+  const out=tpl.replace(/\{(user|message|platform)\}/gi,(_,k:string)=>vars[k.toLowerCase()]);
+  return {text:(/\{message\}/i.test(tpl)?out:`${out} ${msg}`).replace(/\s+/g,' ').trim()};
 }

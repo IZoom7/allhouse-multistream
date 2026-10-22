@@ -1,10 +1,12 @@
-const {app,BrowserWindow,ipcMain,dialog,clipboard,shell,net}=require('electron');
+const {app,BrowserWindow,ipcMain,dialog,clipboard,shell,net,safeStorage}=require('electron');
 const path=require('node:path');
 const fs=require('node:fs/promises');
 const {createRuntime}=require('./runtime.cjs');
 const speech=require('./speech.cjs');
 const edgeTts=require('./edgeTts.cjs');
 const {createConnections}=require('./connections.cjs');
+const {createKickApi}=require('./kickApi.cjs');
+const {createAvatars,within}=require('./avatars.cjs');
 const {isTrustedSender,validateSpeechCommand,validateSpeechStatus,sanitizeBounds,hardenWindow,CHAT_WINDOW_HASH}=require('./windows.cjs');
 let runtime,win,chatWin=null,quitting=false,connections=null;
 const webPreferences=()=>({preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true});
@@ -32,10 +34,26 @@ app.whenReady().then(async()=>{
   // ---- Live platform connections (unofficial readers for YouTube/Kick, anonymous Twitch IRC, TikFinity for TikTok).
   // net.fetch uses Chromium's network stack, which kick.com's Cloudflare accepts (plain Node fetch gets 403).
   const toWindows=(channel,data)=>{for(const w of [win,chatWin])if(w&&!w.isDestroyed())w.webContents.send(channel,data)};
+  const avatars=createAvatars({fetch:(u,o)=>net.fetch(u,o)}),chains={};
   connections=createConnections({dataDir:app.getPath('userData'),fetch:(u,o)=>net.fetch(u,o),
-    onEvent:e=>{const ev=runtime.ingestLive(e);if(ev)toWindows('house:live-event',ev)},
+    // Twitch/Kick chat: look up the viewer's picture first (cached; at most 700 ms for a new viewer). One chain per
+    // platform keeps messages in their original order.
+    onEvent:e=>{const id=e.platform==='twitch'?e.login:e.platform==='kick'?e.slug:'';
+      chains[e.platform]=(chains[e.platform]||Promise.resolve()).then(async()=>{if(e.type==='chat'&&id&&!e.avatar){const url=await within(avatars.get(e.platform,id),700);if(url)e.avatar=url}
+        const ev=runtime.ingestLive(e);if(ev)toWindows('house:live-event',ev)}).catch(()=>{})},
     onChange:s=>toWindows('house:connections',s)});
   invoke('connections',()=>connections.get());
+  // ---- Kick official API (edit stream info). Secret + tokens stay in the main process, encrypted with safeStorage.
+  const kick=createKickApi({dataDir:app.getPath('userData'),fetch:(u,o)=>net.fetch(u,o),safeStorage,openExternal:u=>shell.openExternal(u)});
+  await kick.load();
+  invoke('kick-api-status',()=>kick.status(),{mainOnly:true});
+  invoke('kick-api-set-app',(id,secret)=>kick.setApp(id,secret),{mainOnly:true});
+  invoke('kick-api-clear',()=>kick.clear(),{mainOnly:true});
+  invoke('kick-api-login',()=>kick.login(),{mainOnly:true});
+  invoke('kick-api-logout',()=>kick.logout(),{mainOnly:true});
+  invoke('kick-api-channel',()=>kick.channel(),{mainOnly:true});
+  invoke('kick-api-categories',q=>kick.categories(q),{mainOnly:true});
+  invoke('kick-api-update',input=>kick.update(input),{mainOnly:true});
   invoke('connect',(platform,channel)=>connections.connect(platform,channel),{mainOnly:true});
   invoke('disconnect',platform=>connections.disconnect(platform),{mainOnly:true});
   // Local user manual (docs-site/*.html) opened in the default browser. Only known page names; the renderer never supplies a path.

@@ -42,6 +42,16 @@ test('read the name first (Thai or English connector) and cut long messages with
   assert.ok(Array.from(long.text).length <= 20);
 });
 
+test('custom name template: {user} {message} {platform}, no re-expansion, message appended if missing', () => {
+  const say = (tpl, message = 'hello', platform = 'kick') => R.speechFor({ platform, name: '@mint', message }, rules({ readName: true, nameTemplate: tpl }));
+  assert.deepEqual(say('{user} จาก {platform} พูดว่า {message}'), { text: 'mint จาก Kick พูดว่า hello' });
+  assert.deepEqual(say('{message} — {USER}'), { text: 'hello — mint' });
+  assert.deepEqual(say('{user} says {message}', 'try {user} $&'), { text: 'mint says try {user} $&' });
+  assert.deepEqual(say('ข้อความจาก {user}'), { text: 'ข้อความจาก mint hello' });
+  assert.deepEqual(say('   '), { text: 'mint says hello' }, 'blank = automatic');
+  assert.deepEqual(R.speechFor({ platform: 'kick', name: 'mint', message: 'hello' }, rules({ nameTemplate: '{user}: {message}' })), { text: 'hello' }, 'off = message only');
+});
+
 test('rulesOf fills defaults for older workspaces', () => {
   assert.deepEqual(R.rulesOf({}), R.DEFAULT_TTS_RULES);
   assert.equal(R.rulesOf({ rules: { ...R.DEFAULT_TTS_RULES, platforms: { youtube: false } } }).platforms.twitch, true);
@@ -54,7 +64,10 @@ test('runtime validation: rules optional, saved cleanly, bad values rejected', (
   const v = validateState(s).tts.rules;
   assert.equal(v.platforms.youtube, false);
   assert.equal(v.extra, undefined);
-  for (const bad of [{ maxChars: 5 }, { ignoreNames: 'x'.repeat(2001) }, { readName: 'yes' }, { platforms: { twitch: 'no' } }]) {
+  assert.equal(v.nameTemplate, undefined, 'no template stays absent');
+  const s2 = defaultState(); s2.tts.rules = rules({ nameTemplate: '{user}: {message}' });
+  assert.equal(validateState(s2).tts.rules.nameTemplate, '{user}: {message}');
+  for (const bad of [{ maxChars: 5 }, { nameTemplate: 'x'.repeat(201) }, { nameTemplate: 7 }, { ignoreNames: 'x'.repeat(2001) }, { readName: 'yes' }, { platforms: { twitch: 'no' } }]) {
     const b = defaultState(); b.tts.rules = rules(bad);
     assert.throws(() => validateState(b), /chat reading rules/, JSON.stringify(bad));
   }
@@ -66,4 +79,13 @@ test('pop-out relay: platform switches validated in commands and status', () => 
   assert.throws(() => validateSpeechCommand({ cmd: 'set', patch: { platforms: { twitch: 1 } } }));
   assert.equal(validateSpeechStatus({ platforms: { youtube: false } }).platforms.youtube, false);
   assert.equal(validateSpeechStatus({}).platforms, undefined);
+});
+
+test('single-voice setting: optional, boolean only, saved', () => {
+  const s = defaultState();
+  assert.equal(validateState(s).tts.singleVoice, undefined);
+  s.tts.singleVoice = true;
+  assert.equal(validateState(s).tts.singleVoice, true);
+  s.tts.singleVoice = 'yes';
+  assert.throws(() => validateState(s), /speech settings/);
 });

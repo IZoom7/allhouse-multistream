@@ -1,6 +1,6 @@
 # Image generation prompts
 
-Mode: built-in image generation tool. All three calls requested `transparent_background: true`. Wordmark and mechanical export formats are produced locally, not hallucinated text in the generated symbol.
+Mode: built-in image generation tool. All generations and the revision requested `transparent_background: true`. Wordmark and mechanical export formats are produced locally, not hallucinated text in the generated symbol.
 
 ## 1
 

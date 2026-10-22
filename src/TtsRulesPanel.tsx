@@ -1,8 +1,8 @@
 // Chat TTS page: which platforms are read aloud, and the reading rules (round 9).
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {Filter} from 'lucide-react';
 import {PlatformMark,Toggle,platformNames} from './components';
-import {MAX_IGNORE_CHARS,TTS_PLATFORMS,rulesOf,speechFor} from './ttsRules';
+import {MAX_IGNORE_CHARS,MAX_TEMPLATE_CHARS,TEMPLATE_VARS,TTS_PLATFORMS,rulesOf,speechFor} from './ttsRules';
 import type {Platform,TtsRules,TtsSettings} from './types';
 
 type T=(th:string,en:string)=>string;
@@ -13,6 +13,10 @@ export function TtsRulesPanel({t,tts,onChange}:{t:T;tts:TtsSettings;onChange:(r:
   // max length commits on blur so typing "1" on the way to "150" doesn't jump to 20
   const [maxText,setMaxText]=useState(String(r.maxChars));useEffect(()=>setMaxText(String(r.maxChars)),[r.maxChars]);
   const commitMax=()=>{const n=Math.round(Number(maxText));const v=Number.isFinite(n)?Math.max(20,Math.min(500,n)):r.maxChars;setMaxText(String(v));if(v!==r.maxChars)set({maxChars:v})};
+  // variable buttons insert at the caret, so "{user}" can go anywhere in the sentence
+  const tplRef=useRef<HTMLInputElement>(null),caretRef=useRef<number|null>(null);
+  const insertVar=(v:string)=>{const el=tplRef.current,cur=r.nameTemplate||'';const a=el?.selectionStart??cur.length,b=el?.selectionEnd??cur.length;caretRef.current=Math.min(a+v.length,MAX_TEMPLATE_CHARS);set({nameTemplate:(cur.slice(0,a)+v+cur.slice(b)).slice(0,MAX_TEMPLATE_CHARS)})};
+  useLayoutEffect(()=>{const el=tplRef.current,c=caretRef.current;if(el&&c!==null){caretRef.current=null;el.focus();el.setSelectionRange(c,c)}},[r.nameTemplate]);
   const sample=speechFor({platform:'tiktok',name:'mintmint',message:'สวัสดีทุกคน ไลฟ์วันนี้สนุกมาก https://example.com'},r);
   const on=TTS_PLATFORMS.filter(p=>r.platforms[p]).length;
   return <section className="panel tts-rules">
@@ -23,6 +27,9 @@ export function TtsRulesPanel({t,tts,onChange}:{t:T;tts:TtsSettings;onChange:(r:
     <div className="two-columns tts-rule-cols">
       <div className="form-panel">
         <Toggle checked={r.readName} onChange={readName=>set({readName})} label={t('อ่านชื่อผู้ชมก่อนข้อความ (“mintmint บอกว่า …”)','Say the viewer’s name first (“mintmint says …”)')}/>
+        {r.readName&&<label>{t('รูปแบบประโยค','Sentence format')}<input ref={tplRef} type="text" maxLength={MAX_TEMPLATE_CHARS} value={r.nameTemplate||''} onChange={e=>set({nameTemplate:e.target.value})} placeholder={t('{user} บอกว่า {message}','{user} says {message}')}/>
+          <span className="tts-template-vars">{TEMPLATE_VARS.map(v=><button key={v} type="button" className="button secondary" onClick={()=>insertVar(v)}>{v}</button>)}</span>
+          <small className="helper">{t('{user} = ชื่อผู้ชม • {message} = ข้อความ • {platform} = ชื่อแพลตฟอร์ม • เว้นว่าง = อัตโนมัติ (“บอกว่า” หรือ “says” ตามภาษาของข้อความ)','{user} = viewer name • {message} = the message • {platform} = platform name • blank = automatic (“บอกว่า” or “says” by message language)')}</small></label>}
         <Toggle checked={r.skipCommands} onChange={skipCommands=>set({skipCommands})} label={t('ข้ามคำสั่งบอท (ข้อความที่ขึ้นต้นด้วย ! หรือ /)','Skip bot commands (messages starting with ! or /)')}/>
         <label>{t('อ่านยาวสุดต่อข้อความ (ตัวอักษร)','Longest message to read (characters)')}<input type="number" min={20} max={500} value={maxText} onChange={e=>setMaxText(e.target.value)} onBlur={commitMax} onKeyDown={e=>{if(e.key==='Enter')commitMax()}}/><small className="helper">{t('20–500 • ยาวกว่านี้จะอ่านแค่ส่วนแรก • ลิงก์จะไม่ถูกอ่านเสมอ','20–500 • longer messages are cut • links are never read')}</small></label>
       </div>

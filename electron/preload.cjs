@@ -23,6 +23,17 @@ contextBridge.exposeInMainWorld('allhouse', {
   reportSpeechStatus:(status)=>ipcRenderer.invoke('house:speech-status',status),
   onSpeechCommand:(cb)=>{const h=(_e,cmd)=>cb(cmd);ipcRenderer.on('house:speech-command',h);return()=>ipcRenderer.removeListener('house:speech-command',h)},
   onSpeechStatus:(cb)=>{const h=(_e,s)=>cb(s);ipcRenderer.on('house:speech-status',h);return()=>ipcRenderer.removeListener('house:speech-status',h)},
+  // Kick official API: edit your stream info (the client secret is write-only from here)
+  kickApi:{
+    status:()=>ipcRenderer.invoke('house:kick-api-status'),
+    setApp:(clientId,secret)=>ipcRenderer.invoke('house:kick-api-set-app',String(clientId||''),String(secret||'')),
+    clear:()=>ipcRenderer.invoke('house:kick-api-clear'),
+    login:()=>ipcRenderer.invoke('house:kick-api-login'),
+    logout:()=>ipcRenderer.invoke('house:kick-api-logout'),
+    channel:()=>ipcRenderer.invoke('house:kick-api-channel'),
+    categories:(q)=>ipcRenderer.invoke('house:kick-api-categories',String(q||'')),
+    update:(input)=>ipcRenderer.invoke('house:kick-api-update',input),
+  },
   // Live platform connections
   getConnections:()=>ipcRenderer.invoke('house:connections'),
   connectPlatform:(platform,channel)=>ipcRenderer.invoke('house:connect',String(platform),String(channel||'')),

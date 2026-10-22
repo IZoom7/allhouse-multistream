@@ -25,6 +25,15 @@ const path = require('node:path');
     await menu.click();
     await page.locator('.sidebar.open').waitFor();
     await page.screenshot({path:path.join(__dirname,'app-compact.png')});
+    await page.setViewportSize({width:1440,height:960});
+    await page.goto('http://127.0.0.1:5189/docs-site/index.html');
+    await page.locator('.brand-lockup').evaluate(img=>img.decode());
+    const manualLogo=await page.locator('.brand-lockup').evaluate(img=>({width:img.naturalWidth,src:img.getAttribute('src')}));
+    if(!manualLogo.width||!manualLogo.src.includes('v2'))throw new Error('Manual logo did not update');
+    const favicon=await page.locator('link[rel="icon"]').getAttribute('href');
+    if(!favicon.includes('favicon-v2.png'))throw new Error('Manual favicon did not update');
+    await page.screenshot({path:path.join(__dirname,'manual-v2.png')});
+    console.log(JSON.stringify({manualLogo,favicon}));
     console.log(JSON.stringify({bounds,pageErrors:errors,themes:['dark','light'],compact:'800x600'}));
     if(errors.length)throw new Error(errors.join('; '));
   } finally {await browser.close()}

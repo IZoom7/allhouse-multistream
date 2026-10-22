@@ -1,5 +1,5 @@
-import React,{useId,useLayoutEffect,useRef,useState} from 'react';
-import {Monitor} from 'lucide-react';
+import React,{useEffect,useId,useLayoutEffect,useRef,useState} from 'react';
+import {AlertTriangle,Monitor} from 'lucide-react';
 import type {AlertWidget,BannerWidget,ChatWidget,HouseEvent,Platform,Scene,WidgetId,Widgets,GiftWidget} from './types';
 import {platformIcons} from './platformIcons';
 
@@ -10,6 +10,17 @@ export const platformNames:Record<Platform,string>={youtube:'YouTube',twitch:'Tw
 export function PlatformMark({platform}:{platform:Platform}){const icon=platformIcons[platform];return <span className={'platform-mark '+platform} style={{background:icon.bg,color:icon.fg}} title={platformNames[platform]} aria-label={platformNames[platform]} role="img"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...noDrag}><path d={icon.path} fill="currentColor"/></svg></span>}
 export function PageHeading({title,description,action}:{title:string;description:string;action?:React.ReactNode}){return <div className="page-heading"><div><h1>{title}</h1><p>{description}</p></div>{action}</div>}
 export function Toggle({checked,onChange,label,disabled}:{checked:boolean;onChange:(v:boolean)=>void;label:string;disabled?:boolean}){const id=useId();return <div className="toggle-row"><label htmlFor={id}>{label}</label><button id={id} type="button" role="switch" aria-checked={checked} disabled={disabled} className={'toggle '+(checked?'on':'')} onClick={()=>onChange(!checked)}><span/></button></div>}
+export type ConfirmRequest={title:string;body:string;confirmLabel:string;cancelLabel:string;icon?:React.ReactNode;danger?:boolean;onConfirm:()=>void};
+/** In-app replacement for window.confirm(). Cancel has focus so Enter never confirms a destructive action by accident; Escape cancels. */
+export function ConfirmDialog({request,onClose}:{request:ConfirmRequest;onClose:()=>void}){
+  useEffect(()=>{const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape'){e.stopPropagation();onClose()}};addEventListener('keydown',onKey,true);return()=>removeEventListener('keydown',onKey,true)},[onClose]);
+  return <div className="modal-backdrop" onClick={onClose}><section className={'modal panel confirm-dialog'+(request.danger?' danger':'')} role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-body" onClick={e=>e.stopPropagation()}>
+    <span className="confirm-icon" aria-hidden="true">{request.icon??<AlertTriangle size={22}/>}</span>
+    <h2 id="confirm-title">{request.title}</h2>
+    <p id="confirm-body">{request.body}</p>
+    <div className="confirm-actions"><button type="button" className="button secondary" autoFocus onClick={onClose}>{request.cancelLabel}</button><button type="button" className={'button primary'+(request.danger?' danger-fill':'')} onClick={()=>{onClose();request.onConfirm()}}>{request.icon}{request.confirmLabel}</button></div>
+  </section></div>
+}
 /** In-app copy of the OBS overlay (electron/runtime.cjs overlayDocument): same positions, pixel sizes (via --u) and TEST labels. */
 export function OverlayPreview({scene,chat,alert}:{scene:Scene;chat?:HouseEvent;alert?:HouseEvent}){
   const style={'--scene-accent':scene.accent,'--u':`calc(100cqw / ${scene.width})`,aspectRatio:`${scene.width}/${scene.height}`} as React.CSSProperties;
@@ -34,8 +45,12 @@ export function fillTemplateParts(template:string,v:PreviewEvent):React.ReactNod
     return val===null?<React.Fragment key={i}>{part}</React.Fragment>:<span key={i} className="ph">{val}</span>;
   });
 }
+// Same name colours as the widget page (runtime.cjs): platform brand tints and a steady colour per viewer name.
+export const PCOL:Record<Platform,string>={twitch:'#a970ff',youtube:'#ff4e45',kick:'#53fc18',tiktok:'#25f4ee'};
+const PAL=['#ff6b6b','#ffa94d','#ffd43b','#69db7c','#38d9a9','#4dabf7','#9775fa','#f783ac'];
+export const hashColor=(n:string)=>{let h=0;for(const ch of n)h=(h*31+ch.codePointAt(0)!)>>>0;return PAL[h%PAL.length]};
 /** Platform glyph sized like the widget page's img.pm. */
-function Pm({platform}:{platform:Platform}){const icon=platformIcons[platform];return <span className="pm" style={{background:icon.bg,color:icon.fg}}><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...noDrag}><path d={icon.path} fill="currentColor"/></svg></span>}
+function Pm({platform}:{platform:Platform}){const icon=platformIcons[platform];return <i className="pm" style={{background:icon.bg,color:icon.fg}}><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...noDrag}><path d={icon.path} fill="currentColor"/></svg></i>}
 /**
  * User CSS for the preview: parsed by the browser (CSSStyleSheet) and re-serialised rule by rule inside
  * @scope(.wp-stage), so unbalanced braces or `body {}` rules can never escape and restyle the app itself.
@@ -64,8 +79,10 @@ export function WidgetPreview({widget,kind,event}:{widget:Widgets[WidgetId];kind
     const c=widget as ChatWidget,rows=[ev,{platform:'youtube' as Platform,name:'บ้านข้างๆ',message:'ไลฟ์วันนี้สนุกมาก!'},{platform:'kick' as Platform,name:'guest',message:'hello 👋'}].slice(0,c.maxMessages).reverse();
     body=<Canvas width={c.width} height={c.height} vars={{'--accent':c.accent,'--text':c.textColor,'--bg':rgba('#101414',c.bgOpacity),'--fs':c.fontSize+'px'}}>
       <div id="box" className={c.newestAt==='top'?'top':undefined}>
-        {rows.map((r,i)=><div key={i} className={'chat'+(c.animation==='none'||i!==rows.length-1?'':' anim-'+c.animation)}>
-          {c.showPlatformIcon&&<Pm platform={r.platform}/>}<b>{r.name} · {platformNames[r.platform]}<i className="tag">TEST CHAT</i></b><span>{r.message}</span></div>)}
+        {rows.map((r,i)=>{const nc=c.nameColor==='platform'?PCOL[r.platform]:c.nameColor==='user'?hashColor(r.name):undefined;
+          return <div key={i} className={'chat'+(c.layout==='inline'?' inline':'')+(c.showAvatar?' has-av':'')+(c.animation==='none'||i!==rows.length-1?'':' anim-'+c.animation)} style={nc?{['--name' as string]:nc}:undefined}>
+          {c.showAvatar&&<i className="av" style={c.nameColor==='accent'||!c.nameColor?{background:hashColor(r.name)}:undefined}>{(Array.from(r.name.replace(/^@/,''))[0]||'?').toUpperCase()}</i>}
+          <b>{c.showPlatformIcon&&<Pm platform={r.platform}/>}{r.name}{c.showPlatformName!==false&&<small className="pf"> · {platformNames[r.platform]}</small>}<i className="tag">TEST CHAT</i></b><span>{r.message}</span></div>})}
       </div></Canvas>;
   }else if(kind==='banner'){
     const b=widget as BannerWidget;

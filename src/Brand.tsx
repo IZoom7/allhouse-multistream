@@ -14,7 +14,7 @@ const letters: Record<string, string[]> = {
 const wordPath = [...'ALLHOUSE'].flatMap((letter, i) => letters[letter].flatMap((row, y) =>
   [...row].flatMap((cell, x) => cell === '1' ? [`M${i * 6 + x} ${y}h1v1h-1z`] : [])
 )).join('');
-const icon = './brand/allhouse-icon-128.png';
+const icon = './brand/allhouse-icon-128.png?v=20261022';
 
 export function BrandIcon({size=48,className=''}:{size?:number;className?:string}) {
   return <img className={'allhouse-symbol '+className} src={icon} width={size} height={size} alt="" draggable={false}/>;

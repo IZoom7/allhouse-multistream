@@ -17,7 +17,7 @@ docs-site/
 │   ├── guide.css      ธีม retro + ส่วนประกอบของคู่มือ CSS
 │   ├── site.css       หัวเว็บ เมนู ภาพหน้าจอ ตาราง กล่องแจ้ง ปุ่มหน้าถัดไป
 │   ├── guide.js       ปุ่มคัดลอกโค้ด + สนามทดลอง (เฉพาะหน้า CSS)
-│   └── favicon.svg
+│   └── favicon-v2.png, allhouse-lockup-light-v2.png (Broadcast House v2)
 ├── _headers, vercel.json, robots.txt, .nojekyll   ใช้เฉพาะถ้าจะ deploy ขึ้นเว็บในอนาคต
 ```
 

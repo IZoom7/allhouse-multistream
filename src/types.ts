@@ -3,7 +3,7 @@ export type Platform = 'youtube'|'twitch'|'kick'|'tiktok';
 export type Scene = {title:string;subtitle:string;accent:string;template:'studio'|'minimal'|'neon';showChat:boolean;showAlert:boolean;width:number;height:number;image:string};
 /** sendEvent's verdict (runtime.cjs): which widget, how many pages, and why it will or won't show. */
 export type Delivery = {widget?:WidgetId|null;overlays:number;widgetPages?:number;legacyPages?:number;delivered:boolean;reason:string};
-export type HouseEvent = {id:string;platform:Platform;type:'chat'|'follow'|'subscription'|'gift';name:string;message:string;target:'preview'|'obs';createdAt:string;status:string;sourceMode:'test'|'live';delivery?:Delivery;gift?:GiftInfo}
+export type HouseEvent = {id:string;platform:Platform;type:'chat'|'follow'|'subscription'|'gift';name:string;message:string;target:'preview'|'obs';createdAt:string;status:string;sourceMode:'test'|'live';delivery?:Delivery;gift?:GiftInfo;avatar?:string;color?:string}
 /** TikTok gift details (live gifts; image is a TikTok CDN URL shown only on the OBS gift widget). */
 export type GiftInfo = {name:string;count:number;coins:number;image:string};
 
@@ -12,7 +12,9 @@ export type WidgetId = 'chat'|'follow'|'subscription'|'gift'|'banner';
 export type Anim = 'fade'|'slide'|'pop'|'none';
 /** customCss* (round 7): optional user CSS applied on the OBS widget page when switched on. */
 export type WidgetBase = {enabled:boolean;width:number;height:number;customCssEnabled?:boolean;customCss?:string};
-export type ChatWidget = WidgetBase & {fontSize:number;maxMessages:number;lifetimeSec:number;showPlatformIcon:boolean;bgOpacity:number;accent:string;textColor:string;newestAt:'bottom'|'top';animation:Anim};
+export type ChatWidget = WidgetBase & {fontSize:number;maxMessages:number;lifetimeSec:number;showPlatformIcon:boolean;bgOpacity:number;accent:string;textColor:string;newestAt:'bottom'|'top';animation:Anim;
+  /** Round 13 (optional; runtime fills defaults): profile pictures, "· Platform" after the name, name colour mode, one-line layout. */
+  showAvatar?:boolean;showPlatformName?:boolean;nameColor?:'accent'|'platform'|'user';layout?:'stacked'|'inline'};
 export type AlertWidget = WidgetBase & {durationSec:number;template:string;fontSize:number;accent:string;textColor:string;bgOpacity:number;animation:Anim;image:string;sound:string;soundName:string;volume:number};
 export type BannerWidget = WidgetBase & {title:string;subtitle:string;accent:string;template:'studio'|'minimal'|'neon';image:string};
 /** Gift alert (round 6): an alert plus a minimum-coins filter and the TikTok gift picture. */
@@ -20,8 +22,10 @@ export type GiftWidget = AlertWidget & {minCoins:number;showGiftImage:boolean};
 export type Widgets = {chat:ChatWidget;follow:AlertWidget;subscription:AlertWidget;gift:GiftWidget;banner:BannerWidget};
 
 /** Chat reading rules (round 9). Optional: older workspaces use DEFAULT_TTS_RULES (ttsRules.ts). */
-export type TtsRules = {platforms:Record<Platform,boolean>;readName:boolean;skipCommands:boolean;ignoreNames:string;maxChars:number};
-export type TtsSettings = {enabled:boolean;rate:number;volume:number;thaiVoice:string;englishVoice:string;engine?:'windows'|'online';onlineThaiVoice?:string;onlineEnglishVoice?:string;rules?:TtsRules};
+export type TtsRules = {platforms:Record<Platform,boolean>;readName:boolean;nameTemplate?:string;skipCommands:boolean;ignoreNames:string;maxChars:number};
+export type TtsSettings = {enabled:boolean;rate:number;volume:number;thaiVoice:string;englishVoice:string;engine?:'windows'|'online';onlineThaiVoice?:string;onlineEnglishVoice?:string;rules?:TtsRules;
+  /** One voice (the "Thai voice" slot) reads the whole message instead of switching Thai/English voices. */
+  singleVoice?:boolean};
 export type State = {schemaVersion:2;workspaceName:string;language:'th'|'en';theme:'dark'|'light'|'system';onboarded:boolean;
   draftWidgets:Widgets;publishedWidgets:Widgets;widgetsPublishedAt:string|null;
   /** From an import: the backup's published widgets when they differed from its draft (offered as "load into draft"). */
@@ -40,7 +44,14 @@ export type QueueAction = 'pause'|'resume'|'skip'|'clear'|'mute'|'unmute'|'clear
 export type ConnectionInfo = {channel:string;enabled:boolean;state:'off'|'connecting'|'connected'|'retrying'|'error'|'stopped';detail:string;events:number};
 export type Connections = Record<Platform,ConnectionInfo>;
 export type DocPage = 'index'|'start'|'connections'|'obs-widgets'|'chat-tts'|'custom-css'|'help';
-export type API = {openDocs?(page:DocPage):Promise<unknown>;getConnections?():Promise<Connections>;connectPlatform?(platform:Platform,channel:string):Promise<Connections>;disconnectPlatform?(platform:Platform):Promise<Connections>;onConnections?(cb:(c:Connections)=>void):()=>void;onLiveEvent?(cb:(e:HouseEvent)=>void):()=>void;getState():Promise<State>;getHistory?():Promise<HouseEvent[]>;getStatus():Promise<Status>;saveState(s:State):Promise<State>;sendEvent(e:Pick<HouseEvent,'platform'|'type'|'name'|'message'|'target'>):Promise<HouseEvent>;controlQueue(a:QueueAction):Promise<Status>;exportBackup():Promise<boolean>;importBackup():Promise<State|null>;copyText(t:string):Promise<boolean>;openOverlay():Promise<unknown>;openWidget?(id:WidgetId):Promise<unknown>;listVoices?(options?:{refresh?:boolean}):Promise<{name:string;lang:string}[]>;onlineVoices?():Promise<{name:string;lang:string;label:string}[]>;synthesizeOnline?(text:string,options:{voice:string;rate:number;volume:number}):Promise<string>;synthesize?(text:string,options:{voice:string;rate:number;volume:number}):Promise<string>;
+export type KickApiStatus = {configured:boolean;clientId:string;loggedIn:boolean;user:{name:string;picture:string}|null;redirect:string;scopes:string};
+export type KickCategory = {id:number;name:string;thumbnail:string};
+export type KickChannelInfo = {slug:string;title:string;category:KickCategory|null;tags:string[];language:string;mature:boolean;live:boolean;
+  /** Set when gaps were filled from the stream on air ('live') or the last stream ('last'), not the official API. */
+  filledFrom?:'live'|'last'|'saved'};
+export type KickApi = {status():Promise<KickApiStatus>;setApp(clientId:string,secret:string):Promise<KickApiStatus>;clear():Promise<KickApiStatus>;login():Promise<KickApiStatus>;logout():Promise<KickApiStatus>;
+  channel():Promise<KickChannelInfo>;categories(q:string):Promise<KickCategory[]>;update(input:{title?:string;categoryId?:number;categoryName?:string;categoryThumb?:string;tags?:string[]}):Promise<KickChannelInfo>};
+export type API = {kickApi?:KickApi;openDocs?(page:DocPage):Promise<unknown>;getConnections?():Promise<Connections>;connectPlatform?(platform:Platform,channel:string):Promise<Connections>;disconnectPlatform?(platform:Platform):Promise<Connections>;onConnections?(cb:(c:Connections)=>void):()=>void;onLiveEvent?(cb:(e:HouseEvent)=>void):()=>void;getState():Promise<State>;getHistory?():Promise<HouseEvent[]>;getStatus():Promise<Status>;saveState(s:State):Promise<State>;sendEvent(e:Pick<HouseEvent,'platform'|'type'|'name'|'message'|'target'>):Promise<HouseEvent>;controlQueue(a:QueueAction):Promise<Status>;exportBackup():Promise<boolean>;importBackup():Promise<State|null>;copyText(t:string):Promise<boolean>;openOverlay():Promise<unknown>;openWidget?(id:WidgetId):Promise<unknown>;listVoices?(options?:{refresh?:boolean}):Promise<{name:string;lang:string}[]>;onlineVoices?():Promise<{name:string;lang:string;label:string}[]>;synthesizeOnline?(text:string,options:{voice:string;rate:number;volume:number}):Promise<string>;synthesize?(text:string,options:{voice:string;rate:number;volume:number}):Promise<string>;
   openChatWindow?():Promise<ChatWindowState|unknown>;getChatWindowState?():Promise<ChatWindowState>;setChatWindowTop?(flag:boolean):Promise<ChatWindowState>;
   sendSpeechCommand?(cmd:SpeechCommand):Promise<unknown>;reportSpeechStatus?(s:SpeechStatus):Promise<unknown>;
   onSpeechCommand?(cb:(cmd:SpeechCommand)=>void):()=>void;onSpeechStatus?(cb:(s:SpeechStatus)=>void):()=>void};

@@ -16,6 +16,8 @@ function parseTarget(input) {
   return h ? { handlePath: h[1] } : null;
 }
 
+/** Largest author photo YouTube sends with the message. */
+const photo = r => { const t = r && r.authorPhoto && r.authorPhoto.thumbnails; const u = t && t.length && t[t.length - 1].url; return u ? { avatar: u } : {}; };
 const runsText = r => !r ? '' : r.simpleText || (r.runs || []).map(x => x.text != null ? x.text : x.emoji ? (x.emoji.isCustomEmoji ? (x.emoji.shortcuts || [''])[0] : x.emoji.emojiId) : '').join('');
 
 /** One chat action -> Allhouse event or null. */
@@ -24,11 +26,11 @@ function toEvent(action) {
   if (!item) return null;
   if (item.liveChatTextMessageRenderer) {
     const r = item.liveChatTextMessageRenderer;
-    return { type: 'chat', name: runsText(r.authorName), message: runsText(r.message) };
+    return { type: 'chat', name: runsText(r.authorName), message: runsText(r.message), ...photo(r) };
   }
   if (item.liveChatPaidMessageRenderer) {
     const r = item.liveChatPaidMessageRenderer, amt = runsText(r.purchaseAmountText);
-    return { type: 'chat', name: runsText(r.authorName), message: `[Super Chat ${amt}] ${runsText(r.message)}`.trim() };
+    return { type: 'chat', name: runsText(r.authorName), message: `[Super Chat ${amt}] ${runsText(r.message)}`.trim(), ...photo(r) };
   }
   if (item.liveChatMembershipItemRenderer) {
     const r = item.liveChatMembershipItemRenderer;

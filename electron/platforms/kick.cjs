@@ -25,7 +25,8 @@ function toEvent(push) {
   switch (pub.event) {
     case 'App\\Events\\ChatMessageEvent': {
       const text = cleanText(d.content);
-      return d.sender && text ? { type: 'chat', name: d.sender.username, message: text } : null;
+      const color = d.sender && d.sender.identity && d.sender.identity.color;
+      return d.sender && text ? { type: 'chat', name: d.sender.username, message: text, ...(d.sender.slug ? { slug: String(d.sender.slug) } : {}), ...(color ? { color } : {}) } : null;
     }
     case 'App\\Events\\SubscriptionEvent':
       return { type: 'subscription', name: d.username || 'Someone', message: d.months > 1 ? `subscribed for ${d.months} months` : 'subscribed' };

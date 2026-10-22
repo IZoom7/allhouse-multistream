@@ -12,7 +12,7 @@ test('twitch: channel names, chat, /me, sub notices; ignores other lines', () =>
   assert.equal(twitch.normaliseChannel('#caseoh_'), 'caseoh_');
   assert.equal(twitch.normaliseChannel('bad name!'), null);
   const chat = twitch.parseLine('@badges=;color=#FF0000;display-name=Mint\\sMint;id=1 :mint!mint@mint.tmi.twitch.tv PRIVMSG #xqc :สวัสดี hello');
-  assert.deepEqual(twitch.toEvent(chat), { type: 'chat', name: 'Mint Mint', message: 'สวัสดี hello' });
+  assert.deepEqual(twitch.toEvent(chat), { type: 'chat', name: 'Mint Mint', message: 'สวัสดี hello', login: 'mint', color: '#FF0000' });
   assert.equal(twitch.toEvent(twitch.parseLine(':a!a@a PRIVMSG #x :\u0001ACTION waves\u0001')).message, 'waves');
   const sub = twitch.parseLine('@display-name=Bob;msg-id=resub;system-msg=Bob\\ssubscribed\\sfor\\s3\\smonths! :tmi.twitch.tv USERNOTICE #xqc :hype');
   assert.deepEqual(twitch.toEvent(sub), { type: 'subscription', name: 'Bob', message: 'Bob subscribed for 3 months! — hype' });
@@ -23,6 +23,7 @@ test('twitch: channel names, chat, /me, sub notices; ignores other lines', () =>
 test('kick: chat (emotes become names), subs, gifts, follows; slugs', () => {
   const push = (event, data) => ({ channel: 'chatrooms.1.v2', pub: { data: { event, data: JSON.stringify(data) } } });
   assert.deepEqual(kick.toEvent(push('App\\Events\\ChatMessageEvent', { content: 'hi [emote:39402:Flowie]', sender: { username: 'Deazy' } })), { type: 'chat', name: 'Deazy', message: 'hi Flowie' });
+  assert.equal(kick.toEvent(push('App\\Events\\ChatMessageEvent', { content: 'x', sender: { username: 'D', identity: { color: '#75FD46' } } })).color, '#75FD46');
   assert.equal(kick.toEvent(push('App\\Events\\SubscriptionEvent', { username: 'a', months: 3 })).message, 'subscribed for 3 months');
   assert.equal(kick.toEvent(push('App\\Events\\GiftedSubscriptionsEvent', { gifter_username: 'g', gifted_usernames: ['x', 'y'] })).message, 'gifted 2 subs');
   assert.equal(kick.toEvent(push('App\\Events\\FollowersUpdated', { followed: true, username: 'f' })).type, 'follow');
@@ -40,6 +41,7 @@ test('youtube: targets, chat runs with emoji, super chat, members, page + respon
   assert.equal(youtube.parseTarget('not a channel'), null);
   const add = item => ({ addChatItemAction: { item } });
   assert.deepEqual(youtube.toEvent(add({ liveChatTextMessageRenderer: { authorName: { simpleText: '@A' }, message: { runs: [{ text: 'hi ' }, { emoji: { emojiId: '😉' } }, { emoji: { isCustomEmoji: true, shortcuts: [':yt:'] } }] } } })), { type: 'chat', name: '@A', message: 'hi 😉:yt:' });
+  assert.equal(youtube.toEvent(add({ liveChatTextMessageRenderer: { authorName: { simpleText: 'A' }, message: { runs: [{ text: 'x' }] }, authorPhoto: { thumbnails: [{ url: 'https://yt4.ggpht.com/s32' }, { url: 'https://yt4.ggpht.com/s64' }] } } })).avatar, 'https://yt4.ggpht.com/s64');
   assert.equal(youtube.toEvent(add({ liveChatPaidMessageRenderer: { authorName: { simpleText: 'B' }, purchaseAmountText: { simpleText: '฿100' }, message: { runs: [{ text: 'gg' }] } } })).message, '[Super Chat ฿100] gg');
   assert.equal(youtube.toEvent(add({ liveChatMembershipItemRenderer: { authorName: { simpleText: 'C' }, headerSubtext: { simpleText: 'Welcome to Members!' } } })).type, 'subscription');
   assert.equal(youtube.toEvent({ markChatItemAsDeletedAction: {} }), null);
@@ -53,6 +55,8 @@ test('youtube: targets, chat runs with emoji, super chat, members, page + respon
 test('tiktok (TikFinity): chat, follow, social follow, subscribe; nested user fields; local-only address', () => {
   assert.deepEqual(tiktok.toEvent({ event: 'chat', data: { comment: 'สวัสดี', uniqueId: 'u1', nickname: 'Nick' } }), { type: 'chat', name: 'Nick', message: 'สวัสดี' });
   assert.equal(tiktok.toEvent({ event: 'chat', data: { comment: 'x', user: { uniqueId: 'nested' } } }).name, 'nested');
+  assert.equal(tiktok.toEvent({ event: 'chat', data: { comment: 'x', nickname: 'n', profilePictureUrl: 'https://p16-sign.tiktokcdn.com/a.webp' } }).avatar, 'https://p16-sign.tiktokcdn.com/a.webp');
+  assert.equal(tiktok.toEvent({ event: 'chat', data: { comment: 'x', user: { nickname: 'n', avatarThumb: { urlList: ['https://p77.tiktokcdn-us.com/b.jpg'] } } } }).avatar, 'https://p77.tiktokcdn-us.com/b.jpg');
   assert.equal(tiktok.toEvent({ event: 'follow', data: { nickname: 'F' } }).type, 'follow');
   assert.equal(tiktok.toEvent({ event: 'social', data: { nickname: 'F', displayType: 'pm_main_follow_message_viewer_2' } }).type, 'follow');
   assert.equal(tiktok.toEvent({ event: 'social', data: { displayType: 'pm_mt_guidance_share' } }), null);

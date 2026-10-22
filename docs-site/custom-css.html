@@ -6,7 +6,7 @@
 <title>CSS กำหนดเอง · คู่มือ Allhouse</title>
 <meta name="description" content="คู่มือแต่งวิดเจ็ต OBS ของ Allhouse ด้วย CSS: ชื่อชิ้นส่วน สีพื้นหลัง ขอบ ไล่สี เงา แอนิเมชัน พร้อมสนามทดลอง">
 <meta name="theme-color" content="#8d2832">
-<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="icon" href="assets/favicon-v2.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Noto+Sans+Thai:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&display=swap">
@@ -15,7 +15,7 @@
 </head>
 <body>
 <header class="site-head"><div class="in">
-  <a class="brand" href="index.html"><img src="assets/favicon.png" alt=""><span>allhouse <small>MANUAL</small></span></a>
+  <a class="brand" href="index.html"><img class="brand-lockup" src="assets/allhouse-lockup-light-v2.png" alt="Allhouse"><small>MANUAL</small></a>
   <nav class="site-nav" aria-label="หน้าในคู่มือ"><a href="index.html">หน้าแรก</a><a href="start.html">เริ่มต้นใช้งาน</a><a href="connections.html">เชื่อมต่อแพลตฟอร์ม</a><a href="obs-widgets.html">วิดเจ็ต OBS</a><a href="chat-tts.html">แชทและบอทอ่านแชท</a><a href="custom-css.html" aria-current="page">CSS กำหนดเอง</a><a href="help.html">แก้ปัญหาและข้อมูล</a></nav>
 </div></header>
 <div class="wrap">
@@ -85,6 +85,10 @@
         <div><code>.chat b</code><span>ชื่อผู้ชม · แพลตฟอร์ม</span></div>
         <div><code>.chat span</code><span>ตัวข้อความแชท</span></div>
         <div><code>.pm</code> <span>ไอคอนแพลตฟอร์ม</span></div>
+        <div><code>.chat .av</code><span>รูปโปรไฟล์ (หรือวงกลมตัวอักษรแรก) เมื่อเปิด “แสดงรูปโปรไฟล์”</span></div>
+        <div><code>.chat .pf</code><span>ชื่อแพลตฟอร์มต่อท้ายชื่อ เช่น · Twitch</span></div>
+        <div><code>.chat.inline</code><span>แถวแชทเมื่อเลือก “ชื่อกับข้อความบรรทัดเดียว”</span></div>
+        <div><code>var(--name)</code><span>สีชื่อของแต่ละแถว (เมื่อเลือกสีตามแพลตฟอร์มหรือสีของผู้ชม)</span></div>
         <div><code>.tag</code><span>ป้าย TEST CHAT (มีเฉพาะแชททดสอบ)</span></div>
       </div>
     </div>

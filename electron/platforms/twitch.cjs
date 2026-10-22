@@ -36,7 +36,8 @@ function toEvent(msg) {
   if (msg.command === 'PRIVMSG') {
     let text = msg.trailing;
     const action = /^\u0001ACTION (.*)\u0001$/.exec(text); if (action) text = action[1];
-    return { type: 'chat', name, message: text };
+    const login = msg.tags.login || msg.prefix.split('!')[0]; // used to look up the profile picture
+    return { type: 'chat', name, message: text, ...(login ? { login } : {}), ...(msg.tags.color ? { color: msg.tags.color } : {}) }; // viewer's chosen name colour
   }
   if (msg.command === 'USERNOTICE' && SUB_IDS.includes(msg.tags['msg-id'])) {
     const system = msg.tags['system-msg'] || 'subscribed';

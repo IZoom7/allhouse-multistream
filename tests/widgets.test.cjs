@@ -277,13 +277,22 @@ test('chat widget: options honoured (max messages, newest at top, icon toggle, l
   assert.ok(box.classList.contains('top'));
   assert.equal(w.ids.scene.style['--fs'], '40px');
   assert.equal(allText(box.children[1]), '<img src=x onerror=alert(1)> · YouTubeTEST CHAT<b>m</b>');
-  assert.ok(box.children.every(r => r.children.every(c => c.tagName !== 'img')), 'no platform icon');
+  assert.ok(box.children.every(r => r.children.every(c => c.tagName !== 'img' && (c.children || []).every(x => x.tagName !== 'img'))), 'no platform icon');
   assert.equal(w.timers.length, 0, 'lifetime 0 = never hide');
   w.emit('state', { ...defaultWidgets().chat, lifetimeSec: 30, animation: 'pop' });
   w.emit('chat', { platform: 'kick', name: 'n', message: 'm' });
   assert.equal(w.timers.at(-1).ms, 30000);
   assert.equal(box.children.at(-1).className, 'chat anim-pop');
-  assert.equal(box.children.at(-1).children[0].tagName, 'img', 'platform icon shown');
+  assert.equal(box.children.at(-1).children[0].children[0].tagName, 'img', 'platform icon shown, inside the name line');
+  // round 13: avatar (initial when no picture), platform-coloured names, one-line layout, platform name hidden
+  w.emit('state', { ...defaultWidgets().chat, showAvatar: true, nameColor: 'platform', layout: 'inline', showPlatformName: false, showPlatformIcon: false, animation: 'none' });
+  w.emit('chat', { platform: 'kick', name: '@mint', message: 'hi' });
+  const row = box.children.at(-1);
+  assert.ok(row.classList.contains('inline') && row.classList.contains('has-av'));
+  assert.equal(row.children[0].className, 'av');
+  assert.equal(row.children[0].textContent, 'M', 'first letter, @ dropped');
+  assert.equal(row.style['--name'], '#53fc18', 'Kick green');
+  assert.ok(!allText(row).includes('· Kick'), 'platform name hidden');
 });
 
 test('banner widget: title/subtitle as text, image, template class, hides when disabled', async t => {
