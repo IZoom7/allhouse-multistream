@@ -12,7 +12,8 @@
     "preview": "vite preview --host 127.0.0.1",
     "package": "tsc -b && vite build && electron-packager . Allhouse --platform=win32 --arch=x64 --out=release --overwrite --icon=public/brand/allhouse.ico --ignore=\"^/(release|tests|\\.git|\\.cache|\\.pnpm-store|test-results|QA|artifacts|design)($|/)\"",
     "test": "node --test \"tests/*.test.cjs\"",
-    "app": "tsc -b && vite build && electron ."
+    "app": "tsc -b && vite build && electron .",
+    "release": "node scripts/build-release.cjs"
   },
   "dependencies": {
     "@fontsource/noto-sans": "^5.2.6",
