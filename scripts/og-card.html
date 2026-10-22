@@ -1,0 +1,75 @@
+<!doctype html>
+<!-- Share card (Open Graph / Twitter / Discord / LINE / Facebook) rendered to docs-site/assets/og-cover.png by scripts/build-og-image.cjs. 1200×630. -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@500;600&family=Press+Start+2P&family=VT323&display=block">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: #0d0f1a; }
+  .card { position: relative; width: 1200px; height: 630px; overflow: hidden;
+    background: radial-gradient(700px 420px at 900px 250px, #4a2380 0%, #0000 70%), linear-gradient(180deg, #0b0c18 0%, #1a1440 55%, #2a1650 80%, #3a1a4a 100%); }
+  .stars { position: absolute; inset: 0; }
+  .skyline { position: absolute; left: 0; right: 0; bottom: 34px; height: 150px; background: url(../docs-site/assets/pixel/skyline.svg) repeat-x bottom left / auto 100%; }
+  .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; background: repeating-linear-gradient(90deg, #2a2340 0 16px, #241e38 16px 32px); border-top: 4px solid #000; }
+  .stripe { position: absolute; left: 0; right: 0; top: 0; height: 10px; background: linear-gradient(90deg, #285bb5 0 25%, #bd3933 25% 50%, #f0cb45 50% 75%, #287b49 75%); }
+  .copy { position: absolute; left: 70px; top: 78px; width: 640px; }
+  .coin { display: flex; align-items: center; gap: 12px; font: 16px 'Press Start 2P'; color: #f0cb45; letter-spacing: .1em; }
+  .coin img { width: 26px; image-rendering: pixelated; }
+  h1 { margin: 26px 0 22px; font: 76px/1 'Press Start 2P'; color: #fff5dd; text-shadow: 5px 5px 0 #bd3933, 10px 10px 0 #000; position: relative; }
+  h1::before { content: 'ALLHOUSE'; position: absolute; inset: 0; color: #2bc3e0; clip-path: inset(0 0 62% 0); transform: translate(-4px, 0); opacity: .8; text-shadow: none; }
+  .tag { font: 600 38px/1.25 'Mitr'; color: #fff5dd; }
+  .tag b { color: #f0cb45; font-weight: 600; }
+  .en { margin-top: 10px; font: 29px/1.2 'VT323'; color: #cfc6e8; letter-spacing: .02em; }
+  .plats { display: flex; gap: 12px; margin-top: 26px; }
+  .pt { width: 54px; height: 54px; border-radius: 10px; border: 3px solid #000; display: grid; place-items: center; box-shadow: inset 0 3px 0 #ffffff40, 0 5px 0 #000; }
+  .pt svg { width: 28px; height: 28px; fill: currentColor; }
+  .chip { align-self: center; margin-left: 10px; font: 13px 'Press Start 2P'; color: #53c26b; border: 3px solid #53c26b; padding: 10px 12px; border-radius: 4px; background: #0008; }
+  .art { position: absolute; right: 60px; top: 70px; width: 420px; height: 420px; }
+  .halo { position: absolute; inset: 30px; border-radius: 50%; background: radial-gradient(circle, #f0cb4559, #e62eb42e 45%, #0000 70%); }
+  .house { position: absolute; left: 70px; top: 50px; width: 280px; image-rendering: pixelated; filter: drop-shadow(0 0 34px #f0cb4566); }
+  .shadow { position: absolute; left: 120px; top: 360px; width: 180px; height: 18px; border-radius: 50%; background: #0009; }
+  .sp { position: absolute; image-rendering: pixelated; }
+  .puff { position: absolute; background: #fff5dd; border: 2px solid #514738; }
+  .scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, #0000 0 2px, #0000002e 2px 3px); pointer-events: none; }
+  .url { position: absolute; right: 40px; bottom: 50px; font: 14px 'Press Start 2P'; color: #fff5dd; background: #bd3933; border: 3px solid #000; padding: 10px 14px; box-shadow: 0 5px 0 #000; }
+</style></head>
+<body><div class="card">
+  <canvas class="stars" width="1200" height="630"></canvas>
+  <div class="stripe"></div>
+  <div class="skyline"></div><div class="ground"></div>
+  <div class="copy">
+    <p class="coin"><img src="../docs-site/assets/pixel/coin.svg" alt=""> INSERT COIN ▮</p>
+    <h1>ALLHOUSE</h1>
+    <p class="tag">รวมแชททุกแพลตฟอร์ม<br>ไว้ใน<b>บ้านหลังเดียว</b></p>
+    <p class="en">Multistream chat · OBS widgets · Thai/English TTS</p>
+    <div class="plats">
+      <div class="pt" style="background:#9146ff;color:#fff"><svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg></div>
+      <div class="pt" style="background:#ff0000;color:#fff"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.930 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div>
+      <div class="pt" style="background:#53fc19;color:#0b1a03"><svg viewBox="0 0 24 24"><path d="M1.333 0h8v5.333H12V2.667h2.667V0h8v8H20v2.667h-2.667v2.666H20V16h2.667v8h-8v-2.667H12v-2.666H9.333V24h-8Z"/></svg></div>
+      <div class="pt" style="background:#000;color:#fff;box-shadow:inset 0 3px 0 #ffffff30,0 5px 0 #000,3px 3px 0 #25f4ee,-3px -3px 0 #fe2c55"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></div>
+      <span class="chip">FREE · WINDOWS</span>
+    </div>
+  </div>
+  <div class="art">
+    <div class="halo"></div>
+    <img class="sp" src="../docs-site/assets/pixel/heart.svg" style="left:20px;top:40px;width:52px">
+    <img class="sp" src="../docs-site/assets/pixel/star.svg" style="right:6px;top:30px;width:60px">
+    <img class="sp" src="../docs-site/assets/pixel/chat.svg" style="left:-10px;top:250px;width:64px">
+    <img class="sp" src="../docs-site/assets/pixel/gift.svg" style="right:0;top:240px;width:56px">
+    <img class="sp" src="../docs-site/assets/pixel/coin.svg" style="left:190px;top:395px;width:44px">
+    <i class="puff" style="left:290px;top:28px;width:13px;height:13px"></i><i class="puff" style="left:300px;top:6px;width:9px;height:9px;opacity:.7"></i><i class="puff" style="left:310px;top:-12px;width:7px;height:7px;opacity:.4"></i>
+    <img class="house" src="../docs-site/assets/allhouse-icon-256.png" alt="">
+    <div class="shadow"></div>
+  </div>
+  <img class="sp" src="../docs-site/assets/pixel/slime.svg" style="left:740px;bottom:30px;width:58px">
+  <img class="sp" src="../docs-site/assets/pixel/alien.svg" style="left:620px;top:40px;width:54px;opacity:.9">
+  <div class="url">allhouse-app.vercel.app</div>
+  <div class="scan"></div>
+</div>
+<script>
+  // Seeded starfield so every build looks the same.
+  const c = document.querySelector('.stars').getContext('2d'); let s = 11; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const cols = ['#fff5dd', '#f0cb45', '#5aa0ff', '#efa39a'];
+  for (let i = 0; i < 260; i++) { const x = Math.round(r() * 1200), y = Math.round(r() * 470), z = r() < .12 ? 3 : 2; c.globalAlpha = .4 + r() * .6; c.fillStyle = cols[i % 4]; c.fillRect(x, y, z, z);
+    if (z === 3 && r() > .5) { c.fillRect(x - 3, y + 1, 9, 1); c.fillRect(x + 1, y - 3, 1, 9); } }
+</script>
+</body></html>

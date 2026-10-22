@@ -57,7 +57,7 @@ docs-site/
 
 ## เว็บจริง
 
-Deploy บน Vercel (โปรเจกต์ `allhouse`, ทีม SweetHive, Root Directory = `docs-site`, preset Other ไม่มี build) ทุกครั้งที่ push `main` จะ deploy เองอัตโนมัติ: https://allhouse-app.vercel.app (สำรอง: allhouse-kappa.vercel.app) header ความปลอดภัยตั้งใน `vercel.json` ไฟล์ใน `.vercelignore` ไม่ถูกเผยแพร่
+Deploy บน Vercel (โปรเจกต์ `allhouse`, ทีม SweetHive, Root Directory = `docs-site`, preset Other ไม่มี build) ทุกครั้งที่ push `main` จะ deploy เองอัตโนมัติ: https://allhouse-app.vercel.app header ความปลอดภัยตั้งใน `vercel.json` ไฟล์ใน `.vercelignore` ไม่ถูกเผยแพร่
 
 ## ถ้าอยากย้ายไปที่อื่น
 
