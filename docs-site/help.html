@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>แก้ปัญหาและข้อมูล · คู่มือ Allhouse</title>
-<meta name="description" content="วิธีแก้ปัญหาที่พบบ่อย สำรองและนำเข้าข้อมูล และเรื่องความเป็นส่วนตัว">
+<meta name="title-en" content="Help · Allhouse Manual">
+<script src="assets/i18n.js"></script>
+<meta name="description" content="แก้ปัญหาที่เจอบ่อย สำรองข้อมูล และความเป็นส่วนตัว / Common fixes, backups and privacy in Allhouse.">
 <meta name="theme-color" content="#8d2832">
 <link rel="icon" href="assets/favicon-v2.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,29 +18,55 @@
 <body>
 <header class="site-head"><div class="in">
   <a class="brand" href="index.html"><img class="brand-lockup" src="assets/allhouse-lockup-light-v2.png" alt="Allhouse"><small>MANUAL</small></a>
-  <nav class="site-nav" aria-label="หน้าในคู่มือ"><a href="index.html">หน้าแรก</a><a href="start.html">เริ่มต้นใช้งาน</a><a href="connections.html">เชื่อมต่อแพลตฟอร์ม</a><a href="obs-widgets.html">วิดเจ็ต OBS</a><a href="chat-tts.html">แชทและบอทอ่านแชท</a><a href="custom-css.html">CSS กำหนดเอง</a><a href="help.html" aria-current="page">แก้ปัญหาและข้อมูล</a></nav>
+  <nav class="site-nav" aria-label="Manual"><a href="manual.html"><span lang="th">หน้าแรก</span><span lang="en">Home</span></a><a href="start.html"><span lang="th">เริ่มต้นใช้งาน</span><span lang="en">Getting started</span></a><a href="connections.html"><span lang="th">เชื่อมต่อแพลตฟอร์ม</span><span lang="en">Connections</span></a><a href="obs-widgets.html"><span lang="th">วิดเจ็ต OBS</span><span lang="en">OBS widgets</span></a><a href="chat-tts.html"><span lang="th">แชทและบอทอ่านแชท</span><span lang="en">Chat &amp; TTS</span></a><a href="custom-css.html"><span lang="th">CSS กำหนดเอง</span><span lang="en">Custom CSS</span></a><a href="help.html" aria-current="page"><span lang="th">แก้ปัญหาและข้อมูล</span><span lang="en">Help</span></a></nav>
+  <button class="lang-toggle" type="button" data-lang-toggle><span class="th">TH</span><span class="en">EN</span></button>
 </div></header>
 <div class="wrap">
 
-<section class="page-intro"><span class="crumb">06 · HELP</span><h1>แก้ปัญหาและข้อมูล</h1><p>อาการที่เจอบ่อยและวิธีแก้ การสำรองข้อมูล และข้อมูลของคุณไปที่ไหนบ้าง</p></section>
-<section class="cart" id="faq"><header><span class="no">01</span><h2>อาการที่เจอบ่อย</h2></header><div class="legend"><div><code>OBS ไม่เห็นอะไร</code><span>เช็กว่าแอพเปิดอยู่ ลิงก์ถูกวาง และกด “เผยแพร่ทุกวิดเจ็ต” แล้ว ลองกดปุ่มทดสอบของวิดเจ็ตนั้น</span></div><div><code>ทดสอบแล้วไม่ขึ้น</code><span>ดูข้อความแจ้งในแอพ: วิดเจ็ตอาจปิดอยู่ คิวพักอยู่ หรือยังไม่มีหน้าวิดเจ็ตเปิดใน OBS</span></div><div><code>เสียงแจ้งเตือนไม่ออกในไลฟ์</code><span>ติ๊ก “Control audio via OBS” ใน Browser Source แล้วดูแถบเสียงใน OBS Audio Mixer</span></div><div><code>ไม่มีเสียงไทย</code><span>เพิ่มเสียงไทยใน Windows (Settings → Time & language → Speech) หรือใช้เสียงออนไลน์ในหน้าบอทอ่านแชท</span></div><div><code>YouTube “กำลังลองใหม่”</code><span>ช่องยังไม่ได้ไลฟ์ แอพจะต่อให้เองเมื่อเริ่มไลฟ์</span></div><div><code>TikTok “TikFinity is not running”</code><span>เปิด TikFinity Desktop และล็อกอิน TikTok ไว้ก่อน แล้วกดเชื่อมต่อใหม่</span></div><div><code>เปิดแอพไม่ขึ้น: Port 19324</code><span>มี Allhouse อีกตัวเปิดอยู่ ปิดตัวนั้นก่อนแล้วเปิดใหม่</span></div><div><code>แชทจริงไม่ถูกอ่าน</code><span>เช็กว่าบอทเปิดอยู่ แพลตฟอร์มนั้นไม่ได้ปิดเสียง และชื่อไม่ได้อยู่ในรายชื่อที่ไม่อ่าน</span></div></div></section>
-<section class="cart" id="backup"><header><span class="no">02</span><h2>สำรองและนำเข้า</h2></header><figure class="shot"><div class="bezel"><img src="img/settings-v2.jpg" alt="หน้า “ตั้งค่า”: ส่งออก/นำเข้าไฟล์สำรอง และล้างประวัติ" loading="lazy" width="1440" height="761"></div><figcaption>หน้า “ตั้งค่า”: ส่งออก/นำเข้าไฟล์สำรอง และล้างประวัติ</figcaption></figure>
-<ul class="plain"><li><b>ส่งออกไฟล์สำรอง:</b> เก็บการตั้งค่า วิดเจ็ต รูป และเสียงไว้ในไฟล์เดียว ไม่รวมประวัติแชทและลิงก์ OBS ส่วนตัว</li>
+<section class="page-intro"><span class="crumb">06 · HELP</span><h1><span lang="th">แก้ปัญหาและข้อมูล</span><span lang="en">Help &amp; info</span></h1><p lang="th">อาการที่เจอบ่อยและวิธีแก้ การสำรองข้อมูล และข้อมูลของคุณไปที่ไหนบ้าง</p><p lang="en">Common problems and fixes, backups, and where your data goes.</p></section>
+<section class="cart" id="faq"><header><span class="no">01</span><h2><span lang="th">อาการที่เจอบ่อย</span><span lang="en">Common problems</span></h2></header><div class="legend">
+<div><code><span lang="th">OBS ไม่เห็นอะไร</span><span lang="en">Nothing in OBS</span></code><span lang="th">เช็กว่าแอพเปิดอยู่ ลิงก์ถูกวาง และกด “เผยแพร่ทุกวิดเจ็ต” แล้ว ลองกดปุ่มทดสอบของวิดเจ็ตนั้น</span><span lang="en">Check the app is open, the link is pasted, and you pressed “Publish all widgets”. Then press that widget’s test button.</span></div>
+<div><code><span lang="th">ทดสอบแล้วไม่ขึ้น</span><span lang="en">Test doesn’t show</span></code><span lang="th">ดูข้อความแจ้งในแอพ: วิดเจ็ตอาจปิดอยู่ คิวพักอยู่ หรือยังไม่มีหน้าวิดเจ็ตเปิดใน OBS</span><span lang="en">Read the app’s message: the widget may be off, the queue paused, or no widget page open in OBS.</span></div>
+<div><code><span lang="th">เสียงแจ้งเตือนไม่ออกในไลฟ์</span><span lang="en">No alert sound on stream</span></code><span lang="th">ติ๊ก “Control audio via OBS” ใน Browser Source แล้วดูแถบเสียงใน OBS Audio Mixer</span><span lang="en">Tick “Control audio via OBS” in the Browser Source and watch the OBS Audio Mixer.</span></div>
+<div><code><span lang="th">ไม่มีเสียงไทย</span><span lang="en">No Thai voice</span></code><span lang="th">เพิ่มเสียงไทยใน Windows (Settings → Time &amp; language → Speech) หรือใช้เสียงออนไลน์ในหน้าบอกอ่านแชท</span><span lang="en">Add a Thai voice in Windows (Settings → Time &amp; language → Speech) or use online voices on Chat TTS.</span></div>
+<div><code><span lang="th">YouTube “กำลังลองใหม่”</span><span lang="en">YouTube “Retrying”</span></code><span lang="th">ช่องยังไม่ได้ไลฟ์ แอพจะต่อให้เองเมื่อเริ่มไลฟ์</span><span lang="en">The channel isn’t live yet; the app joins by itself when you start.</span></div>
+<div><code>TikTok “TikFinity is not running”</code><span lang="th">เปิด TikFinity Desktop และล็อกอิน TikTok ไว้ก่อน แล้วกดเชื่อมต่อใหม่</span><span lang="en">Open TikFinity Desktop, sign in to TikTok, then connect again.</span></div>
+<div><code><span lang="th">เปิดแอพไม่ขึ้น: Port 19324</span><span lang="en">Won’t start: Port 19324</span></code><span lang="th">มี Allhouse อีกตัวเปิดอยู่ ปิดตัวนั้นก่อนแล้วเปิดใหม่</span><span lang="en">Another Allhouse is running. Close it and open the app again.</span></div>
+<div><code><span lang="th">แชทจริงไม่ถูกอ่าน</span><span lang="en">Real chat not read aloud</span></code><span lang="th">เช็กว่าบอทเปิดอยู่ แพลตฟอร์มนั้นไม่ได้ปิดเสียง และชื่อไม่ได้อยู่ในรายชื่อที่ไม่อ่าน</span><span lang="en">Check Chat TTS is on, that platform isn’t muted, and the name isn’t on the never-read list.</span></div>
+<div><code><span lang="th">Windows เตือนตอนติดตั้ง</span><span lang="en">Windows warns on install</span></code><span lang="th">ตัวติดตั้งยังไม่ได้เซ็นดิจิทัล กด More info → Run anyway</span><span lang="en">The installer isn’t code-signed yet. Choose More info → Run anyway.</span></div>
+</div></section>
+<section class="cart" id="backup"><header><span class="no">02</span><h2><span lang="th">สำรองและนำเข้า</span><span lang="en">Backup and import</span></h2></header><figure class="shot"><div class="bezel"><img src="img/settings-v2.jpg" alt="หน้า “ตั้งค่า”: ส่งออก/นำเข้าไฟล์สำรอง และล้างประวัติ" data-en-alt="Settings: export / import a backup and clear history" loading="lazy" width="1440" height="761"></div><figcaption><span lang="th">หน้า “ตั้งค่า”: ส่งออก/นำเข้าไฟล์สำรอง และล้างประวัติ</span><span lang="en">Settings: export / import a backup and clear history</span></figcaption></figure>
+<ul class="plain" lang="th"><li><b>ส่งออกไฟล์สำรอง:</b> เก็บการตั้งค่า วิดเจ็ต รูป และเสียงไว้ในไฟล์เดียว ไม่รวมประวัติแชทและลิงก์ OBS ส่วนตัว</li>
 <li><b>นำเข้า:</b> ข้อมูลจากไฟล์จะเข้ามาเป็น <b>ฉบับร่าง</b> OBS ยังแสดงแบบเดิมจนกว่าจะกดเผยแพร่ บอทอ่านแชทจะถูกปิดไว้ก่อนเพื่อความปลอดภัย</li>
-<li><b>ล้างประวัติ:</b> ลบแชทและกิจกรรมที่เก็บไว้ (เก็บล่าสุดสูงสุด 200 รายการ) และล้างคิวการแจ้งเตือน</li></ul></section>
-<section class="cart" id="privacy"><header><span class="no">03</span><h2>ข้อมูลของคุณไปที่ไหน</h2></header><div class="legend"><div><code>ในเครื่อง</code><span>การตั้งค่า ประวัติ รูป เสียง และลิงก์ OBS เก็บในเครื่องนี้เท่านั้น</span></div><div><code>เสียงออนไลน์</code><span>ถ้าเลือกเสียงออนไลน์ ข้อความที่จะอ่านจะถูกส่งไป Microsoft (เสียงของ Windows ไม่ส่งออกไปไหน)</span></div><div><code>การเชื่อมแพลตฟอร์ม</code><span>แอพอ่านแชทสาธารณะของช่องที่คุณใส่ ไม่ได้ขอรหัสผ่านหรือ API key ใดๆ</span></div><div><code>คู่มือนี้</code><span>เป็นไฟล์ในเครื่อง โหลดเฉพาะฟอนต์จาก Google Fonts ถ้าไม่มีเน็ตจะใช้ฟอนต์ในเครื่องแทน</span></div></div></section>
-<section class="cart" id="obs-check"><header><span class="no">04</span><h2>เช็กลิสต์ทดสอบกับ OBS จริงก่อนไลฟ์ครั้งแรก</h2></header><ul class="plain">
+<li><b>ล้างประวัติ:</b> ลบแชทและกิจกรรมที่เก็บไว้ (เก็บล่าสุดสูงสุด 200 รายการ) และล้างคิวการแจ้งเตือน</li></ul>
+<ul class="plain" lang="en"><li><b>Export backup:</b> your settings, widgets, images and sounds in one file. Chat history and your private OBS links are left out.</li>
+<li><b>Import backup:</b> the file comes in as a <b>draft</b>; OBS keeps the current layout until you publish. Chat TTS is switched off to be safe.</li>
+<li><b>Clear history:</b> removes stored chat and events (the latest 200 are kept) and empties the alert queue.</li></ul></section>
+<section class="cart" id="privacy"><header><span class="no">03</span><h2><span lang="th">ข้อมูลของคุณไปที่ไหน</span><span lang="en">Where your data goes</span></h2></header><div class="legend">
+<div><code><span lang="th">ในเครื่อง</span><span lang="en">On your PC</span></code><span lang="th">การตั้งค่า ประวัติ รูป เสียง และลิงก์ OBS เก็บในเครื่องนี้เท่านั้น</span><span lang="en">Settings, history, images, sounds and OBS links stay on this computer.</span></div>
+<div><code><span lang="th">เสียงออนไลน์</span><span lang="en">Online voices</span></code><span lang="th">ถ้าเลือกเสียงออนไลน์ ข้อความที่จะอ่านจะถูกส่งไป Microsoft (เสียงของ Windows ไม่ส่งออกไปไหน)</span><span lang="en">With online voices, text to be read is sent to Microsoft. Windows voices send nothing anywhere.</span></div>
+<div><code><span lang="th">การเชื่อมแพลตฟอร์ม</span><span lang="en">Platform connections</span></code><span lang="th">แอพอ่านแชทสาธารณะของช่องที่คุณใส่ ไม่ได้ขอรหัสผ่านหรือ API key ใดๆ</span><span lang="en">The app reads the public chat of the channels you enter; it never asks for passwords or API keys.</span></div>
+<div><code><span lang="th">คู่มือนี้</span><span lang="en">This manual</span></code><span lang="th">โหลดเฉพาะฟอนต์จาก Google Fonts ถ้าไม่มีเน็ตจะใช้ฟอนต์ในเครื่องแทน ไม่มีตัวติดตามหรือคุกกี้</span><span lang="en">Only fonts load from Google Fonts (local fonts are used offline). No trackers, no cookies.</span></div>
+</div></section>
+<section class="cart" id="obs-check"><header><span class="no">04</span><h2><span lang="th">เช็กลิสต์ทดสอบกับ OBS จริงก่อนไลฟ์ครั้งแรก</span><span lang="en">OBS checklist before your first stream</span></h2></header>
+<ul class="plain" lang="th">
 <li>☐ เพิ่มวิดเจ็ตครบตามที่ใช้ ใส่ Width/Height ตรงกับในแอพ</li>
 <li>☐ กดทดสอบทุกวิดเจ็ต เห็นใน OBS และมีป้าย TEST</li>
 <li>☐ แจ้งเตือนที่มีเสียง: ติ๊ก Control audio via OBS และเห็นแถบเสียงขยับใน Audio Mixer</li>
 <li>☐ แก้ข้อความแจ้งเตือนแล้วกดเผยแพร่ OBS เปลี่ยนตามโดยไม่ต้องรีเฟรช</li>
 <li>☐ ปิดแล้วเปิดแอพใหม่ การตั้งค่ายังอยู่ และ OBS กลับมาแสดงเอง</li>
+</ul>
+<ul class="plain" lang="en">
+<li>☐ Every widget you use is added, with Width/Height matching the app</li>
+<li>☐ Each widget’s test shows in OBS with the TEST label</li>
+<li>☐ Alerts with sound: Control audio via OBS is ticked and the Audio Mixer meter moves</li>
+<li>☐ Edit an alert’s text and publish: OBS updates without a refresh</li>
+<li>☐ Close and reopen the app: settings are kept and OBS comes back by itself</li>
 </ul></section>
 
-<nav class="pager" aria-label="หน้าก่อนและหน้าถัดไป"><a href="custom-css.html"><small>◀ ก่อนหน้า</small><b>CSS กำหนดเอง</b></a></nav>
-<p class="foot">Allhouse 0.1.0 · Local alpha · คู่มือนี้อยู่ในเครื่องของคุณ เปิดได้โดยไม่ต้องใช้อินเทอร์เน็ต</p>
+<nav class="pager" aria-label="Pages"><a href="custom-css.html"><small><span lang="th">◀ ก่อนหน้า</span><span lang="en">◀ BACK</span></small><b><span lang="th">CSS กำหนดเอง</span><span lang="en">Custom CSS</span></b></a></nav>
+<p class="foot"><span lang="th">Allhouse 0.1.0 · Local alpha · คู่มือนี้มากับแอพ เปิดได้แม้ไม่มีอินเทอร์เน็ต</span><span lang="en">Allhouse 0.1.0 · Local alpha · This manual ships with the app and works offline</span></p>
 </div>
 <script src="assets/guide.js" defer></script>
 </body>
 </html>
-

@@ -4,21 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ไม่พบหน้านี้ · Allhouse</title>
+<meta name="title-en" content="Page not found · Allhouse">
+<script src="/assets/i18n.js"></script>
+<meta name="robots" content="noindex">
 <link rel="icon" href="/assets/favicon-v2.png" type="image/png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@500&family=Noto+Sans+Thai:wght@400&family=Press+Start+2P&display=swap">
-<link rel="stylesheet" href="/assets/guide.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@500;600&family=Noto+Sans+Thai:wght@400&family=Press+Start+2P&family=VT323&display=swap">
+<link rel="stylesheet" href="/assets/landing.css">
 </head>
 <body>
-<main class="wrap" style="min-height:80vh;justify-content:center">
-  <div class="stripe" aria-hidden="true"></div>
-  <section class="cart" style="align-items:flex-start">
-    <span class="eyebrow">ERROR 404 · GAME OVER</span>
-    <h1>ไม่พบหน้านี้</h1>
-    <p class="lead">ลิงก์อาจพิมพ์ผิด หรือหน้านี้ถูกย้ายไปแล้ว</p>
-    <a class="replay" href="/" style="text-decoration:none">กลับไปที่คู่มือ CSS</a>
-  </section>
-  <div class="stripe" aria-hidden="true"></div>
+<div class="crt" aria-hidden="true"></div>
+<main class="sec start" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center">
+  <img class="s-sprite s1" src="/assets/pixel/alien.svg" alt="" aria-hidden="true">
+  <img class="s-sprite s2" src="/assets/pixel/slime.svg" alt="" aria-hidden="true">
+  <p class="press-start">GAME OVER</p>
+  <h1 style="margin:18px 0 10px;color:var(--cream)"><span lang="th">ไม่พบหน้านี้ (404)</span><span lang="en">Page not found (404)</span></h1>
+  <p class="fine" style="margin:0 0 28px"><span lang="th">ลิงก์อาจพิมพ์ผิด หรือหน้านี้ถูกย้ายไปแล้ว</span><span lang="en">The link may be mistyped, or the page has moved.</span></p>
+  <div class="cta" style="justify-content:center"><a class="px-btn" href="/">CONTINUE? <span lang="th">กลับหน้าแรก</span><span lang="en">Back home</span></a><a class="px-btn ghost" href="/manual.html"><span lang="th">คู่มือ</span><span lang="en">Manual</span></a></div>
+  <button class="lang-toggle" type="button" data-lang-toggle style="margin-top:28px"><span class="th">TH</span><span class="en">EN</span></button>
 </main>
 </body>
 </html>
-

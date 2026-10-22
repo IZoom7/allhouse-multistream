@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>เริ่มต้นใช้งาน · คู่มือ Allhouse</title>
-<meta name="description" content="เปิดแอพ รู้จักหน้าจอ และพื้นฐานที่ควรรู้ก่อนไลฟ์">
+<meta name="title-en" content="Getting started · Allhouse Manual">
+<script src="assets/i18n.js"></script>
+<meta name="description" content="ติดตั้ง เปิดแอพ รู้จักหน้าจอ / Install Allhouse, open it, and learn the basics before you go live.">
 <meta name="theme-color" content="#8d2832">
 <link rel="icon" href="assets/favicon-v2.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,24 +18,39 @@
 <body>
 <header class="site-head"><div class="in">
   <a class="brand" href="index.html"><img class="brand-lockup" src="assets/allhouse-lockup-light-v2.png" alt="Allhouse"><small>MANUAL</small></a>
-  <nav class="site-nav" aria-label="หน้าในคู่มือ"><a href="index.html">หน้าแรก</a><a href="start.html" aria-current="page">เริ่มต้นใช้งาน</a><a href="connections.html">เชื่อมต่อแพลตฟอร์ม</a><a href="obs-widgets.html">วิดเจ็ต OBS</a><a href="chat-tts.html">แชทและบอทอ่านแชท</a><a href="custom-css.html">CSS กำหนดเอง</a><a href="help.html">แก้ปัญหาและข้อมูล</a></nav>
+  <nav class="site-nav" aria-label="Manual"><a href="manual.html"><span lang="th">หน้าแรก</span><span lang="en">Home</span></a><a href="start.html" aria-current="page"><span lang="th">เริ่มต้นใช้งาน</span><span lang="en">Getting started</span></a><a href="connections.html"><span lang="th">เชื่อมต่อแพลตฟอร์ม</span><span lang="en">Connections</span></a><a href="obs-widgets.html"><span lang="th">วิดเจ็ต OBS</span><span lang="en">OBS widgets</span></a><a href="chat-tts.html"><span lang="th">แชทและบอทอ่านแชท</span><span lang="en">Chat &amp; TTS</span></a><a href="custom-css.html"><span lang="th">CSS กำหนดเอง</span><span lang="en">Custom CSS</span></a><a href="help.html"><span lang="th">แก้ปัญหาและข้อมูล</span><span lang="en">Help</span></a></nav>
+  <button class="lang-toggle" type="button" data-lang-toggle><span class="th">TH</span><span class="en">EN</span></button>
 </div></header>
 <div class="wrap">
 
-<section class="page-intro"><span class="crumb">01 · GETTING STARTED</span><h1>เริ่มต้นใช้งาน</h1><p>เปิดแอพ รู้จักแต่ละเมนู และเรื่องพื้นฐานที่ช่วยให้ไม่งงตอนไลฟ์จริง</p></section>
-<section class="cart" id="open"><header><span class="no">01</span><h2>เปิดแอพ</h2></header><p>ดับเบิลคลิก <span class="kbd">Start Allhouse.cmd</span> ในโฟลเดอร์ของโปรแกรม ครั้งแรกแอพจะเตรียมไฟล์ก่อน อาจใช้เวลาสักครู่ ครั้งต่อไปจะเปิดเร็วขึ้น</p>
-<div class="callout"><p>เปิด Allhouse ได้ทีละหน้าต่าง ถ้าเปิดซ้ำ แอพจะพาไปหน้าต่างเดิม และต้องเปิดแอพค้างไว้ตลอดที่ไลฟ์ วิดเจ็ตใน OBS ถึงจะทำงาน</p></div></section>
-<section class="cart" id="screen"><header><span class="no">02</span><h2>รู้จักหน้าจอ</h2></header><figure class="shot"><div class="bezel"><img src="img/home-v2.jpg" alt="แถบซ้ายคือเมนูหลัก แถบบนบอกสถานะการบันทึกและสลับภาษา" loading="lazy" width="1440" height="761"></div><figcaption>แถบซ้ายคือเมนูหลัก แถบบนบอกสถานะการบันทึกและสลับภาษา</figcaption></figure>
-<div class="legend"><div><code>ห้องสตรีม</code><span>ภาพรวม: เชื่อมไว้กี่แพลตฟอร์ม วิดเจ็ตเปิดกี่ตัว บอทอ่านแชทเปิดอยู่ไหม และแชทล่าสุด</span></div><div><code>เชื่อมต่อแพลตฟอร์ม</code><span>ใส่ชื่อช่อง Twitch / YouTube / Kick และเชื่อม TikTok ผ่าน TikFinity</span></div><div><code>วิดเจ็ต OBS</code><span>ลิงก์และการตั้งค่าของวิดเจ็ตแต่ละตัว (แชท ผู้ติดตาม สมาชิก ของขวัญ แบนเนอร์)</span></div><div><code>แชทและกิจกรรม</code><span>แชทจากทุกแพลตฟอร์มรวมกัน ส่งกิจกรรมทดสอบ คิวการแจ้งเตือน หน้าต่างแชทแยก</span></div><div><code>บอทอ่านแชท</code><span>เลือกเสียง ความเร็ว ความดัง และกฎว่าจะอ่านแชทจากที่ไหน</span></div><div><code>ตั้งค่า</code><span>ชื่อห้อง ภาษา ธีม สำรองและนำเข้าข้อมูล ล้างประวัติ</span></div></div></section>
-<section class="cart" id="save"><header><span class="no">03</span><h2>บันทึกอัตโนมัติ และ “เผยแพร่”</h2></header><p>ทุกการตั้งค่าบันทึกลงเครื่องให้เองทันที ไม่มีปุ่มเซฟ (ดูจุด “บันทึกในเครื่องแล้ว” ที่มุมขวาบน) <b>ยกเว้นวิดเจ็ต OBS</b> ที่แก้แล้วจะยังเป็นฉบับร่าง ต้องกด <b>เผยแพร่ทุกวิดเจ็ต</b> ก่อน OBS ถึงจะเปลี่ยน กันไม่ให้ผู้ชมเห็นตอนกำลังแต่ง</p></section>
-<section class="cart" id="test"><header><span class="no">04</span><h2>ข้อมูลทดสอบ กับ ของจริง</h2></header><p>ทุกอย่างที่คุณกดส่งเองจะติดป้าย <span class="kbd">ทดสอบ</span> ในแอพ และ <span class="kbd">TEST</span> บนหน้า OBS แชทและการแจ้งเตือนจริงจากแพลตฟอร์มจะไม่มีป้ายนี้</p>
-<div class="callout warn"><p>ถ้ากำลังไลฟ์อยู่แล้วกดส่งทดสอบไป OBS ผู้ชมจะเห็นด้วย (มีป้าย TEST) ทดสอบก่อนเริ่มไลฟ์จะดีที่สุด</p></div></section>
-<section class="cart" id="look"><header><span class="no">05</span><h2>ภาษาและธีม</h2></header><ul class="plain"><li>ปุ่ม <span class="kbd">TH / EN</span> มุมขวาบน สลับภาษาไทย/อังกฤษ</li><li>ปุ่มพระจันทร์/ดวงอาทิตย์มุมซ้ายล่าง สลับโหมดสว่าง (ครีม) และมืด (ถ่าน) หรือตั้ง “ตามเครื่อง” ในหน้าตั้งค่า</li></ul></section>
+<section class="page-intro"><span class="crumb">01 · GETTING STARTED</span><h1><span lang="th">เริ่มต้นใช้งาน</span><span lang="en">Getting started</span></h1><p lang="th">ติดตั้งและเปิดแอพ รู้จักแต่ละเมนู และเรื่องพื้นฐานที่ช่วยให้ไม่งงตอนไลฟ์จริง</p><p lang="en">Install and open the app, get to know each menu, and the basics that keep live shows calm.</p></section>
+<section class="cart" id="open"><header><span class="no">01</span><h2><span lang="th">ติดตั้งและเปิดแอพ</span><span lang="en">Install and open the app</span></h2></header>
+<p lang="th">ดาวน์โหลด <span class="kbd">Allhouse-Setup-0.1.0.exe</span> แล้วดับเบิลคลิก กด <b>ติดตั้ง</b> ไม่ต้องใช้สิทธิ์แอดมิน เสร็จแล้วเปิด Allhouse จากเมนู Start หรือไอคอนบนเดสก์ท็อป ถ้า Windows ขึ้น “Windows protected your PC” ให้กด <b>More info → Run anyway</b> (ตัวติดตั้งยังไม่ได้เซ็นดิจิทัล)</p>
+<p lang="en">Download <span class="kbd">Allhouse-Setup-0.1.0.exe</span>, double-click it and press <b>Install</b>. No admin rights are needed. Then open Allhouse from the Start menu or the desktop icon. If Windows shows “Windows protected your PC”, choose <b>More info → Run anyway</b> (the installer isn’t code-signed yet).</p>
+<div class="callout"><p lang="th">เปิด Allhouse ได้ทีละหน้าต่าง ถ้าเปิดซ้ำ แอพจะพาไปหน้าต่างเดิม และต้องเปิดแอพค้างไว้ตลอดที่ไลฟ์ วิดเจ็ตใน OBS ถึงจะทำงาน</p><p lang="en">Only one Allhouse window runs at a time; opening it again brings the existing window forward. Keep the app open while you stream, or the OBS widgets stop updating.</p></div></section>
+<section class="cart" id="screen"><header><span class="no">02</span><h2><span lang="th">รู้จักหน้าจอ</span><span lang="en">The screens</span></h2></header><figure class="shot"><div class="bezel"><img src="img/home-v2.jpg" alt="แถบซ้ายคือเมนูหลัก แถบบนบอกสถานะการบันทึกและสลับภาษา" data-en-alt="The left bar is the main menu; the top bar shows save status and switches language" loading="lazy" width="1440" height="761"></div><figcaption><span lang="th">แถบซ้ายคือเมนูหลัก แถบบนบอกสถานะการบันทึกและสลับภาษา</span><span lang="en">The left bar is the main menu; the top bar shows save status and switches language</span></figcaption></figure>
+<div class="legend">
+<div><code><span lang="th">ห้องสตรีม</span><span lang="en">Overview</span></code><span lang="th">ภาพรวม: เชื่อมไว้กี่แพลตฟอร์ม วิดเจ็ตเปิดกี่ตัว บอทอ่านแชทเปิดอยู่ไหม และแชทล่าสุด</span><span lang="en">At a glance: platforms connected, widgets open in OBS, whether Chat TTS is on, and the latest chat</span></div>
+<div><code><span lang="th">เชื่อมต่อแพลตฟอร์ม</span><span lang="en">Connections</span></code><span lang="th">ใส่ชื่อช่อง Twitch / YouTube / Kick และเชื่อม TikTok ผ่าน TikFinity</span><span lang="en">Enter your Twitch / YouTube / Kick channel and connect TikTok through TikFinity</span></div>
+<div><code><span lang="th">วิดเจ็ต OBS</span><span lang="en">OBS widgets</span></code><span lang="th">ลิงก์และการตั้งค่าของวิดเจ็ตแต่ละตัว (แชท ผู้ติดตาม สมาชิก ของขวัญ แบนเนอร์)</span><span lang="en">Links and settings for each widget (chat, follow, subscription, gift, banner)</span></div>
+<div><code><span lang="th">แชทและกิจกรรม</span><span lang="en">Chat &amp; activity</span></code><span lang="th">แชทจากทุกแพลตฟอร์มรวมกัน ส่งกิจกรรมทดสอบ คิวการแจ้งเตือน หน้าต่างแชทแยก</span><span lang="en">Chat from every platform together, test events, the alert queue, pop-out chat</span></div>
+<div><code><span lang="th">บอกอ่านแชท</span><span lang="en">Chat TTS</span></code><span lang="th">เลือกเสียง ความเร็ว ความดัง และกฎว่าจะอ่านแชทจากที่ไหน</span><span lang="en">Voice, speed, volume, and rules for which chat gets read aloud</span></div>
+<div><code><span lang="th">ตั้งค่า</span><span lang="en">Settings</span></code><span lang="th">ชื่อห้อง ภาษา ธีม สำรองและนำเข้าข้อมูล ล้างประวัติ</span><span lang="en">Room name, language, theme, backup and import, clear history</span></div>
+</div></section>
+<section class="cart" id="save"><header><span class="no">03</span><h2><span lang="th">บันทึกอัตโนมัติ และ “เผยแพร่”</span><span lang="en">Autosave and “Publish”</span></h2></header>
+<p lang="th">ทุกการตั้งค่าบันทึกลงเครื่องให้เองทันที ไม่มีปุ่มเซฟ (ดูจุด “บันทึกในเครื่องแล้ว” ที่มุมขวาบน) <b>ยกเว้นวิดเจ็ต OBS</b> ที่แก้แล้วจะยังเป็นฉบับร่าง ต้องกด <b>เผยแพร่ทุกวิดเจ็ต</b> ก่อน OBS ถึงจะเปลี่ยน กันไม่ให้ผู้ชมเห็นตอนกำลังแต่ง</p>
+<p lang="en">Every setting saves to your computer instantly; there is no Save button (watch for “Saved locally” at the top right). <b>OBS widgets are the exception</b>: your edits stay a draft until you press <b>Publish all widgets</b>, so viewers never see a half-finished design.</p></section>
+<section class="cart" id="test"><header><span class="no">04</span><h2><span lang="th">ข้อมูลทดสอบ กับ ของจริง</span><span lang="en">Test events vs. real ones</span></h2></header>
+<p lang="th">ทุกอย่างที่คุณกดส่งเองจะติดป้าย <span class="kbd">ทดสอบ</span> ในแอพ และ <span class="kbd">TEST</span> บนหน้า OBS แชทและการแจ้งเตือนจริงจากแพลตฟอร์มจะไม่มีป้ายนี้</p>
+<p lang="en">Anything you send yourself is labelled <span class="kbd">TEST</span> in the app and in OBS. Real chat and alerts from your platforms never carry that label.</p>
+<div class="callout warn"><p lang="th">ถ้ากำลังไลฟ์อยู่แล้วกดส่งทดสอบไป OBS ผู้ชมจะเห็นด้วย (มีป้าย TEST) ทดสอบก่อนเริ่มไลฟ์จะดีที่สุด</p><p lang="en">If you are live and send a test to OBS, viewers will see it too (with the TEST label). Test before you go live.</p></div></section>
+<section class="cart" id="look"><header><span class="no">05</span><h2><span lang="th">ภาษาและธีม</span><span lang="en">Language and theme</span></h2></header><ul class="plain">
+<li><span lang="th">ปุ่ม <span class="kbd">TH / EN</span> มุมขวาบน สลับภาษาไทย/อังกฤษ</span><span lang="en">The <span class="kbd">TH / EN</span> button at the top right switches between Thai and English</span></li>
+<li><span lang="th">ปุ่มพระจันทร์/ดวงอาทิตย์มุมซ้ายล่าง สลับโหมดสว่าง (ครีม) และมืด (ถ่าน) หรือตั้ง “ตามเครื่อง” ในหน้าตั้งค่า</span><span lang="en">The moon/sun button at the bottom left switches light (cream) and dark (charcoal), or choose “System” in Settings</span></li></ul></section>
 
-<nav class="pager" aria-label="หน้าก่อนและหน้าถัดไป"><a href="index.html"><small>◀ ก่อนหน้า</small><b>หน้าแรก</b></a><a class="next" href="connections.html"><small>ถัดไป ▶</small><b>เชื่อมต่อแพลตฟอร์ม</b></a></nav>
-<p class="foot">Allhouse 0.1.0 · Local alpha · คู่มือนี้อยู่ในเครื่องของคุณ เปิดได้โดยไม่ต้องใช้อินเทอร์เน็ต</p>
+<nav class="pager" aria-label="Pages"><a href="manual.html"><small><span lang="th">◀ ก่อนหน้า</span><span lang="en">◀ BACK</span></small><b><span lang="th">หน้าแรก</span><span lang="en">Home</span></b></a><a class="next" href="connections.html"><small><span lang="th">ถัดไป ▶</span><span lang="en">NEXT ▶</span></small><b><span lang="th">เชื่อมต่อแพลตฟอร์ม</span><span lang="en">Connections</span></b></a></nav>
+<p class="foot"><span lang="th">Allhouse 0.1.0 · Local alpha · คู่มือนี้มากับแอพ เปิดได้แม้ไม่มีอินเทอร์เน็ต</span><span lang="en">Allhouse 0.1.0 · Local alpha · This manual ships with the app and works offline</span></p>
 </div>
 <script src="assets/guide.js" defer></script>
 </body>
 </html>
-

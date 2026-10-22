@@ -3,40 +3,224 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>คู่มือ Allhouse</title>
-<meta name="description" content="คู่มือการใช้งาน Allhouse ทั้งระบบ: เชื่อมแพลตฟอร์ม วิดเจ็ต OBS แชท บอทอ่านแชท และ CSS กำหนดเอง">
-<meta name="theme-color" content="#8d2832">
+<title>Allhouse · รวมแชททุกแพลตฟอร์มไว้ในบ้านหลังเดียว</title>
+<meta name="title-en" content="Allhouse · Every platform’s chat, in one house">
+<script src="assets/i18n.js"></script>
+<meta name="description" content="Allhouse: แอพ Windows ฟรีสำหรับสตรีมเมอร์ รวมแชท Twitch, YouTube, Kick, TikTok วิดเจ็ต OBS และบอทอ่านแชทภาษาไทย / A free Windows app for streamers: multistream chat, OBS widgets and Thai/English text-to-speech.">
+<meta name="theme-color" content="#0d0f1a">
+<meta property="og:title" content="Allhouse — your stream, together">
+<meta property="og:description" content="Twitch, YouTube, Kick and TikTok chat, OBS widgets and Thai/English chat TTS. Free for Windows.">
+<meta property="og:image" content="assets/allhouse-icon-256.png">
 <link rel="icon" href="assets/favicon-v2.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Noto+Sans+Thai:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&display=swap">
-<link rel="stylesheet" href="assets/guide.css">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Noto+Sans+Thai:wght@400;600;700&family=Press+Start+2P&family=VT323&display=swap">
+<link rel="stylesheet" href="assets/landing.css">
 </head>
 <body>
-<header class="site-head"><div class="in">
-  <a class="brand" href="index.html"><img class="brand-lockup" src="assets/allhouse-lockup-light-v2.png" alt="Allhouse"><small>MANUAL</small></a>
-  <nav class="site-nav" aria-label="หน้าในคู่มือ"><a href="index.html" aria-current="page">หน้าแรก</a><a href="start.html">เริ่มต้นใช้งาน</a><a href="connections.html">เชื่อมต่อแพลตฟอร์ม</a><a href="obs-widgets.html">วิดเจ็ต OBS</a><a href="chat-tts.html">แชทและบอทอ่านแชท</a><a href="custom-css.html">CSS กำหนดเอง</a><a href="help.html">แก้ปัญหาและข้อมูล</a></nav>
-</div></header>
-<div class="wrap">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="ic-twitch" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></symbol>
+<symbol id="ic-youtube" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></symbol>
+<symbol id="ic-kick" viewBox="0 0 24 24"><path d="M1.333 0h8v5.333H12V2.667h2.667V0h8v8H20v2.667h-2.667v2.666H20V16h2.667v8h-8v-2.667H12v-2.666H9.333V24h-8Z"/></symbol>
+<symbol id="ic-tiktok" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></symbol>
+</defs></svg>
+<div class="crt" aria-hidden="true"></div>
 
-<section class="page-intro"><span class="crumb">ALLHOUSE · USER MANUAL</span><h1>คู่มือ Allhouse</h1><p>Allhouse รวมแชทและการแจ้งเตือนจาก Twitch, YouTube, Kick และ TikTok ไว้ที่เดียว แล้วส่งขึ้น OBS เป็นวิดเจ็ตที่แต่งได้เอง พร้อมบอทอ่านแชทภาษาไทยและอังกฤษ ทุกอย่างทำงานในเครื่องของคุณ</p></section>
-<figure class="shot"><div class="bezel"><img src="img/home-v2.jpg" alt="หน้า “ห้องสตรีม” หน้าแรกของแอพ" loading="lazy" width="1440" height="761"></div><figcaption>หน้า “ห้องสตรีม” หน้าแรกของแอพ</figcaption></figure>
-<section class="cart" id="map"><header><span class="no">00</span><h2>อยากทำอะไร เลือกหัวข้อได้เลย</h2></header><nav class="map" aria-label="หัวข้อในคู่มือ">
-  <a href="start.html"><b>เริ่มต้นใช้งาน</b><span>เปิดแอพ รู้จักหน้าจอ บันทึกอัตโนมัติ ข้อมูลทดสอบกับของจริง</span></a>
-  <a href="connections.html"><b>เชื่อมต่อแพลตฟอร์ม</b><span>Twitch, YouTube, Kick และ TikTok ผ่าน TikFinity</span></a>
-  <a href="obs-widgets.html"><b>วิดเจ็ต OBS</b><span>เพิ่มแชท แจ้งเตือน ของขวัญ แบนเนอร์ เข้า OBS และตั้งค่าแต่ละตัว</span></a>
-  <a href="chat-tts.html"><b>แชทและบอทอ่านแชท</b><span>ห้องแชท หน้าต่างแชทแยก เสียงไทย เลือกแพลตฟอร์มที่จะอ่าน</span></a>
-  <a href="custom-css.html"><b>CSS กำหนดเอง</b><span>แต่งวิดเจ็ตเอง: สี ขอบ ไล่สี เงา แอนิเมชัน + สนามทดลอง</span></a>
-  <a href="help.html"><b>แก้ปัญหาและข้อมูล</b><span>OBS ไม่ขึ้น เสียงไม่ออก สำรองข้อมูล ความเป็นส่วนตัว</span></a>
-</nav></section>
-<section class="cart" id="quick"><header><span class="no">01</span><h2>เริ่มไลฟ์ได้ใน 5 ขั้น</h2></header><ol class="steps" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))"><li><b>เปิดแอพ</b><span>ดับเบิลคลิก Start Allhouse.cmd ในโฟลเดอร์โปรแกรม</span></li><li><b>เชื่อมช่องของคุณ</b><span>หน้า “เชื่อมต่อแพลตฟอร์ม” ใส่ชื่อช่องแล้วกดเชื่อมต่อ</span></li><li><b>เพิ่มวิดเจ็ตเข้า OBS</b><span>หน้า “วิดเจ็ต OBS” คัดลอกลิงก์ไปเป็น Browser Source</span></li><li><b>ส่งทดสอบ</b><span>กดปุ่มทดสอบของแต่ละวิดเจ็ต ต้องเห็นใน OBS ทันที</span></li><li><b>เปิดบอทอ่านแชท</b><span>หน้า “บอทอ่านแชท” เลือกเสียงและแพลตฟอร์มที่จะอ่าน</span></li></ol>
-<div class="callout"><p>ในแอพ กดปุ่ม <b>คู่มือ</b> ที่แถบด้านบนได้ทุกเมื่อ แอพจะเปิดหน้าคู่มือที่ตรงกับหน้าที่คุณดูอยู่</p></div></section>
+<header class="lp-head">
+  <a class="lp-brand" href="#top"><img src="assets/allhouse-lockup-dark.png" alt="Allhouse" width="168" height="48"></a>
+  <nav class="lp-nav" aria-label="Sections">
+    <a href="#features"><span lang="th">ฟีเจอร์</span><span lang="en">Features</span></a>
+    <a href="#demo"><span lang="th">ลองเล่น</span><span lang="en">Demo</span></a>
+    <a href="#screens"><span lang="th">หน้าจอ</span><span lang="en">Screens</span></a>
+    <a href="#how"><span lang="th">วิธีเริ่ม</span><span lang="en">How to start</span></a>
+    <a href="manual.html"><span lang="th">คู่มือ</span><span lang="en">Manual</span></a>
+  </nav>
+  <button class="lang-toggle" type="button" data-lang-toggle><span class="th">TH</span><span class="en">EN</span></button>
+  <a class="px-btn small" data-download href="https://github.com/IZoom7/allhouse-multistream/releases"><span lang="th">ดาวน์โหลด</span><span lang="en">Download</span></a>
+</header>
 
-<nav class="pager" aria-label="หน้าก่อนและหน้าถัดไป"><a class="next" href="start.html"><small>ถัดไป ▶</small><b>เริ่มต้นใช้งาน</b></a></nav>
-<p class="foot">Allhouse 0.1.0 · Local alpha · คู่มือนี้อยู่ในเครื่องของคุณ เปิดได้โดยไม่ต้องใช้อินเทอร์เน็ต</p>
-</div>
-<script src="assets/guide.js" defer></script>
+<main id="top">
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <canvas class="stars" aria-hidden="true"></canvas>
+  <img class="cloud c1" src="assets/pixel/cloud.svg" alt="" aria-hidden="true">
+  <img class="cloud c2" src="assets/pixel/cloud.svg" alt="" aria-hidden="true">
+  <img class="cloud c3" src="assets/pixel/cloud.svg" alt="" aria-hidden="true">
+  <div class="hero-in">
+    <div class="hero-copy">
+      <p class="insert-coin"><img src="assets/pixel/coin.svg" alt="" class="spin-coin"> INSERT COIN <span class="blink">▮</span></p>
+      <h1 class="title" aria-label="Allhouse"><span class="glitch" data-text="ALLHOUSE">ALLHOUSE</span></h1>
+      <p class="tagline"><span lang="th">แชท การแจ้งเตือน และวิดเจ็ต OBS<br>จากทุกแพลตฟอร์ม รวมไว้ใน<b>บ้านหลังเดียว</b></span><span lang="en">Chat, alerts and OBS widgets<br>from every platform, together in <b>one house</b></span></p>
+      <p class="sub" lang="th">แอพ Windows ฟรีสำหรับสตรีมเมอร์ ต่อ Twitch, YouTube, Kick และ TikTok พร้อมกัน ส่งขึ้น OBS เป็นวิดเจ็ตสวยๆ และให้บอทอ่านแชทภาษาไทยด้วยเสียงธรรมชาติ</p>
+      <p class="sub" lang="en">A free Windows app for streamers. Connect Twitch, YouTube, Kick and TikTok at once, send it all to OBS as good-looking widgets, and have chat read aloud in natural Thai and English voices.</p>
+      <div class="cta">
+        <a class="px-btn big" data-download href="https://github.com/IZoom7/allhouse-multistream/releases">
+          <img src="assets/pixel/rocket.svg" alt="" class="btn-sprite">
+          <span><b><span lang="th">ดาวน์โหลดสำหรับ Windows</span><span lang="en">Download for Windows</span></b><small>v0.1.0 · 131 MB · Windows 10/11</small></span>
+        </a>
+        <a class="px-btn ghost" href="manual.html"><span lang="th">อ่านคู่มือ</span><span lang="en">Read the manual</span> ▸</a>
+      </div>
+      <ul class="chips">
+        <li><span lang="th">ฟรี</span><span lang="en">FREE</span></li>
+        <li><span lang="th">ไม่ต้องสมัครบัญชี</span><span lang="en">NO ACCOUNT</span></li>
+        <li><span lang="th">ทำงานในเครื่อง</span><span lang="en">100% LOCAL</span></li>
+        <li>TH + EN</li>
+      </ul>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="halo"></div>
+      <div class="orbit">
+        <img src="assets/pixel/heart.svg" alt="" style="--a:0deg;--d:0s">
+        <img src="assets/pixel/star.svg" alt="" style="--a:60deg;--d:-.4s">
+        <img src="assets/pixel/chat.svg" alt="" style="--a:120deg;--d:-.8s">
+        <img src="assets/pixel/coin.svg" alt="" style="--a:180deg;--d:-1.2s">
+        <img src="assets/pixel/gift.svg" alt="" style="--a:240deg;--d:-1.6s">
+        <img src="assets/pixel/mic.svg" alt="" style="--a:300deg;--d:-2s">
+      </div>
+      <div class="house"><img src="assets/allhouse-icon-256.png" alt=""><i class="puff"></i><i class="puff"></i><i class="puff"></i></div>
+      <div class="house-shadow"></div>
+      <div class="ptile twitch"><svg><use href="#ic-twitch"/></svg></div>
+      <div class="ptile youtube"><svg><use href="#ic-youtube"/></svg></div>
+      <div class="ptile kick"><svg><use href="#ic-kick"/></svg></div>
+      <div class="ptile tiktok"><svg><use href="#ic-tiktok"/></svg></div>
+    </div>
+  </div>
+  <img class="walker" src="assets/pixel/slime.svg" alt="" aria-hidden="true">
+  <div class="skyline" aria-hidden="true"></div>
+  <div class="ground" aria-hidden="true"></div>
+</section>
+
+<!-- ============ TICKER ============ -->
+<div class="ticker" aria-hidden="true"><div class="ticker-track"></div></div>
+
+<!-- ============ FEATURES ============ -->
+<section class="sec" id="features">
+  <header class="sec-head reveal"><p class="eyebrow">SELECT YOUR POWER-UP</p><h2><span lang="th">ทุกอย่างที่สตรีมเมอร์ต้องใช้</span><span lang="en">Everything a streamer needs</span></h2><p class="sec-sub"><span lang="th">เลือกได้เลย ทุกพลังพร้อมใช้ตั้งแต่ติดตั้งเสร็จ</span><span lang="en">Pick one. Every power-up works the moment you install.</span></p></header>
+  <div class="cards">
+    <article class="card reveal" style="--c:#5aa0ff"><img src="assets/pixel/chat.svg" alt=""><span class="p">P1</span>
+      <h3><span lang="th">แชทรวมทุกแพลตฟอร์ม</span><span lang="en">Every chat, one room</span></h3>
+      <p lang="th">Twitch, YouTube, Kick และ TikTok ไหลเข้ามาในห้องเดียว พร้อมรูปโปรไฟล์และสีชื่อของผู้ชม หน้าต่างแชทแยกปักไว้บนสุดได้</p>
+      <p lang="en">Twitch, YouTube, Kick and TikTok flow into one room, with profile pictures and name colours. Pop the chat out and pin it on top.</p>
+      <dl class="stats"><dt>RANGE</dt><dd style="--v:100%"></dd><dt>SPEED</dt><dd style="--v:90%"></dd></dl></article>
+    <article class="card reveal" style="--c:#f0cb45"><img src="assets/pixel/tv.svg" alt=""><span class="p">P2</span>
+      <h3><span lang="th">วิดเจ็ต OBS 5 แบบ</span><span lang="en">Five OBS widgets</span></h3>
+      <p lang="th">แชท ผู้ติดตาม สมาชิก ของขวัญ แบนเนอร์ แยกเป็น Browser Source ของใครของมัน แก้เป็นฉบับร่างแล้วค่อยกดเผยแพร่</p>
+      <p lang="en">Chat, follow, subscription, gift and banner, each its own Browser Source. Edit as a draft, then publish when it’s ready.</p>
+      <dl class="stats"><dt>STYLE</dt><dd style="--v:95%"></dd><dt>EASE</dt><dd style="--v:100%"></dd></dl></article>
+    <article class="card reveal" style="--c:#53c26b"><img src="assets/pixel/speaker.svg" alt=""><span class="p">P3</span>
+      <h3><span lang="th">บอทอ่านแชทภาษาไทย</span><span lang="en">Chat read aloud</span></h3>
+      <p lang="th">เสียง Windows แบบออฟไลน์ หรือเสียงไทยธรรมชาติ เลือกอ่านเฉพาะแพลตฟอร์มที่ต้องการ ข้ามคำสั่งบอท และไม่อ่านลิงก์</p>
+      <p lang="en">Offline Windows voices or natural online Thai voices. Read only the platforms you want, skip bot commands, never read links.</p>
+      <dl class="stats"><dt>VOICE</dt><dd style="--v:92%"></dd><dt>RULES</dt><dd style="--v:88%"></dd></dl></article>
+    <article class="card reveal" style="--c:#e62eb4"><img src="assets/pixel/gift.svg" alt=""><span class="p">P4</span>
+      <h3><span lang="th">แจ้งเตือนของขวัญ TikTok</span><span lang="en">TikTok gift alerts</span></h3>
+      <p lang="th">คอมโบกุหลาบแจ้งครั้งเดียวพร้อมจำนวนรวม ตั้งเหรียญขั้นต่ำ ใส่รูป GIF และเสียงของคุณเอง</p>
+      <p lang="en">A rose combo alerts once with the total. Set a minimum coin value and add your own GIF and sound.</p>
+      <dl class="stats"><dt>HYPE</dt><dd style="--v:100%"></dd><dt>COMBO</dt><dd style="--v:85%"></dd></dl></article>
+    <article class="card reveal" style="--c:#a78bff"><img src="assets/pixel/gamepad.svg" alt=""><span class="p">P5</span>
+      <h3><span lang="th">แต่งเองได้ทุกพิกเซล</span><span lang="en">Style every pixel</span></h3>
+      <p lang="th">เขียน CSS ของคุณเองให้ทุกวิดเจ็ต มีคู่มือแบบเห็นภาพและสนามทดลองให้ลองก่อนใช้จริง</p>
+      <p lang="en">Write your own CSS for any widget, with a visual guide and a playground to try ideas first.</p>
+      <dl class="stats"><dt>POWER</dt><dd style="--v:100%"></dd><dt>FUN</dt><dd style="--v:100%"></dd></dl></article>
+    <article class="card reveal" style="--c:#2bc3e0"><img src="assets/pixel/rocket.svg" alt=""><span class="p">P6</span>
+      <h3><span lang="th">ติดตั้งไม่กี่วินาที</span><span lang="en">Installs in seconds</span></h3>
+      <p lang="th">ดับเบิลคลิกครั้งเดียว ไม่ต้องใช้แอดมิน ไม่ต้องสมัคร ไม่มี API key ข้อมูลทุกอย่างอยู่ในเครื่องคุณ</p>
+      <p lang="en">One double-click, no admin, no sign-up, no API keys. Everything stays on your computer.</p>
+      <dl class="stats"><dt>SETUP</dt><dd style="--v:100%"></dd><dt>PRIVACY</dt><dd style="--v:100%"></dd></dl></article>
+  </div>
+</section>
+
+<!-- ============ DEMO ============ -->
+<section class="sec demo-sec" id="demo">
+  <header class="sec-head reveal"><p class="eyebrow">ATTRACT MODE · LIVE DEMO</p><h2><span lang="th">ดูของจริงไหลบนจอ OBS</span><span lang="en">Watch it run on an OBS screen</span></h2><p class="sec-sub"><span lang="th">นี่คือสิ่งที่ผู้ชมเห็น ลองกดปุ่มด้านล่างเพื่อส่งเหตุการณ์ทดสอบเองได้เลย</span><span lang="en">This is what your viewers see. Press the buttons below to fire test events yourself.</span></p></header>
+  <div class="monitor reveal">
+    <div class="monitor-bezel">
+      <div class="scene" id="scene">
+        <div class="scene-sky"></div><div class="scene-city"></div>
+        <img class="scene-slime" src="assets/pixel/slime.svg" alt="">
+        <img class="scene-alien" src="assets/pixel/alien.svg" alt="">
+        <div class="hud"><span class="live">● LIVE</span><span class="viewers"><b id="viewers">128</b> <span lang="th">คนดู</span><span lang="en">watching</span></span></div>
+        <div class="banner-w"><b>WELCOME TO THE HOUSE</b><small><span lang="th">พื้นที่ของเรา เรื่องราวของคุณ</span><span lang="en">Our space, your story</span></small></div>
+        <ol class="chat-w" id="chatw" aria-live="off"></ol>
+        <div class="alert-w" id="alertw" hidden></div>
+        <div class="tts-w" id="ttsw" hidden><img src="assets/pixel/speaker.svg" alt=""><span></span></div>
+      </div>
+    </div>
+    <div class="monitor-base"><span class="led"></span>ALLHOUSE · OBS PREVIEW 1920×1080</div>
+  </div>
+  <div class="pad reveal" role="group" aria-label="Demo controls">
+    <button type="button" class="pad-btn b-blue" data-fire="chat"><img src="assets/pixel/chat.svg" alt=""><span lang="th">แชท</span><span lang="en">Chat</span></button>
+    <button type="button" class="pad-btn b-red" data-fire="follow"><img src="assets/pixel/heart.svg" alt=""><span lang="th">ติดตาม</span><span lang="en">Follow</span></button>
+    <button type="button" class="pad-btn b-yellow" data-fire="sub"><img src="assets/pixel/star.svg" alt=""><span lang="th">สมาชิก</span><span lang="en">Sub</span></button>
+    <button type="button" class="pad-btn b-green" data-fire="gift"><img src="assets/pixel/gift.svg" alt=""><span lang="th">ของขวัญ</span><span lang="en">Gift</span></button>
+  </div>
+</section>
+
+<!-- ============ SCREENS ============ -->
+<section class="sec" id="screens">
+  <header class="sec-head reveal"><p class="eyebrow">STAGE SELECT</p><h2><span lang="th">หน้าตาแอพจริง</span><span lang="en">The real app</span></h2><p class="sec-sub"><span lang="th">ธีมเครื่องเกมยุค 90 สว่างและมืด ใช้งานได้ทั้งภาษาไทยและอังกฤษ</span><span lang="en">A 90s console look in light and dark, fully in Thai and English.</span></p></header>
+  <div class="stages reveal">
+    <div class="stage-tabs" role="tablist">
+      <button type="button" role="tab" aria-selected="true" data-shot="img/home-v2.jpg"><span>1-1</span><b lang="th">ห้องสตรีม</b><b lang="en">Overview</b></button>
+      <button type="button" role="tab" aria-selected="false" data-shot="img/connections-v2.jpg"><span>1-2</span><b lang="th">เชื่อมต่อ</b><b lang="en">Connections</b></button>
+      <button type="button" role="tab" aria-selected="false" data-shot="img/widgets-v2.jpg"><span>1-3</span><b lang="th">วิดเจ็ต OBS</b><b lang="en">OBS widgets</b></button>
+      <button type="button" role="tab" aria-selected="false" data-shot="img/activity-v2.jpg"><span>1-4</span><b lang="th">แชท</b><b lang="en">Chat</b></button>
+      <button type="button" role="tab" aria-selected="false" data-shot="img/tts-v2.jpg"><span>1-5</span><b lang="th">บอทอ่านแชท</b><b lang="en">Chat TTS</b></button>
+      <button type="button" role="tab" aria-selected="false" data-shot="img/widget-css-v2.jpg"><span>1-6</span><b lang="th">CSS</b><b lang="en">CSS</b></button>
+    </div>
+    <div class="stage-view"><img id="stageimg" src="img/home-v2.jpg" alt="Allhouse" width="1440" height="761"><div class="stage-glare"></div></div>
+  </div>
+</section>
+
+<!-- ============ HOW ============ -->
+<section class="sec" id="how">
+  <header class="sec-head reveal"><p class="eyebrow">HOW TO PLAY</p><h2><span lang="th">เริ่มไลฟ์ใน 3 ด่าน</span><span lang="en">Go live in 3 levels</span></h2></header>
+  <div class="levels">
+    <div class="track" aria-hidden="true"><img src="assets/pixel/slime.svg" alt="" class="runner"></div>
+    <article class="level reveal"><img src="assets/pixel/coin.svg" alt=""><span class="lv">LEVEL 1</span><h3><span lang="th">ดาวน์โหลดและติดตั้ง</span><span lang="en">Download &amp; install</span></h3><p lang="th">ดับเบิลคลิก Allhouse-Setup กดติดตั้ง จบในไม่กี่วินาที</p><p lang="en">Double-click Allhouse-Setup and press Install. Done in seconds.</p></article>
+    <article class="level reveal"><img src="assets/pixel/gamepad.svg" alt=""><span class="lv">LEVEL 2</span><h3><span lang="th">เชื่อมช่องของคุณ</span><span lang="en">Connect your channels</span></h3><p lang="th">ใส่ชื่อช่อง Twitch, YouTube, Kick แล้วกดเชื่อมต่อ TikTok ผ่าน TikFinity</p><p lang="en">Enter your Twitch, YouTube and Kick channels and press Connect. TikTok goes through TikFinity.</p></article>
+    <article class="level reveal"><img src="assets/pixel/trophy.svg" alt=""><span class="lv">LEVEL 3</span><h3><span lang="th">วางวิดเจ็ตใน OBS</span><span lang="en">Drop widgets into OBS</span></h3><p lang="th">คัดลอกลิงก์ไปเป็น Browser Source กดทดสอบ แล้วเริ่มไลฟ์ได้เลย</p><p lang="en">Copy each link into a Browser Source, send a test, and you’re live.</p></article>
+  </div>
+</section>
+
+<!-- ============ SCORES ============ -->
+<section class="sec" id="scores">
+  <div class="scoreboard reveal">
+    <p class="eyebrow center">HIGH SCORES</p>
+    <ol class="scores">
+      <li><span class="rk">1ST</span><span class="nm"><span lang="th">แพลตฟอร์มพร้อมกัน</span><span lang="en">PLATFORMS AT ONCE</span></span><b data-count="4">0</b></li>
+      <li><span class="rk">2ND</span><span class="nm"><span lang="th">วิดเจ็ต OBS</span><span lang="en">OBS WIDGETS</span></span><b data-count="5">0</b></li>
+      <li><span class="rk">3RD</span><span class="nm"><span lang="th">ภาษา</span><span lang="en">LANGUAGES</span></span><b data-count="2">0</b></li>
+      <li><span class="rk">4TH</span><span class="nm"><span lang="th">ราคา (บาท)</span><span lang="en">PRICE (THB)</span></span><b data-count="0">0</b></li>
+      <li><span class="rk">5TH</span><span class="nm"><span lang="th">บัญชีที่ต้องสมัคร</span><span lang="en">ACCOUNTS NEEDED</span></span><b data-count="0">0</b></li>
+      <li><span class="rk">6TH</span><span class="nm"><span lang="th">ข้อมูลที่ส่งให้เรา</span><span lang="en">DATA SENT TO US</span></span><b data-count="0" data-suffix=" B">0 B</b></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ START ============ -->
+<section class="sec start" id="start">
+  <img class="s-sprite s1" src="assets/pixel/star.svg" alt="" aria-hidden="true">
+  <img class="s-sprite s2" src="assets/pixel/heart.svg" alt="" aria-hidden="true">
+  <img class="s-sprite s3" src="assets/pixel/bolt.svg" alt="" aria-hidden="true">
+  <img class="s-sprite s4" src="assets/pixel/alien.svg" alt="" aria-hidden="true">
+  <p class="press-start">PRESS START</p>
+  <h2><span lang="th">พร้อมย้ายเข้าบ้านหรือยัง?</span><span lang="en">Ready to move in?</span></h2>
+  <a class="px-btn big" data-download data-burst href="https://github.com/IZoom7/allhouse-multistream/releases">
+    <img src="assets/pixel/rocket.svg" alt="" class="btn-sprite">
+    <span><b><span lang="th">ดาวน์โหลด Allhouse</span><span lang="en">Download Allhouse</span></b><small>Windows 10/11 · v0.1.0 · <span lang="th">ฟรี</span><span lang="en">free</span></small></span>
+  </a>
+  <p class="fine" lang="th">ถ้า Windows ขึ้น “Windows protected your PC” ให้กด More info → Run anyway (ตัวติดตั้งยังไม่ได้เซ็นดิจิทัล)</p>
+  <p class="fine" lang="en">If Windows shows “Windows protected your PC”, choose More info → Run anyway (the installer isn’t code-signed yet).</p>
+</section>
+</main>
+
+<footer class="lp-foot">
+  <img src="assets/allhouse-lockup-dark.png" alt="Allhouse" width="140" height="40">
+  <nav aria-label="Footer"><a href="manual.html"><span lang="th">คู่มือ</span><span lang="en">Manual</span></a><a href="custom-css.html"><span lang="th">คู่มือ CSS</span><span lang="en">CSS guide</span></a><a href="help.html"><span lang="th">ช่วยเหลือ</span><span lang="en">Help</span></a><a data-download href="https://github.com/IZoom7/allhouse-multistream/releases"><span lang="th">ดาวน์โหลด</span><span lang="en">Download</span></a></nav>
+  <p><span lang="th">© Allhouse · สงวนลิขสิทธิ์ · ทำด้วย ♥ ในประเทศไทย</span><span lang="en">© Allhouse · All rights reserved · Made with ♥ in Thailand</span></p>
+  <p class="tiny"><span lang="th">ภาพพิกเซลวาดขึ้นใหม่สำหรับ Allhouse · โลโก้แพลตฟอร์มจาก Simple Icons (CC0) เป็นเครื่องหมายการค้าของเจ้าของ</span><span lang="en">Pixel art drawn for Allhouse · Platform logos from Simple Icons (CC0) are trademarks of their owners</span> · <span class="konami">↑↑↓↓←→←→BA</span></p>
+</footer>
+<script src="assets/landing.js" defer></script>
 </body>
 </html>
-

@@ -1,5 +1,6 @@
 /* Allhouse CSS guide — copy buttons and the live playground. No dependencies. */
 (function () {
+  var L = function (th, en) { return window.allhouseLang && window.allhouseLang() === 'en' ? en : th; };
   var presets = {
     retro: "#card {\n  border-radius: 0;\n  border: 4px solid #000;\n  background: #f0cb45;\n  color: #1d1a12;\n  box-shadow: 8px 8px 0 #000;\n}\n#card small {\n  color: #8d2832;\n}\n#card .ph {\n  color: #8d2832;\n}",
     neon: "@keyframes glow {\n  0%, 100% { box-shadow: 0 0 8px #ff3df5; }\n  50% { box-shadow: 0 0 34px 8px #ff3df5; }\n}\n#card {\n  border-color: #ff3df5;\n  background: #0b0718;\n  animation: glow 1.6s ease-in-out infinite;\n}\n#card .ph {\n  color: #6ff7ff;\n  text-shadow: 0 0 12px #6ff7ff;\n}",
@@ -16,8 +17,8 @@
       var sheet = new CSSStyleSheet(); sheet.replaceSync(css);
       var rules = Array.prototype.map.call(sheet.cssRules, function (r) { return r.cssText; }).join('\n');
       style.textContent = rules ? '@scope (#pg-stage) {\n' + rules + '\n}' : '';
-      status.textContent = css.trim() ? sheet.cssRules.length + ' กฎใช้งานได้' : '';
-    } catch (e) { status.textContent = 'โค้ดยังไม่สมบูรณ์'; }
+      status.textContent = css.trim() ? sheet.cssRules.length + L(' กฎใช้งานได้', ' rules applied') : '';
+    } catch (e) { status.textContent = L('โค้ดยังไม่สมบูรณ์', 'The code isn’t complete yet'); }
   }
   function replay() { var c = document.getElementById('card'); c.style.animation = 'none'; void c.offsetWidth; c.style.animation = ''; }
   ta.addEventListener('input', apply);
@@ -29,17 +30,18 @@
   });
   document.getElementById('pg-replay').addEventListener('click', replay);
   document.getElementById('pg-copy').addEventListener('click', function () {
-    var done = function () { status.textContent = 'คัดลอกแล้ว วางในช่อง CSS ของวิดเจ็ตได้เลย'; };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done, function () { ta.focus(); ta.select(); status.textContent = 'กด Ctrl+C เพื่อคัดลอก'; });
-    else { ta.focus(); ta.select(); status.textContent = 'กด Ctrl+C เพื่อคัดลอก'; }
+    var done = function () { status.textContent = L('คัดลอกแล้ว วางในช่อง CSS ของวิดเจ็ตได้เลย', 'Copied. Paste it into the widget’s CSS box.'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done, function () { ta.focus(); ta.select(); status.textContent = L('กด Ctrl+C เพื่อคัดลอก', 'Press Ctrl+C to copy'); });
+    else { ta.focus(); ta.select(); status.textContent = L('กด Ctrl+C เพื่อคัดลอก', 'Press Ctrl+C to copy'); }
   });
   } // end playground
   // copy buttons on every code block
   document.querySelectorAll('pre.code').forEach(function (pre) {
-    var b = document.createElement('button'); b.type = 'button'; b.className = 'copy'; b.textContent = 'คัดลอก';
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'copy'; b.textContent = L('คัดลอก', 'Copy');
+    document.addEventListener('allhouse:lang', function () { b.textContent = L('คัดลอก', 'Copy'); });
     b.addEventListener('click', function () {
-      var text = pre.innerText.replace(/คัดลอก(แล้ว)?$/, '').trimEnd();
-      var ok = function () { b.textContent = 'คัดลอกแล้ว'; setTimeout(function () { b.textContent = 'คัดลอก'; }, 1400); };
+      var text = pre.innerText.replace(/(คัดลอก(แล้ว)?|Copy|Copied)$/, '').trimEnd();
+      var ok = function () { b.textContent = L('คัดลอกแล้ว', 'Copied'); setTimeout(function () { b.textContent = L('คัดลอก', 'Copy'); }, 1400); };
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, function () { var r = document.createRange(); r.selectNodeContents(pre); var s = getSelection(); s.removeAllRanges(); s.addRange(r); });
     });
     pre.appendChild(b);

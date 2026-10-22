@@ -57,12 +57,14 @@ app.whenReady().then(async()=>{
   invoke('connect',(platform,channel)=>connections.connect(platform,channel),{mainOnly:true});
   invoke('disconnect',platform=>connections.disconnect(platform),{mainOnly:true});
   // Local user manual (docs-site/*.html) opened in the default browser. Only known page names; the renderer never supplies a path.
+  // 'index' is the manual's home (manual.html; docs-site/index.html is the public landing page). lang picks Thai/English.
   const DOC_PAGES=['index','start','connections','obs-widgets','chat-tts','custom-css','help'];
-  invoke('open-docs',async page=>{
+  invoke('open-docs',async(page,lang)=>{
     if(!DOC_PAGES.includes(page))throw new Error('Unknown manual page');
-    const file=path.join(__dirname,'..','docs-site',page+'.html');
+    const file=path.join(__dirname,'..','docs-site',(page==='index'?'manual':page)+'.html');
     try{await fs.access(file)}catch{throw new Error('The manual files are missing (docs-site folder).')}
-    return shell.openExternal(require('node:url').pathToFileURL(file).href);
+    const url=require('node:url').pathToFileURL(file);url.search='lang='+(lang==='en'?'en':'th');
+    return shell.openExternal(url.href);
   });
   invoke('open-overlay',()=>shell.openExternal(runtime.url));
   // Opens only a URL the runtime itself issued for a known widget id (never a renderer-supplied URL).

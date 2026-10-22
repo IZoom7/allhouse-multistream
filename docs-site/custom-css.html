@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CSS กำหนดเอง · คู่มือ Allhouse</title>
-<meta name="description" content="คู่มือแต่งวิดเจ็ต OBS ของ Allhouse ด้วย CSS: ชื่อชิ้นส่วน สีพื้นหลัง ขอบ ไล่สี เงา แอนิเมชัน พร้อมสนามทดลอง">
+<meta name="title-en" content="Custom CSS · Allhouse Manual">
+<script src="assets/i18n.js"></script>
+<meta name="description" content="แต่งวิดเจ็ต OBS ของ Allhouse ด้วย CSS / Style Allhouse OBS widgets with CSS: selectors, colours, borders, gradients, shadows, animation, and a live playground.">
 <meta name="theme-color" content="#8d2832">
 <link rel="icon" href="assets/favicon-v2.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +18,8 @@
 <body>
 <header class="site-head"><div class="in">
   <a class="brand" href="index.html"><img class="brand-lockup" src="assets/allhouse-lockup-light-v2.png" alt="Allhouse"><small>MANUAL</small></a>
-  <nav class="site-nav" aria-label="หน้าในคู่มือ"><a href="index.html">หน้าแรก</a><a href="start.html">เริ่มต้นใช้งาน</a><a href="connections.html">เชื่อมต่อแพลตฟอร์ม</a><a href="obs-widgets.html">วิดเจ็ต OBS</a><a href="chat-tts.html">แชทและบอทอ่านแชท</a><a href="custom-css.html" aria-current="page">CSS กำหนดเอง</a><a href="help.html">แก้ปัญหาและข้อมูล</a></nav>
+  <nav class="site-nav" aria-label="Manual"><a href="manual.html"><span lang="th">หน้าแรก</span><span lang="en">Home</span></a><a href="start.html"><span lang="th">เริ่มต้นใช้งาน</span><span lang="en">Getting started</span></a><a href="connections.html"><span lang="th">เชื่อมต่อแพลตฟอร์ม</span><span lang="en">Connections</span></a><a href="obs-widgets.html"><span lang="th">วิดเจ็ต OBS</span><span lang="en">OBS widgets</span></a><a href="chat-tts.html"><span lang="th">แชทและบอทอ่านแชท</span><span lang="en">Chat &amp; TTS</span></a><a href="custom-css.html" aria-current="page"><span lang="th">CSS กำหนดเอง</span><span lang="en">Custom CSS</span></a><a href="help.html"><span lang="th">แก้ปัญหาและข้อมูล</span><span lang="en">Help</span></a></nav>
+  <button class="lang-toggle" type="button" data-lang-toggle><span class="th">TH</span><span class="en">EN</span></button>
 </div></header>
 <div class="wrap">
 
@@ -25,13 +28,13 @@
   <section class="hero">
     <div>
       <div class="eyebrow">05 · CUSTOM CSS</div>
-      <h1>แต่งวิดเจ็ต OBS ด้วย CSS ของคุณเอง</h1>
-      <p>คู่มือนี้สอนตั้งแต่ “ตรงไหนเรียกว่าอะไร” ไปจนถึงสีพื้นหลัง ขอบ ไล่สี (gradient) และแอนิเมชัน ทุกภาพในหน้านี้วาดด้วย CSS จริง ก๊อปโค้ดไปวางในช่อง <b>CSS กำหนดเอง</b> ของวิดเจ็ตได้เลย</p>
-      <nav class="toc" aria-label="สารบัญ">
-        <a href="#start">เริ่มต้น</a><a href="#anatomy">ตรงไหนเป็นตรงไหน</a><a href="#colors">สีและพื้นหลัง</a><a href="#borders">ขอบ</a><a href="#gradient">ไล่สี</a><a href="#shadow">เงา</a><a href="#animation">แอนิเมชัน</a><a href="#playground">สนามทดลอง</a><a href="#limits">ข้อควรรู้</a>
+      <h1><span lang="th">แต่งวิดเจ็ต OBS ด้วย CSS ของคุณเอง</span><span lang="en">Style your OBS widgets with your own CSS</span></h1>
+      <p lang="th">คู่มือนี้สอนตั้งแต่ “ตรงไหนเรียกว่าอะไร” ไปจนถึงสีพื้นหลัง ขอบ ไล่สี (gradient) และแอนิเมชัน ทุกภาพในหน้านี้วาดด้วย CSS จริง ก๊อปโค้ดไปวางในช่อง <b>CSS กำหนดเอง</b> ของวิดเจ็ตได้เลย</p><p lang="en">From “what is each part called” to backgrounds, borders, gradients and animation. Every picture on this page is real CSS, so you can copy the code straight into a widget’s <b>custom CSS</b> box.</p>
+      <nav class="toc" aria-label="Contents">
+        <a href="#start"><span lang="th">เริ่มต้น</span><span lang="en">Start</span></a><a href="#anatomy"><span lang="th">ตรงไหนเป็นตรงไหน</span><span lang="en">Anatomy</span></a><a href="#colors"><span lang="th">สีและพื้นหลัง</span><span lang="en">Colours</span></a><a href="#borders"><span lang="th">ขอบ</span><span lang="en">Borders</span></a><a href="#gradient"><span lang="th">ไล่สี</span><span lang="en">Gradients</span></a><a href="#shadow"><span lang="th">เงา</span><span lang="en">Shadows</span></a><a href="#animation"><span lang="th">แอนิเมชัน</span><span lang="en">Animation</span></a><a href="#playground"><span lang="th">สนามทดลอง</span><span lang="en">Playground</span></a><a href="#limits"><span lang="th">ข้อควรรู้</span><span lang="en">Good to know</span></a>
       </nav>
     </div>
-    <div class="screen" aria-label="ตัวอย่างการแจ้งเตือนที่แต่งด้วย CSS">
+    <div class="screen" aria-label="ตัวอย่างการแจ้งเตือนที่แต่งด้วย CSS" data-en-aria-label="An alert styled with CSS">
       <span class="cap">OBS · FOLLOW ALERT</span>
       <div class="w-card g-border sh-hard an-float" style="--a:#ffc371"><small>TWITCH</small><span class="ph">mintmint</span> followed!</div>
     </div>
@@ -39,147 +42,147 @@
 
   <!-- 1 -->
   <section class="cart" id="start">
-    <header><span class="no">01</span><h2>เริ่มต้นใช้ CSS กำหนดเอง</h2></header>
+    <header><span class="no">01</span><h2><span lang="th">เริ่มต้นใช้ CSS กำหนดเอง</span><span lang="en">Getting started with custom CSS</span></h2></header>
     <ol class="steps">
-      <li><b>เลือกวิดเจ็ต</b><span>ไปที่ วิดเจ็ต OBS แล้วกดแท็บที่จะแต่ง เช่น แจ้งเตือนผู้ติดตาม</span></li>
-      <li><b>เปิดสวิตช์</b><span>ใต้พรีวิว กด “ใช้ CSS กำหนดเอง (ขั้นสูง)” ช่องเขียนโค้ดจะโผล่ขึ้นมา</span></li>
-      <li><b>เขียนหรือวางโค้ด</b><span>พรีวิวเปลี่ยนทันที กด “ใส่โค้ดตัวอย่าง” ถ้ายังไม่รู้จะเริ่มตรงไหน</span></li>
-      <li><b>กดเผยแพร่</b><span>OBS เปลี่ยนตามเมื่อกด “เผยแพร่ทุกวิดเจ็ต” ไม่ต้องรีเฟรช Browser Source</span></li>
+      <li><b><span lang="th">เลือกวิดเจ็ต</span><span lang="en">Pick a widget</span></b><span lang="th">ไปที่ วิดเจ็ต OBS แล้วกดแท็บที่จะแต่ง เช่น แจ้งเตือนผู้ติดตาม</span><span lang="en">Go to OBS widgets and open the tab to style, e.g. the follow alert</span></li>
+      <li><b><span lang="th">เปิดสวิตช์</span><span lang="en">Turn it on</span></b><span lang="th">ใต้พรีวิว กด “ใช้ CSS กำหนดเอง (ขั้นสูง)” ช่องเขียนโค้ดจะโผล่ขึ้นมา</span><span lang="en">Under the preview, switch on “Use custom CSS (advanced)” and the code box appears</span></li>
+      <li><b><span lang="th">เขียนหรือวางโค้ด</span><span lang="en">Write or paste code</span></b><span lang="th">พรีวิวเปลี่ยนทันที กด “ใส่โค้ดตัวอย่าง” ถ้ายังไม่รู้จะเริ่มตรงไหน</span><span lang="en">The preview updates instantly. Press “Insert example” if you’re not sure where to start</span></li>
+      <li><b><span lang="th">กดเผยแพร่</span><span lang="en">Publish</span></b><span lang="th">OBS เปลี่ยนตามเมื่อกด “เผยแพร่ทุกวิดเจ็ต” ไม่ต้องรีเฟรช Browser Source</span><span lang="en">OBS updates when you press “Publish all widgets”; no Browser Source refresh needed</span></li>
     </ol>
-    <div class="note"><b>CSS คืออะไร:</b> คือคำสั่งบอกหน้าตา เขียนเป็น “ชื่อชิ้นส่วน { คุณสมบัติ: ค่า; }” เช่น <code>#card { border-radius: 0; }</code> แปลว่า “กล่องการ์ด ให้มุมเหลี่ยม” ทุกบรรทัดในวงเล็บปีกกาต้องจบด้วย <code>;</code></div>
+    <div class="note"><span lang="th"><b>CSS คืออะไร:</b> คือคำสั่งบอกหน้าตา เขียนเป็น “ชื่อชิ้นส่วน { คุณสมบัติ: ค่า; }” เช่น <code>#card { border-radius: 0; }</code> แปลว่า “กล่องการ์ด ให้มุมเหลี่ยม” ทุกบรรทัดในวงเล็บปีกกาต้องจบด้วย <code>;</code></span><span lang="en"><b>What is CSS?</b> Rules that describe how things look, written as “part { property: value; }”. For example <code>#card { border-radius: 0; }</code> means “give the card square corners”. Every line inside the braces ends with <code>;</code></span></div>
   </section>
 
   <!-- 2 -->
   <section class="cart" id="anatomy">
-    <header><span class="no">02</span><h2>ตรงไหนเป็นตรงไหน</h2></header>
-    <p class="lead">ชื่อสีเหลืองคือ “selector” ที่ใช้เรียกชิ้นส่วนนั้นในโค้ด วิดเจ็ตแจ้งเตือน (ผู้ติดตาม สมาชิก ของขวัญ) ใช้ชุดเดียวกัน</p>
+    <header><span class="no">02</span><h2><span lang="th">ตรงไหนเป็นตรงไหน</span><span lang="en">Which part is which</span></h2></header>
+    <p class="lead" lang="th">ชื่อสีเหลืองคือ “selector” ที่ใช้เรียกชิ้นส่วนนั้นในโค้ด วิดเจ็ตแจ้งเตือน (ผู้ติดตาม สมาชิก ของขวัญ) ใช้ชุดเดียวกัน</p><p class="lead" lang="en">The yellow names are the “selectors” you use to target each part in code. All alert widgets (follow, subscription, gift) share the same set.</p>
     <div class="pair">
       <div class="screen anat" style="min-height:250px">
-        <span class="cap">แจ้งเตือน (follow / sub / gift)</span>
+        <span class="cap"><span lang="th">แจ้งเตือน (follow / sub / gift)</span><span lang="en">ALERT (follow / sub / gift)</span></span>
         <div class="w-card" style="position:relative"><small>TEST ALERT · TWITCH</small><span class="ph">mintmint</span> followed!</div>
         <span class="tagpin" style="left:6%;top:24%">#card</span>
         <span class="tagpin" style="right:8%;top:26%">#card small</span>
         <span class="tagpin" style="left:10%;bottom:16%">#card .ph</span>
-        <span class="tagpin" style="right:6%;bottom:12%">#wrap = ทั้งจอ</span>
+        <span class="tagpin" style="right:6%;bottom:12%"><span lang="th">#wrap = ทั้งจอ</span><span lang="en">#wrap = whole screen</span></span>
       </div>
       <div class="legend">
-        <div><code>#wrap</code><span>พื้นที่ทั้งจอ 1920×1080 ใช้จัดตำแหน่งการ์ด (ตั้งต้นอยู่กลางจอ)</span></div>
-        <div><code>#card</code><span>กล่องการแจ้งเตือน: พื้นหลัง ขอบ มุม เงา ขนาดตัวอักษร</span></div>
-        <div><code>#card small</code><span>ป้ายเล็กด้านบน เช่น TEST ALERT · TWITCH</span></div>
-        <div><code>#card .ph</code><span>คำที่แทนค่าใน {name} {gift} {count} (ชื่อผู้ชม ฯลฯ)</span></div>
-        <div><code>#card img.art</code><span>รูป / GIF ที่คุณอัปโหลด</span></div>
-        <div><code>#card .gimg</code><span>รูปของขวัญจาก TikTok (วิดเจ็ตของขวัญ)</span></div>
+        <div><code>#wrap</code><span lang="th">พื้นที่ทั้งจอ 1920×1080 ใช้จัดตำแหน่งการ์ด (ตั้งต้นอยู่กลางจอ)</span><span lang="en">The whole 1920×1080 area; use it to position the card (centred by default)</span></div>
+        <div><code>#card</code><span lang="th">กล่องการแจ้งเตือน: พื้นหลัง ขอบ มุม เงา ขนาดตัวอักษร</span><span lang="en">The alert box: background, border, corners, shadow, font size</span></div>
+        <div><code>#card small</code><span lang="th">ป้ายเล็กด้านบน เช่น TEST ALERT · TWITCH</span><span lang="en">The small label on top, e.g. TEST ALERT · TWITCH</span></div>
+        <div><code>#card .ph</code><span lang="th">คำที่แทนค่าใน {name} {gift} {count} (ชื่อผู้ชม ฯลฯ)</span><span lang="en">Words filled in from {name} {gift} {count} (the viewer’s name, etc.)</span></div>
+        <div><code>#card img.art</code><span lang="th">รูป / GIF ที่คุณอัปโหลด</span><span lang="en">The image / GIF you uploaded</span></div>
+        <div><code>#card .gimg</code><span lang="th">รูปของขวัญจาก TikTok (วิดเจ็ตของขวัญ)</span><span lang="en">TikTok’s gift picture (gift widget)</span></div>
       </div>
     </div>
     <div class="pair">
       <div class="screen anat">
-        <span class="cap">กล่องแชท</span>
-        <div class="w-chat"><b>บ้านข้างๆ · YouTube</b>ไลฟ์วันนี้สนุกมาก!</div>
+        <span class="cap"><span lang="th">กล่องแชท</span><span lang="en">CHAT BOX</span></span>
+        <div class="w-chat"><b><span lang="th">บ้านข้างๆ</span><span lang="en">nextdoor</span> · YouTube</b><span lang="th">ไลฟ์วันนี้สนุกมาก!</span><span lang="en">Best stream today!</span></div>
         <span class="tagpin" style="left:4%;top:22%">.chat</span>
         <span class="tagpin" style="right:5%;top:34%">.chat b</span>
         <span class="tagpin" style="right:7%;bottom:18%">.chat span</span>
       </div>
       <div class="legend">
-        <div><code>#box</code><span>กล่องรวมแชททั้งหมด (<code>#box.top</code> = ข้อความใหม่อยู่บน)</span></div>
-        <div><code>.chat</code><span>ฟองแชทแต่ละข้อความ</span></div>
-        <div><code>.chat b</code><span>ชื่อผู้ชม · แพลตฟอร์ม</span></div>
-        <div><code>.chat span</code><span>ตัวข้อความแชท</span></div>
-        <div><code>.pm</code> <span>ไอคอนแพลตฟอร์ม</span></div>
-        <div><code>.chat .av</code><span>รูปโปรไฟล์ (หรือวงกลมตัวอักษรแรก) เมื่อเปิด “แสดงรูปโปรไฟล์”</span></div>
-        <div><code>.chat .pf</code><span>ชื่อแพลตฟอร์มต่อท้ายชื่อ เช่น · Twitch</span></div>
-        <div><code>.chat.inline</code><span>แถวแชทเมื่อเลือก “ชื่อกับข้อความบรรทัดเดียว”</span></div>
-        <div><code>var(--name)</code><span>สีชื่อของแต่ละแถว (เมื่อเลือกสีตามแพลตฟอร์มหรือสีของผู้ชม)</span></div>
-        <div><code>.tag</code><span>ป้าย TEST CHAT (มีเฉพาะแชททดสอบ)</span></div>
+        <div><code>#box</code><span lang="th">กล่องรวมแชททั้งหมด (<code>#box.top</code> = ข้อความใหม่อยู่บน)</span><span lang="en">The box holding all chat (<code>#box.top</code> = newest at top)</span></div>
+        <div><code>.chat</code><span lang="th">ฟองแชทแต่ละข้อความ</span><span lang="en">Each chat bubble</span></div>
+        <div><code>.chat b</code><span lang="th">ชื่อผู้ชม · แพลตฟอร์ม</span><span lang="en">Viewer name · platform</span></div>
+        <div><code>.chat span</code><span lang="th">ตัวข้อความแชท</span><span lang="en">The message text</span></div>
+        <div><code>.pm</code> <span lang="th">ไอคอนแพลตฟอร์ม</span><span lang="en">Platform icon</span></div>
+        <div><code>.chat .av</code><span lang="th">รูปโปรไฟล์ (หรือวงกลมตัวอักษรแรก) เมื่อเปิด “แสดงรูปโปรไฟล์”</span><span lang="en">Profile picture (or initial circle) when profile pictures are on</span></div>
+        <div><code>.chat .pf</code><span lang="th">ชื่อแพลตฟอร์มต่อท้ายชื่อ เช่น · Twitch</span><span lang="en">Platform name after the viewer, e.g. · Twitch</span></div>
+        <div><code>.chat.inline</code><span lang="th">แถวแชทเมื่อเลือก “ชื่อกับข้อความบรรทัดเดียว”</span><span lang="en">A chat row when “name and message on one line” is chosen</span></div>
+        <div><code>var(--name)</code><span lang="th">สีชื่อของแต่ละแถว (เมื่อเลือกสีตามแพลตฟอร์มหรือสีของผู้ชม)</span><span lang="en">Each row’s name colour (with per-platform or per-viewer colours)</span></div>
+        <div><code>.tag</code><span lang="th">ป้าย TEST CHAT (มีเฉพาะแชททดสอบ)</span><span lang="en">The TEST CHAT label (test chats only)</span></div>
       </div>
     </div>
     <div class="pair">
       <div class="screen anat">
-        <span class="cap">แบนเนอร์หัวข้อ</span>
-        <div class="w-banner"><h4>WELCOME TO THE HOUSE</h4><p>พื้นที่ของเรา เรื่องราวของคุณ</p></div>
+        <span class="cap"><span lang="th">แบนเนอร์หัวข้อ</span><span lang="en">BANNER</span></span>
+        <div class="w-banner"><h4>WELCOME TO THE HOUSE</h4><p><span lang="th">พื้นที่ของเรา เรื่องราวของคุณ</span><span lang="en">Our space, your story</span></p></div>
         <span class="tagpin" style="left:6%;top:20%">#brand</span>
         <span class="tagpin" style="right:6%;top:36%">#title</span>
         <span class="tagpin" style="right:10%;bottom:18%">#subtitle</span>
       </div>
       <div class="legend">
-        <div><code>#brand</code><span>กล่องแบนเนอร์</span></div>
-        <div><code>#title</code><span>หัวข้อใหญ่</span></div>
-        <div><code>#subtitle</code><span>ข้อความรอง</span></div>
-        <div><code>#art</code><span>รูปของแบนเนอร์ (มุมขวาบน)</span></div>
-        <div><code>#scene.neon</code><span>ใช้เมื่อเลือกรูปแบบ Neon (มี .minimal ด้วย)</span></div>
+        <div><code>#brand</code><span lang="th">กล่องแบนเนอร์</span><span lang="en">The banner box</span></div>
+        <div><code>#title</code><span lang="th">หัวข้อใหญ่</span><span lang="en">The big title</span></div>
+        <div><code>#subtitle</code><span lang="th">ข้อความรอง</span><span lang="en">The subtitle</span></div>
+        <div><code>#art</code><span lang="th">รูปของแบนเนอร์ (มุมขวาบน)</span><span lang="en">The banner image (top right)</span></div>
+        <div><code>#scene.neon</code><span lang="th">ใช้เมื่อเลือกรูปแบบ Neon (มี .minimal ด้วย)</span><span lang="en">Applies with the Neon style (.minimal exists too)</span></div>
       </div>
     </div>
   </section>
 
   <!-- 3 -->
   <section class="cart" id="colors">
-    <header><span class="no">03</span><h2>สีและพื้นหลัง</h2></header>
-    <p class="lead">ใช้ <code>background</code> เปลี่ยนพื้น <code>color</code> เปลี่ยนสีตัวอักษร สีเขียนได้หลายแบบ: <code>#ff6b6b</code>, <code>rgb(255 107 107)</code> หรือมีความโปร่งใส <code>rgba(0,0,0,.5)</code> (ตัวท้าย 0 = ใส, 1 = ทึบ)</p>
+    <header><span class="no">03</span><h2><span lang="th">สีและพื้นหลัง</span><span lang="en">Colours and backgrounds</span></h2></header>
+    <p class="lead" lang="th">ใช้ <code>background</code> เปลี่ยนพื้น <code>color</code> เปลี่ยนสีตัวอักษร สีเขียนได้หลายแบบ: <code>#ff6b6b</code>, <code>rgb(255 107 107)</code> หรือมีความโปร่งใส <code>rgba(0,0,0,.5)</code> (ตัวท้าย 0 = ใส, 1 = ทึบ)</p><p class="lead" lang="en"><code>background</code> changes the fill, <code>color</code> changes the text. Colours can be <code>#ff6b6b</code>, <code>rgb(255 107 107)</code>, or see-through with <code>rgba(0,0,0,.5)</code> (last number: 0 = clear, 1 = solid).</p>
     <div class="grid3">
-      <div class="tile"><div class="screen"><div class="w-card bg-solid" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">พื้นสีทึบ</div>
+      <div class="tile"><div class="screen"><div class="w-card bg-solid" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label"><span lang="th">พื้นสีทึบ</span><span lang="en">Solid fill</span></div>
         <pre class="code"><span class="s">#card</span> {
   <span class="k">background</span>: <span class="v">#3a1d6e</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card bg-rgba" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">โปร่งใสครึ่งๆ</div>
+      <div class="tile"><div class="screen"><div class="w-card bg-rgba" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label"><span lang="th">โปร่งใสครึ่งๆ</span><span lang="en">Half see-through</span></div>
         <pre class="code"><span class="s">#card</span> {
   <span class="k">background</span>: <span class="v">rgba(16,20,20,.35)</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card bg-none" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">ไม่มีพื้นเลย</div>
+      <div class="tile"><div class="screen"><div class="w-card bg-none" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label"><span lang="th">ไม่มีพื้นเลย</span><span lang="en">No background</span></div>
         <pre class="code"><span class="s">#card</span> {
   <span class="k">background</span>: <span class="v">transparent</span>;
   <span class="k">border-color</span>: <span class="v">transparent</span>;
 }</pre></div>
     </div>
-    <div class="note"><b>ตัวแปรสีจากหน้าตั้งค่า:</b> <code>var(--accent)</code> = สีหลัก, <code>var(--text)</code> = สีข้อความ, <code>var(--bg)</code> = สีพื้นตามความทึบที่ตั้งไว้ ใช้ตัวแปรแทนรหัสสีแล้ว ถ้าไปเปลี่ยนสีในหน้าตั้งค่า โค้ดของคุณจะเปลี่ยนตามเอง เช่น <code>.chat b { color: var(--accent); }</code></div>
+    <div class="note"><span lang="th"><b>ตัวแปรสีจากหน้าตั้งค่า:</b> <code>var(--accent)</code> = สีหลัก, <code>var(--text)</code> = สีข้อความ, <code>var(--bg)</code> = สีพื้นตามความทึบที่ตั้งไว้ ใช้ตัวแปรแทนรหัสสีแล้ว ถ้าไปเปลี่ยนสีในหน้าตั้งค่า โค้ดของคุณจะเปลี่ยนตามเอง เช่น <code>.chat b { color: var(--accent); }</code></span><span lang="en"><b>Colour variables from the settings:</b> <code>var(--accent)</code> = accent, <code>var(--text)</code> = text colour, <code>var(--bg)</code> = background at your chosen opacity. Use them instead of fixed colours and your CSS follows whatever you pick in the settings, e.g. <code>.chat b { color: var(--accent); }</code></span></div>
   </section>
 
   <!-- 4 -->
   <section class="cart" id="borders">
-    <header><span class="no">04</span><h2>ขอบ: ความหนา รูปแบบ สี และมุม</h2></header>
-    <p class="lead">เขียนรวดเดียวได้ว่า <code>border: ความหนา รูปแบบ สี;</code> เช่น <code>border: 4px dashed #ffd84a;</code> ส่วนมุมโค้งใช้ <code>border-radius</code></p>
-    <h3>รูปแบบขอบ (border-style)</h3>
+    <header><span class="no">04</span><h2><span lang="th">ขอบ: ความหนา รูปแบบ สี และมุม</span><span lang="en">Borders: width, style, colour and corners</span></h2></header>
+    <p class="lead" lang="th">เขียนรวดเดียวได้ว่า <code>border: ความหนา รูปแบบ สี;</code> เช่น <code>border: 4px dashed #ffd84a;</code> ส่วนมุมโค้งใช้ <code>border-radius</code></p><p class="lead" lang="en">Write it in one go as <code>border: width style colour;</code>, e.g. <code>border: 4px dashed #ffd84a;</code>. Rounded corners use <code>border-radius</code>.</p>
+    <h3><span lang="th">รูปแบบขอบ (border-style)</span><span lang="en">Border style</span></h3>
     <div class="grid4">
-      <div class="tile"><div class="screen"><div class="w-card b-solid" style="font-size:16px">solid</div></div><div class="label">solid <em>เส้นทึบ</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card b-dashed" style="font-size:16px">dashed</div></div><div class="label">dashed <em>เส้นประ</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card b-dotted" style="font-size:16px">dotted</div></div><div class="label">dotted <em>จุด</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card b-double" style="font-size:16px">double</div></div><div class="label">double <em>เส้นคู่</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card b-groove" style="font-size:16px">groove</div></div><div class="label">groove <em>ร่องลึก</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card b-ridge" style="font-size:16px">ridge</div></div><div class="label">ridge <em>สันนูน</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card b-inset" style="font-size:16px">inset</div></div><div class="label">inset <em>ยุบลง</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card b-outset" style="font-size:16px">outset</div></div><div class="label">outset <em>นูนขึ้น</em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card b-solid" style="font-size:16px">solid</div></div><div class="label">solid <em><span lang="th">เส้นทึบ</span><span lang="en">solid line</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card b-dashed" style="font-size:16px">dashed</div></div><div class="label">dashed <em><span lang="th">เส้นประ</span><span lang="en">dashes</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card b-dotted" style="font-size:16px">dotted</div></div><div class="label">dotted <em><span lang="th">จุด</span><span lang="en">dots</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card b-double" style="font-size:16px">double</div></div><div class="label">double <em><span lang="th">เส้นคู่</span><span lang="en">double line</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card b-groove" style="font-size:16px">groove</div></div><div class="label">groove <em><span lang="th">ร่องลึก</span><span lang="en">groove</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card b-ridge" style="font-size:16px">ridge</div></div><div class="label">ridge <em><span lang="th">สันนูน</span><span lang="en">ridge</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card b-inset" style="font-size:16px">inset</div></div><div class="label">inset <em><span lang="th">ยุบลง</span><span lang="en">pressed in</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card b-outset" style="font-size:16px">outset</div></div><div class="label">outset <em><span lang="th">นูนขึ้น</span><span lang="en">raised</span></em></div></div>
     </div>
-    <h3>มุม (border-radius)</h3>
+    <h3><span lang="th">มุม (border-radius)</span><span lang="en">Corners (border-radius)</span></h3>
     <div class="grid4">
-      <div class="tile"><div class="screen"><div class="w-card r0" style="font-size:16px">0</div></div><div class="label">0 <em>เหลี่ยม</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card r8" style="font-size:16px">8px</div></div><div class="label">8px <em>มนนิดๆ</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card r24" style="font-size:16px">24px</div></div><div class="label">24px <em>มนมาก</em></div></div>
-      <div class="tile"><div class="screen"><div class="w-card rpill" style="font-size:16px">999px</div></div><div class="label">999px <em>แคปซูล</em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card r0" style="font-size:16px">0</div></div><div class="label">0 <em><span lang="th">เหลี่ยม</span><span lang="en">square</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card r8" style="font-size:16px">8px</div></div><div class="label">8px <em><span lang="th">มนนิดๆ</span><span lang="en">slightly round</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card r24" style="font-size:16px">24px</div></div><div class="label">24px <em><span lang="th">มนมาก</span><span lang="en">very round</span></em></div></div>
+      <div class="tile"><div class="screen"><div class="w-card rpill" style="font-size:16px">999px</div></div><div class="label">999px <em><span lang="th">แคปซูล</span><span lang="en">pill</span></em></div></div>
     </div>
     <pre class="code"><span class="s">#card</span> {
-  <span class="k">border</span>: <span class="v">6px double var(--accent)</span>;   <span class="c">/* หนา 6px เส้นคู่ ใช้สีหลัก */</span>
-  <span class="k">border-radius</span>: <span class="v">0</span>;                  <span class="c">/* มุมเหลี่ยมแบบเกมเก่า */</span>
+  <span class="k">border</span>: <span class="v">6px double var(--accent)</span>;   <span class="c"><span lang="th">/* หนา 6px เส้นคู่ ใช้สีหลัก */</span><span lang="en">/* 6px double line in the accent colour */</span></span>
+  <span class="k">border-radius</span>: <span class="v">0</span>;                  <span class="c"><span lang="th">/* มุมเหลี่ยมแบบเกมเก่า */</span><span lang="en">/* square corners, old-school */</span></span>
 }
 <span class="s">.chat</span> {
-  <span class="k">border-left</span>: <span class="v">6px solid var(--accent)</span>;   <span class="c">/* ขอบเฉพาะด้านซ้าย */</span>
+  <span class="k">border-left</span>: <span class="v">6px solid var(--accent)</span>;   <span class="c"><span lang="th">/* ขอบเฉพาะด้านซ้าย */</span><span lang="en">/* left edge only */</span></span>
 }</pre>
   </section>
 
   <!-- 5 -->
   <section class="cart" id="gradient">
-    <header><span class="no">05</span><h2>ไล่สี (gradient)</h2></header>
-    <p class="lead">gradient ใช้แทนสีพื้นได้เลย <code>linear-gradient(ทิศทาง, สี1, สี2, …)</code> ไล่เป็นเส้นตรง, <code>radial-gradient</code> ไล่เป็นวงกลม, <code>conic-gradient</code> หมุนรอบจุด</p>
+    <header><span class="no">05</span><h2><span lang="th">ไล่สี (gradient)</span><span lang="en">Gradients</span></h2></header>
+    <p class="lead" lang="th">gradient ใช้แทนสีพื้นได้เลย <code>linear-gradient(ทิศทาง, สี1, สี2, …)</code> ไล่เป็นเส้นตรง, <code>radial-gradient</code> ไล่เป็นวงกลม, <code>conic-gradient</code> หมุนรอบจุด</p><p class="lead" lang="en">A gradient works anywhere a background colour does: <code>linear-gradient(direction, colour1, colour2, …)</code> runs in a line, <code>radial-gradient</code> in a circle, <code>conic-gradient</code> around a point.</p>
     <div class="grid3">
-      <div class="tile"><div class="screen"><div class="w-card g-linear" style="font-size:20px"><span class="ph" style="color:#fff">mintmint</span> followed!</div></div><div class="label">linear <em>เส้นตรง เฉียง 135°</em></div>
+      <div class="tile"><div class="screen"><div class="w-card g-linear" style="font-size:20px"><span class="ph" style="color:#fff">mintmint</span> followed!</div></div><div class="label">linear <em><span lang="th">เส้นตรง เฉียง 135°</span><span lang="en">straight, 135°</span></em></div>
         <pre class="code"><span class="s">#card</span> {
   <span class="k">background</span>: <span class="v">linear-gradient(
     135deg, #ff5f6d, #ffc371)</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card g-radial" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">radial <em>วงกลมจากมุม</em></div>
+      <div class="tile"><div class="screen"><div class="w-card g-radial" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">radial <em><span lang="th">วงกลมจากมุม</span><span lang="en">circle from a corner</span></em></div>
         <pre class="code"><span class="s">#card</span> {
   <span class="k">background</span>: <span class="v">radial-gradient(
     circle at 30% 20%,
     #6a5cff, #12121c 70%)</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card g-conic" style="font-size:20px"><span class="ph" style="color:#fff">mintmint</span> followed!</div></div><div class="label">conic <em>สีจอยสี่สี</em></div>
+      <div class="tile"><div class="screen"><div class="w-card g-conic" style="font-size:20px"><span class="ph" style="color:#fff">mintmint</span> followed!</div></div><div class="label">conic <em><span lang="th">สีจอยสี่สี</span><span lang="en">four controller colours</span></em></div>
         <pre class="code"><span class="s">#card</span> {
   <span class="k">background</span>: <span class="v">conic-gradient(
     #285bb5, #bd3933,
@@ -187,14 +190,14 @@
 }</pre></div>
     </div>
     <div class="pair">
-      <div class="tile"><div class="screen"><div class="w-card g-border" style="font-size:22px"><span class="ph">mintmint</span> followed!</div></div><div class="label">ขอบไล่สี <em>พื้นทึบ + ขอบรุ้ง</em></div>
+      <div class="tile"><div class="screen"><div class="w-card g-border" style="font-size:22px"><span class="ph">mintmint</span> followed!</div></div><div class="label"><span lang="th">ขอบไล่สี</span><span lang="en">Gradient border</span> <em><span lang="th">พื้นทึบ + ขอบรุ้ง</span><span lang="en">solid fill + rainbow border</span></em></div>
         <pre class="code"><span class="s">#card</span> {
   <span class="k">border</span>: <span class="v">4px solid transparent</span>;
   <span class="k">background</span>:
     <span class="v">linear-gradient(#141818, #141818) padding-box,</span>
     <span class="v">linear-gradient(90deg, #ff5f6d, #ffc371, #2ec4b6) border-box</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card g-text" style="font-size:22px"><span class="ph">mintmint</span> followed!</div></div><div class="label">ตัวอักษรไล่สี <em>เฉพาะชื่อผู้ชม</em></div>
+      <div class="tile"><div class="screen"><div class="w-card g-text" style="font-size:22px"><span class="ph">mintmint</span> followed!</div></div><div class="label"><span lang="th">ตัวอักษรไล่สี</span><span lang="en">Gradient text</span> <em><span lang="th">เฉพาะชื่อผู้ชม</span><span lang="en">viewer name only</span></em></div>
         <pre class="code"><span class="s">#card .ph</span> {
   <span class="k">background</span>: <span class="v">linear-gradient(90deg, #ffd84a, #ff6b6b, #c86bff)</span>;
   <span class="k">-webkit-background-clip</span>: <span class="v">text</span>;
@@ -206,36 +209,36 @@
 
   <!-- 6 -->
   <section class="cart" id="shadow">
-    <header><span class="no">06</span><h2>เงาและตัวอักษร</h2></header>
+    <header><span class="no">06</span><h2><span lang="th">เงาและตัวอักษร</span><span lang="en">Shadows and text</span></h2></header>
     <div class="grid3">
-      <div class="tile"><div class="screen"><div class="w-card sh-hard r0" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">เงาแข็งแบบ retro</div>
+      <div class="tile"><div class="screen"><div class="w-card sh-hard r0" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label"><span lang="th">เงาแข็งแบบ retro</span><span lang="en">Hard retro shadow</span></div>
         <pre class="code"><span class="s">#card</span> {
   <span class="k">box-shadow</span>: <span class="v">8px 8px 0 #000</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card sh-glow" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">เรืองแสง</div>
+      <div class="tile"><div class="screen"><div class="w-card sh-glow" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label"><span lang="th">เรืองแสง</span><span lang="en">Glow</span></div>
         <pre class="code"><span class="s">#card</span> {
   <span class="k">box-shadow</span>: <span class="v">0 0 22px 4px var(--accent)</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card ts-pop" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">ตัวอักษรมีเงา</div>
+      <div class="tile"><div class="screen"><div class="w-card ts-pop" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label"><span lang="th">ตัวอักษรมีเงา</span><span lang="en">Text shadow</span></div>
         <pre class="code"><span class="s">#card .ph</span> {
   <span class="k">text-shadow</span>: <span class="v">3px 3px 0 #000</span>;
 }</pre></div>
     </div>
-    <div class="note"><b>อ่าน box-shadow:</b> <code>8px 8px 0 #000</code> = เลื่อนขวา 8px, ลง 8px, เบลอ 0 (คม), สีดำ ส่วนขนาดตัวอักษรใช้ <code>font-size: 1.2em;</code> (1em = ขนาดที่ตั้งในหน้าตั้งค่า) และตัวหนาใช้ <code>font-weight: 700;</code></div>
+    <div class="note"><span lang="th"><b>อ่าน box-shadow:</b> <code>8px 8px 0 #000</code> = เลื่อนขวา 8px, ลง 8px, เบลอ 0 (คม), สีดำ ส่วนขนาดตัวอักษรใช้ <code>font-size: 1.2em;</code> (1em = ขนาดที่ตั้งในหน้าตั้งค่า) และตัวหนาใช้ <code>font-weight: 700;</code></span><span lang="en"><b>Reading box-shadow:</b> <code>8px 8px 0 #000</code> = 8px right, 8px down, 0 blur (sharp), black. For text size use <code>font-size: 1.2em;</code> (1em = the size in the settings) and for bold <code>font-weight: 700;</code></span></div>
   </section>
 
   <!-- 7 -->
   <section class="cart" id="animation">
-    <header><span class="no">07</span><h2>แอนิเมชันพื้นฐาน</h2></header>
-    <p class="lead">แอนิเมชันมี 2 ส่วน: <b>@keyframes</b> บอกว่า “ขยับยังไง” (จุดเริ่ม 0% → จุดจบ 100%) และ <b>animation</b> บอกว่า “ใช้กับชิ้นไหน นานเท่าไร กี่รอบ”</p>
-    <div class="anim-line" aria-label="ส่วนประกอบของคำสั่ง animation">
-      <span><b>pulse</b><small>ชื่อ keyframes</small></span>
-      <span><b>1.2s</b><small>นานต่อรอบ</small></span>
-      <span><b>ease-in-out</b><small>จังหวะเร่ง/ผ่อน</small></span>
-      <span><b>infinite</b><small>วนตลอด (หรือใส่ 1, 3)</small></span>
+    <header><span class="no">07</span><h2><span lang="th">แอนิเมชันพื้นฐาน</span><span lang="en">Animation basics</span></h2></header>
+    <p class="lead" lang="th">แอนิเมชันมี 2 ส่วน: <b>@keyframes</b> บอกว่า “ขยับยังไง” (จุดเริ่ม 0% → จุดจบ 100%) และ <b>animation</b> บอกว่า “ใช้กับชิ้นไหน นานเท่าไร กี่รอบ”</p><p class="lead" lang="en">Animation has two parts: <b>@keyframes</b> says how things move (start 0% → end 100%), and <b>animation</b> says which part moves, for how long, and how many times.</p>
+    <div class="anim-line" aria-label="ส่วนประกอบของคำสั่ง animation" data-en-aria-label="Parts of the animation property">
+      <span><b>pulse</b><small><span lang="th">ชื่อ keyframes</span><span lang="en">keyframes name</span></small></span>
+      <span><b>1.2s</b><small><span lang="th">นานต่อรอบ</span><span lang="en">length per run</span></small></span>
+      <span><b>ease-in-out</b><small><span lang="th">จังหวะเร่ง/ผ่อน</span><span lang="en">easing</span></small></span>
+      <span><b>infinite</b><small><span lang="th">วนตลอด (หรือใส่ 1, 3)</span><span lang="en">forever (or 1, 3)</span></small></span>
     </div>
     <div class="grid3">
-      <div class="tile"><div class="screen"><div class="w-card an-pulse" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">pulse <em>เต้นตุบๆ</em></div>
+      <div class="tile"><div class="screen"><div class="w-card an-pulse" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">pulse <em><span lang="th">เต้นตุบๆ</span><span lang="en">heartbeat</span></em></div>
         <pre class="code"><span class="s">@keyframes pulse</span> {
   <span class="k">0%, 100%</span> { <span class="k">transform</span>: <span class="v">scale(1)</span>; }
   <span class="k">50%</span> { <span class="k">transform</span>: <span class="v">scale(1.06)</span>; }
@@ -243,7 +246,7 @@
 <span class="s">#card</span> {
   <span class="k">animation</span>: <span class="v">pulse 1.2s ease-in-out infinite</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card an-glow" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">glow <em>เรืองแสงเป็นจังหวะ</em></div>
+      <div class="tile"><div class="screen"><div class="w-card an-glow" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">glow <em><span lang="th">เรืองแสงเป็นจังหวะ</span><span lang="en">pulsing glow</span></em></div>
         <pre class="code"><span class="s">@keyframes glow</span> {
   <span class="k">0%, 100%</span> { <span class="k">box-shadow</span>: <span class="v">0 0 6px var(--accent)</span>; }
   <span class="k">50%</span> { <span class="k">box-shadow</span>: <span class="v">0 0 28px 6px var(--accent)</span>; }
@@ -251,16 +254,16 @@
 <span class="s">#card</span> {
   <span class="k">animation</span>: <span class="v">glow 1.6s ease-in-out infinite</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card an-shake" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">shake <em>สั่นตอนขึ้น</em></div>
+      <div class="tile"><div class="screen"><div class="w-card an-shake" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">shake <em><span lang="th">สั่นตอนขึ้น</span><span lang="en">shake on arrival</span></em></div>
         <pre class="code"><span class="s">@keyframes shake</span> {
   <span class="k">0%, 100%</span> { <span class="k">transform</span>: <span class="v">translateX(0)</span>; }
   <span class="k">20%, 60%</span> { <span class="k">transform</span>: <span class="v">translateX(-8px)</span>; }
   <span class="k">40%, 80%</span> { <span class="k">transform</span>: <span class="v">translateX(8px)</span>; }
 }
 <span class="s">#card</span> {
-  <span class="k">animation</span>: <span class="v">shake .6s 3</span>;  <span class="c">/* สั่น 3 รอบ */</span>
+  <span class="k">animation</span>: <span class="v">shake .6s 3</span>;  <span class="c"><span lang="th">/* สั่น 3 รอบ */</span><span lang="en">/* shake 3 times */</span></span>
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card an-bounce" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">bounce-in <em>หล่นลงมาเด้ง</em></div>
+      <div class="tile"><div class="screen"><div class="w-card an-bounce" style="font-size:20px"><span class="ph">mintmint</span> followed!</div></div><div class="label">bounce-in <em><span lang="th">หล่นลงมาเด้ง</span><span lang="en">drop and bounce</span></em></div>
         <pre class="code"><span class="s">@keyframes bounce-in</span> {
   <span class="k">0%</span>   { <span class="k">transform</span>: <span class="v">translateY(-60px)</span>; <span class="k">opacity</span>: <span class="v">0</span>; }
   <span class="k">60%</span>  { <span class="k">transform</span>: <span class="v">translateY(8px)</span>; <span class="k">opacity</span>: <span class="v">1</span>; }
@@ -269,14 +272,14 @@
 <span class="s">#card</span> {
   <span class="k">animation</span>: <span class="v">bounce-in .8s ease-out</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-card an-hue g-conic" style="font-size:20px"><span class="ph" style="color:#fff">mintmint</span> followed!</div></div><div class="label">rainbow <em>สีวนไปเรื่อยๆ</em></div>
+      <div class="tile"><div class="screen"><div class="w-card an-hue g-conic" style="font-size:20px"><span class="ph" style="color:#fff">mintmint</span> followed!</div></div><div class="label">rainbow <em><span lang="th">สีวนไปเรื่อยๆ</span><span lang="en">cycling colours</span></em></div>
         <pre class="code"><span class="s">@keyframes hue</span> {
   <span class="k">to</span> { <span class="k">filter</span>: <span class="v">hue-rotate(360deg)</span>; }
 }
 <span class="s">#card</span> {
   <span class="k">animation</span>: <span class="v">hue 3s linear infinite</span>;
 }</pre></div>
-      <div class="tile"><div class="screen"><div class="w-chat an-float" style="font-size:15px"><b>บ้านข้างๆ · YouTube</b>ไลฟ์วันนี้สนุกมาก!</div></div><div class="label">float <em>ลอยขึ้นลง (แชท)</em></div>
+      <div class="tile"><div class="screen"><div class="w-chat an-float" style="font-size:15px"><b><span lang="th">บ้านข้างๆ</span><span lang="en">nextdoor</span> · YouTube</b><span lang="th">ไลฟ์วันนี้สนุกมาก!</span><span lang="en">Best stream today!</span></div></div><div class="label">float <em><span lang="th">ลอยขึ้นลง (แชท)</span><span lang="en">gentle float (chat)</span></em></div>
         <pre class="code"><span class="s">@keyframes float</span> {
   <span class="k">0%, 100%</span> { <span class="k">transform</span>: <span class="v">translateY(0)</span>; }
   <span class="k">50%</span> { <span class="k">transform</span>: <span class="v">translateY(-8px)</span>; }
@@ -285,29 +288,29 @@
   <span class="k">animation</span>: <span class="v">float 2.4s ease-in-out infinite</span>;
 }</pre></div>
     </div>
-    <div class="note"><b>แอนิเมชันเดิมของวิดเจ็ต</b> (เด้งขึ้น / ค่อยๆ ปรากฏ / เลื่อนเข้า) ตั้งในหน้าตั้งค่า ถ้าจะใช้แอนิเมชันของคุณเองล้วนๆ ให้เลือก “ไม่มี” ในช่องแอนิเมชันก่อน จะได้ไม่ซ้อนกัน การ์ดแจ้งเตือนถูกสร้างใหม่ทุกครั้งที่มีคนติดตาม แอนิเมชันที่ไม่วนซ้ำ (เช่น bounce-in, shake 3) จะเล่นใหม่ทุกครั้งที่มีแจ้งเตือน</div>
+    <div class="note"><span lang="th"><b>แอนิเมชันเดิมของวิดเจ็ต</b> (เด้งขึ้น / ค่อยๆ ปรากฏ / เลื่อนเข้า) ตั้งในหน้าตั้งค่า ถ้าจะใช้แอนิเมชันของคุณเองล้วนๆ ให้เลือก “ไม่มี” ในช่องแอนิเมชันก่อน จะได้ไม่ซ้อนกัน การ์ดแจ้งเตือนถูกสร้างใหม่ทุกครั้งที่มีคนติดตาม แอนิเมชันที่ไม่วนซ้ำ (เช่น bounce-in, shake 3) จะเล่นใหม่ทุกครั้งที่มีแจ้งเตือน</span><span lang="en"><b>The widget’s built-in animation</b> (pop / fade / slide) is set in the settings. To use only your own, choose “none” there first so they don’t stack. The alert card is rebuilt for every alert, so one-shot animations (bounce-in, shake 3) replay each time.</span></div>
   </section>
 
   <!-- 8 -->
   <section class="cart" id="playground">
-    <header><span class="no">08</span><h2>สนามทดลอง</h2></header>
-    <p class="lead">พิมพ์ CSS ด้านซ้าย ผลจะขึ้นบนจอด้านขวาทันที ชิ้นส่วนบนจอนี้ใช้ <code>#wrap</code> <code>#card</code> <code>#card small</code> <code>#card .ph</code> เหมือนวิดเจ็ตแจ้งเตือนจริง ลองเสร็จแล้วกดคัดลอกไปวางในแอพได้เลย</p>
-    <div class="presets" role="group" aria-label="โค้ดสำเร็จรูป">
-      <button type="button" data-preset="retro">Retro เงาแข็ง</button>
-      <button type="button" data-preset="neon">Neon เรืองแสง</button>
-      <button type="button" data-preset="rainbow">ขอบรุ้ง</button>
-      <button type="button" data-preset="bounce">หล่นเด้ง</button>
-      <button type="button" data-preset="clean">มินิมอลโปร่ง</button>
-      <button type="button" data-preset="">ล้าง</button>
+    <header><span class="no">08</span><h2><span lang="th">สนามทดลอง</span><span lang="en">Playground</span></h2></header>
+    <p class="lead" lang="th">พิมพ์ CSS ด้านซ้าย ผลจะขึ้นบนจอด้านขวาทันที ชิ้นส่วนบนจอนี้ใช้ <code>#wrap</code> <code>#card</code> <code>#card small</code> <code>#card .ph</code> เหมือนวิดเจ็ตแจ้งเตือนจริง ลองเสร็จแล้วกดคัดลอกไปวางในแอพได้เลย</p><p class="lead" lang="en">Type CSS on the left and the screen on the right updates instantly. It uses <code>#wrap</code> <code>#card</code> <code>#card small</code> <code>#card .ph</code>, just like a real alert widget. When you like it, copy it into the app.</p>
+    <div class="presets" role="group" aria-label="โค้ดสำเร็จรูป" data-en-aria-label="Presets">
+      <button type="button" data-preset="retro"><span lang="th">Retro เงาแข็ง</span><span lang="en">Retro hard shadow</span></button>
+      <button type="button" data-preset="neon"><span lang="th">Neon เรืองแสง</span><span lang="en">Neon glow</span></button>
+      <button type="button" data-preset="rainbow"><span lang="th">ขอบรุ้ง</span><span lang="en">Rainbow border</span></button>
+      <button type="button" data-preset="bounce"><span lang="th">หล่นเด้ง</span><span lang="en">Drop &amp; bounce</span></button>
+      <button type="button" data-preset="clean"><span lang="th">มินิมอลโปร่ง</span><span lang="en">Clean minimal</span></button>
+      <button type="button" data-preset=""><span lang="th">ล้าง</span><span lang="en">Clear</span></button>
     </div>
     <div class="pg">
       <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
-        <label for="pg-code" style="font-weight:600">โค้ด CSS</label>
+        <label for="pg-code" style="font-weight:600"><span lang="th">โค้ด CSS</span><span lang="en">CSS code</span></label>
         <textarea id="pg-code" spellcheck="false"></textarea>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="replay" id="pg-copy">คัดลอกโค้ด</button><button type="button" class="replay" id="pg-replay">เล่นแอนิเมชันอีกครั้ง</button><span class="status" id="pg-status" role="status"></span></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button type="button" class="replay" id="pg-copy"><span lang="th">คัดลอกโค้ด</span><span lang="en">Copy code</span></button><button type="button" class="replay" id="pg-replay"><span lang="th">เล่นแอนิเมชันอีกครั้ง</span><span lang="en">Replay animation</span></button><span class="status" id="pg-status" role="status"></span></div>
       </div>
       <div class="screen" style="min-height:300px">
-        <span class="cap">PREVIEW · 1920×1080 ย่อส่วน</span>
+        <span class="cap">PREVIEW · 1920×1080 <span lang="th">ย่อส่วน</span><span lang="en">scaled</span></span>
         <div id="pg-stage"><div id="wrap"><div id="card"><small>TEST ALERT · TWITCH</small><div><span class="ph">mintmint</span> followed!</div></div></div></div>
       </div>
     </div>
@@ -315,21 +318,21 @@
 
   <!-- 9 -->
   <section class="cart" id="limits">
-    <header><span class="no">09</span><h2>ข้อควรรู้และแก้ปัญหา</h2></header>
+    <header><span class="no">09</span><h2><span lang="th">ข้อควรรู้และแก้ปัญหา</span><span lang="en">Good to know and troubleshooting</span></h2></header>
     <div class="legend">
-      <div><code>ไม่เปลี่ยนใน OBS</code><span>ลืมกด “เผยแพร่ทุกวิดเจ็ต” พรีวิวเปลี่ยนทันที แต่ OBS ใช้ฉบับที่เผยแพร่แล้วเท่านั้น</span></div>
-      <div><code>ไม่เปลี่ยนเลย</code><span>เช็กว่าเปิดสวิตช์ “ใช้ CSS กำหนดเอง” แล้ว และทุกบรรทัดจบด้วย ; ส่วน { } ต้องเปิดปิดครบคู่</span></div>
-      <div><code>รูปไม่ขึ้น</code><span>วิดเจ็ตโหลดไฟล์จากเน็ตไม่ได้ (เพื่อความปลอดภัย) ใช้ปุ่ม “เพิ่มรูป / GIF” ในหน้าตั้งค่าแทน หรือใช้รูปแบบ data: URL</span></div>
-      <div><code>ฟอนต์ไม่เปลี่ยน</code><span>ฟอนต์จากเว็บ (Google Fonts) โหลดไม่ได้ ใช้ฟอนต์ที่มีในเครื่องได้ เช่น font-family: Tahoma;</span></div>
-      <div><code>ยาวสุด</code><span>20,000 ตัวอักษรต่อวิดเจ็ต</span></div>
-      <div><code>ทำพัง?</code><span>ปิดสวิตช์ CSS กำหนดเอง วิดเจ็ตกลับเป็นหน้าตาเดิมทันที โค้ดยังเก็บไว้ให้</span></div>
+      <div><code><span lang="th">ไม่เปลี่ยนใน OBS</span><span lang="en">No change in OBS</span></code><span lang="th">ลืมกด “เผยแพร่ทุกวิดเจ็ต” พรีวิวเปลี่ยนทันที แต่ OBS ใช้ฉบับที่เผยแพร่แล้วเท่านั้น</span><span lang="en">You forgot “Publish all widgets”. The preview updates at once; OBS only uses the published version.</span></div>
+      <div><code><span lang="th">ไม่เปลี่ยนเลย</span><span lang="en">No change at all</span></code><span lang="th">เช็กว่าเปิดสวิตช์ “ใช้ CSS กำหนดเอง” แล้ว และทุกบรรทัดจบด้วย ; ส่วน { } ต้องเปิดปิดครบคู่</span><span lang="en">Check “Use custom CSS” is on, every line ends with ; and every { has its }.</span></div>
+      <div><code><span lang="th">รูปไม่ขึ้น</span><span lang="en">Image won’t load</span></code><span lang="th">วิดเจ็ตโหลดไฟล์จากเน็ตไม่ได้ (เพื่อความปลอดภัย) ใช้ปุ่ม “เพิ่มรูป / GIF” ในหน้าตั้งค่าแทน หรือใช้รูปแบบ data: URL</span><span lang="en">Widgets can’t load files from the internet (for safety). Use “Add image / GIF” in the settings, or a data: URL.</span></div>
+      <div><code><span lang="th">ฟอนต์ไม่เปลี่ยน</span><span lang="en">Font won’t change</span></code><span lang="th">ฟอนต์จากเว็บ (Google Fonts) โหลดไม่ได้ ใช้ฟอนต์ที่มีในเครื่องได้ เช่น font-family: Tahoma;</span><span lang="en">Web fonts (Google Fonts) can’t load. Use fonts installed on your PC, e.g. font-family: Tahoma;</span></div>
+      <div><code><span lang="th">ยาวสุด</span><span lang="en">Maximum length</span></code><span lang="th">20,000 ตัวอักษรต่อวิดเจ็ต</span><span lang="en">20,000 characters per widget</span></div>
+      <div><code><span lang="th">ทำพัง?</span><span lang="en">Broke it?</span></code><span lang="th">ปิดสวิตช์ CSS กำหนดเอง วิดเจ็ตกลับเป็นหน้าตาเดิมทันที โค้ดยังเก็บไว้ให้</span><span lang="en">Turn custom CSS off and the widget looks normal again instantly. Your code is kept.</span></div>
     </div>
   </section>
 
   
   
-<nav class="pager" aria-label="หน้าก่อนและหน้าถัดไป"><a href="chat-tts.html"><small>◀ ก่อนหน้า</small><b>แชทและบอทอ่านแชท</b></a><a class="next" href="help.html"><small>ถัดไป ▶</small><b>แก้ปัญหาและข้อมูล</b></a></nav>
-<p class="foot">Allhouse 0.1.0 · Local alpha · คู่มือนี้อยู่ในเครื่องของคุณ เปิดได้โดยไม่ต้องใช้อินเทอร์เน็ต</p>
+<nav class="pager" aria-label="Pages"><a href="chat-tts.html"><small><span lang="th">◀ ก่อนหน้า</span><span lang="en">◀ BACK</span></small><b><span lang="th">แชทและบอทอ่านแชท</span><span lang="en">Chat &amp; TTS</span></b></a><a class="next" href="help.html"><small><span lang="th">ถัดไป ▶</span><span lang="en">NEXT ▶</span></small><b><span lang="th">แก้ปัญหาและข้อมูล</span><span lang="en">Help</span></b></a></nav>
+<p class="foot"><span lang="th">Allhouse 0.1.0 · Local alpha · คู่มือนี้มากับแอพ เปิดได้แม้ไม่มีอินเทอร์เน็ต</span><span lang="en">Allhouse 0.1.0 · Local alpha · This manual ships with the app and works offline</span></p>
 </div>
 <script src="assets/guide.js" defer></script>
 </body>

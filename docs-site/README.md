@@ -4,22 +4,34 @@
 
 ```
 docs-site/
-├── index.html         หน้าแรก: แผนที่คู่มือ + เริ่มไลฟ์ใน 5 ขั้น
-├── start.html         เริ่มต้นใช้งาน: เปิดแอพ รู้จักเมนู บันทึกอัตโนมัติ ทดสอบกับของจริง
+├── index.html         หน้า landing (โฆษณา): ธีมเกมตู้ มี demo จอ OBS ที่กดเล่นได้ ปุ่มดาวน์โหลด
+├── manual.html        หน้าแรกของคู่มือ: แผนที่คู่มือ + เริ่มไลฟ์ใน 5 ขั้น (แอพเปิดหน้านี้เมื่อขอหน้า 'index')
+├── start.html         เริ่มต้นใช้งาน: ติดตั้ง เปิดแอพ รู้จักเมนู บันทึกอัตโนมัติ ทดสอบกับของจริง
 ├── connections.html   เชื่อมต่อแพลตฟอร์ม: Twitch / YouTube / Kick / TikTok (TikFinity)
 ├── obs-widgets.html   วิดเจ็ต OBS: เพิ่มเข้า OBS เผยแพร่ แจ้งเตือน ของขวัญ แชท แบนเนอร์
 ├── chat-tts.html      แชทและบอทอ่านแชท: ห้องแชท หน้าต่างแชทแยก เสียง กฎการอ่าน
 ├── custom-css.html    CSS กำหนดเอง (หัวข้อย่อย) + สนามทดลอง
 ├── help.html          แก้ปัญหา สำรอง/นำเข้า ความเป็นส่วนตัว เช็กลิสต์ OBS
-├── 404.html
+├── 404.html           GAME OVER (ใช้ path แบบ / จึงต้องอยู่ที่ root ของโดเมน)
 ├── img/               ภาพหน้าจอแอพ (1440 กว้าง, JPEG)
 ├── assets/
+│   ├── i18n.js        สลับไทย/อังกฤษ (โหลดใน <head>) จำค่าใน localStorage รับ ?lang=th|en
 │   ├── guide.css      ธีม retro + ส่วนประกอบของคู่มือ CSS
-│   ├── site.css       หัวเว็บ เมนู ภาพหน้าจอ ตาราง กล่องแจ้ง ปุ่มหน้าถัดไป
+│   ├── site.css       หัวเว็บ เมนู ปุ่ม TH/EN ภาพหน้าจอ ตาราง กล่องแจ้ง ปุ่มหน้าถัดไป
 │   ├── guide.js       ปุ่มคัดลอกโค้ด + สนามทดลอง (เฉพาะหน้า CSS)
-│   └── favicon-v2.png, allhouse-lockup-light-v2.png (Broadcast House v2)
-├── _headers, vercel.json, robots.txt, .nojekyll   ใช้เฉพาะถ้าจะ deploy ขึ้นเว็บในอนาคต
+│   ├── landing.css / landing.js   หน้า landing: ดาว แถบแชทวิ่ง demo OBS ภาพหน้าจอ คะแนน confetti (↑↑↓↓←→←→BA)
+│   ├── pixel/*.svg    ภาพพิกเซลที่วาดเองทั้งหมด สร้างจาก scripts/build-pixel-art.cjs
+│   └── favicon-v2.png, allhouse-lockup-*.png, allhouse-icon-256.png
+├── _headers, vercel.json, robots.txt, .nojekyll   ค่า header/ความปลอดภัยตอน deploy
 ```
+
+## สองภาษา (ไทย / English)
+
+ทุกข้อความเขียนเป็นคู่ในไฟล์เดียวกัน: `<span lang="th">…</span><span lang="en">…</span>` (หรือ `<p lang="th">` / `<p lang="en">`) CSS ใน `site.css` / `landing.css` ซ่อนภาษาที่ไม่ได้เลือก ถ้าไม่มี JavaScript จะเห็นภาษาไทย
+- ชื่อหน้าภาษาอังกฤษอยู่ใน `<meta name="title-en">`
+- attribute ใช้ `data-en-alt`, `data-en-aria-label`, `data-en-placeholder`, `data-en-title`
+- ปุ่มสลับคือ `<button class="lang-toggle" data-lang-toggle>` ค่าที่เลือกเก็บใน localStorage (`allhouse-lang`) แอพส่ง `?lang=` มาตามภาษาของแอพ
+- เพิ่มข้อความใหม่แล้วอย่าลืมใส่ทั้งสองภาษา
 
 ## แอพเปิดคู่มืออย่างไร
 
@@ -30,7 +42,7 @@ docs-site/
 
 ## ดูในเครื่อง
 
-ดับเบิลคลิก `index.html` หรือใช้ dev server (ตั้งไว้ใน `.claude/launch.json` ชื่อ `docs-site`):
+ดับเบิลคลิก `manual.html` (คู่มือ) หรือ `index.html` (landing) หรือใช้ dev server (ตั้งไว้ใน `.claude/launch.json` ชื่อ `docs-site`):
 
 ```bash
 "/c/Program Files/Adobe/Adobe Creative Cloud Experience/libs/node.exe" node_modules/vite/bin/vite.js docs-site --host 127.0.0.1 --port 4180

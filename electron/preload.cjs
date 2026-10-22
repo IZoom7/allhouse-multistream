@@ -10,7 +10,7 @@ contextBridge.exposeInMainWorld('allhouse', {
   importBackup:()=>ipcRenderer.invoke('house:import'),
   copyText:(text)=>ipcRenderer.invoke('house:copy',text),
   openOverlay:()=>ipcRenderer.invoke('house:open-overlay'),
-  openDocs:(page)=>ipcRenderer.invoke('house:open-docs',String(page)),
+  openDocs:(page,lang)=>ipcRenderer.invoke('house:open-docs',String(page),lang==='en'?'en':'th'),
   openWidget:(id)=>ipcRenderer.invoke('house:open-widget',String(id)),
   listVoices:(options)=>ipcRenderer.invoke('house:voices',options&&options.refresh===true?{refresh:true}:undefined),
   onlineVoices:()=>ipcRenderer.invoke('house:online-voices'),
