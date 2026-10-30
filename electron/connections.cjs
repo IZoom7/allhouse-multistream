@@ -16,8 +16,11 @@ function createConnections({ dataDir, fetch, onEvent, onChange, connectors = CON
   const live = {};   // platform -> { close }
   const status = Object.fromEntries(PLATFORMS.map(p => [p, { state: 'off', detail: '' }]));
   const counts = Object.fromEntries(PLATFORMS.map(p => [p, 0]));
+  // Live numbers a platform reports (viewers, likes, shares) plus when the connection came up. Reset on every start.
+  const stats = Object.fromEntries(PLATFORMS.map(p => [p, {}]));
+  let statsTimer = null; // like counts can arrive many times a second: tell the windows at most once a second
   const fetchJson = async url => { const r = await fetch(url, { headers: { Accept: 'application/json' } }); if (r.status === 404) return null; if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); };
-  const snapshot = () => Object.fromEntries(PLATFORMS.map(p => [p, { channel: (saved[p] || {}).channel || '', enabled: !!(saved[p] || {}).enabled, ...status[p], events: counts[p] }]));
+  const snapshot = () => Object.fromEntries(PLATFORMS.map(p => [p, { channel: (saved[p] || {}).channel || '', enabled: !!(saved[p] || {}).enabled, ...status[p], events: counts[p], stats: { ...stats[p] } }]));
   const changed = () => onChange(snapshot());
   const persist = () => fs.writeFile(file, JSON.stringify(saved, null, 2)).catch(() => {});
 
@@ -28,13 +31,17 @@ function createConnections({ dataDir, fetch, onEvent, onChange, connectors = CON
       live[platform] = connectors[platform].connect({
         channel: cfg.channel, fetch, fetchJson,
         onEvent: e => { counts[platform]++; onEvent({ ...e, platform }); },
-        onStatus: s => { status[platform] = s; changed(); },
+        onStatus: s => { status[platform] = s; if (s.state === 'connected' && !stats[platform].since) stats[platform].since = new Date().toISOString(); changed(); },
+        onStats: patch => {
+          for (const k of ['viewers', 'likes', 'shares']) if (Number.isFinite(patch[k]) && patch[k] >= 0) stats[platform][k] = patch[k];
+          if (!statsTimer) statsTimer = setTimeout(() => { statsTimer = null; changed(); }, 1000);
+        },
       });
     } catch (e) { status[platform] = { state: 'error', detail: e.message }; changed(); }
   }
   function stop(platform, notify = true) {
     if (live[platform]) { live[platform].close(); delete live[platform]; }
-    status[platform] = { state: 'off', detail: '' };
+    status[platform] = { state: 'off', detail: '' }; stats[platform] = {};
     if (notify) changed();
   }
   return {
@@ -54,7 +61,7 @@ function createConnections({ dataDir, fetch, onEvent, onChange, connectors = CON
       saved[platform] = { ...(saved[platform] || { channel: '' }), enabled: false };
       await persist(); stop(platform); return snapshot();
     },
-    closeAll() { for (const p of PLATFORMS) if (live[p]) { live[p].close(); delete live[p]; } },
+    closeAll() { clearTimeout(statsTimer); for (const p of PLATFORMS) if (live[p]) { live[p].close(); delete live[p]; } },
   };
 }
 

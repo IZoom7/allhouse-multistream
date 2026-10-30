@@ -32,20 +32,41 @@ function toEvent(msg) {
       };
       return { type: 'gift', name: who(d), message: `${gift.name} ×${gift.count}`, gift };
     }
-    default: return null; // likes, joins, shares: not shown
+    default: return null; // likes, joins, shares: counted by toStats, not shown in chat
   }
 }
 
-function connect({ url = DEFAULT_URL, WebSocket = globalThis.WebSocket, onEvent, onStatus }) {
+const count = v => { const n = Number(v); return Number.isFinite(n) && n >= 0 ? Math.round(n) : null; };
+/** One TikFinity message -> live numbers: { viewers } | { likes } | { share: dedupe key } | null.
+ * TikTok sends the room's viewer and like totals; shares only come one at a time (counted from when we connect).
+ * A share can arrive both as 'social' and as 'share': the key (msgId, else who + time) lets the caller count it once. */
+function toStats(msg) {
+  if (!msg || typeof msg.event !== 'string') return null;
+  const d = msg.data || {};
+  switch (msg.event) {
+    case 'roomUser': { const n = count(d.viewerCount ?? d.total); return n == null ? null : { viewers: n }; }
+    case 'like': { const n = count(d.totalLikeCount ?? d.total); return n == null ? null : { likes: n }; }
+    case 'share': case 'social':
+      if (msg.event === 'social' && !/share/i.test(String(d.displayType || ''))) return null;
+      return { share: String(d.msgId || (d.common && d.common.msgId) || `${who(d)}|${Math.floor(Number(d.createTime || Date.now()) / 2000)}`) };
+    default: return null;
+  }
+}
+
+function connect({ url = DEFAULT_URL, WebSocket = globalThis.WebSocket, onEvent, onStatus, onStats = () => {} }) {
   if (!/^ws:\/\/(127\.0\.0\.1|localhost):\d{2,5}\/?$/.test(url)) throw new Error('TikFinity address must be on this computer (ws://127.0.0.1:port).');
+  let shares = 0; // since this connection started (TikTok sends no share total)
   return reconnecting({
     label: 'TikFinity', onStatus, readyTimeoutMs: 8000,
     open(ready, fail) {
-      const ws = new WebSocket(url);
+      const ws = new WebSocket(url), seenShares = new Set();
       ws.onopen = () => ready('TikFinity');
       ws.onmessage = ev => {
         let m; try { m = JSON.parse(String(ev.data)); } catch { return; }
         const e = toEvent(m); if (e && e.name) onEvent(e);
+        const st = toStats(m);
+        if (st && st.share) { if (seenShares.has(st.share)) return; seenShares.add(st.share); if (seenShares.size > 500) seenShares.delete(seenShares.values().next().value); onStats({ shares: ++shares }); }
+        else if (st) onStats(st);
       };
       ws.onerror = () => {};
       ws.onclose = () => fail(new Error('TikFinity is not running (or its Event API is off)'));
@@ -54,4 +75,4 @@ function connect({ url = DEFAULT_URL, WebSocket = globalThis.WebSocket, onEvent,
   });
 }
 
-module.exports = { connect, toEvent, DEFAULT_URL };
+module.exports = { connect, toEvent, toStats, DEFAULT_URL };

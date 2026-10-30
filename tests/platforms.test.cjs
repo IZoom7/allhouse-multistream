@@ -52,6 +52,29 @@ test('youtube: targets, chat runs with emoji, super chat, members, page + respon
   assert.equal(youtube.parseChatResponse({}).continuation, null);
 });
 
+test('tiktok (TikFinity): live numbers — viewers, total likes, shares with a dedupe key', () => {
+  assert.deepEqual(tiktok.toStats({ event: 'roomUser', data: { viewerCount: 1234 } }), { viewers: 1234 });
+  assert.deepEqual(tiktok.toStats({ event: 'like', data: { likeCount: 15, totalLikeCount: 45300 } }), { likes: 45300 });
+  assert.equal(tiktok.toStats({ event: 'like', data: { likeCount: 15 } }), null);
+  assert.deepEqual(tiktok.toStats({ event: 'social', data: { displayType: 'pm_mt_guidance_share', msgId: '77' } }), { share: '77' });
+  assert.deepEqual(tiktok.toStats({ event: 'share', data: { msgId: '77' } }), { share: '77' });
+  assert.equal(tiktok.toStats({ event: 'social', data: { displayType: 'pm_main_follow_message_viewer_2' } }), null);
+  assert.equal(tiktok.toStats({ event: 'chat', data: { comment: 'x' } }), null);
+});
+
+test('tiktok connect: a share sent as both social and share counts once; viewers/likes pass through', () => {
+  let sock; class FakeWS { constructor() { sock = this; setTimeout(() => this.onopen && this.onopen()); } close() {} }
+  const got = [];
+  const c = tiktok.connect({ WebSocket: FakeWS, onEvent() {}, onStatus() {}, onStats: s => got.push(s) });
+  const send = m => sock.onmessage({ data: JSON.stringify(m) });
+  send({ event: 'roomUser', data: { viewerCount: 10 } });
+  send({ event: 'social', data: { displayType: 'pm_mt_guidance_share', msgId: 'a' } });
+  send({ event: 'share', data: { msgId: 'a' } });
+  send({ event: 'share', data: { msgId: 'b' } });
+  c.close();
+  assert.deepEqual(got, [{ viewers: 10 }, { shares: 1 }, { shares: 2 }]);
+});
+
 test('tiktok (TikFinity): chat, follow, social follow, subscribe; nested user fields; local-only address', () => {
   assert.deepEqual(tiktok.toEvent({ event: 'chat', data: { comment: 'สวัสดี', uniqueId: 'u1', nickname: 'Nick' } }), { type: 'chat', name: 'Nick', message: 'สวัสดี' });
   assert.equal(tiktok.toEvent({ event: 'chat', data: { comment: 'x', user: { uniqueId: 'nested' } } }).name, 'nested');

@@ -41,7 +41,9 @@ export type SpeechCommand = {cmd:'stop'}|{cmd:'skip'}|{cmd:'open-settings'}|{cmd
 export type SpeechStatus = {speaking:boolean;enabled:boolean;volume:number;rate:number;pending:number;engine:'windows'|'online';platforms?:Record<Platform,boolean>};
 export type ChatWindowState = {open:boolean;top:boolean};
 export type QueueAction = 'pause'|'resume'|'skip'|'clear'|'mute'|'unmute'|'clearHistory';
-export type ConnectionInfo = {channel:string;enabled:boolean;state:'off'|'connecting'|'connected'|'retrying'|'error'|'stopped';detail:string;events:number};
+/** Live numbers a platform reports (TikTok via TikFinity for now). shares counts from when the connection started. */
+export type PlatformStats = {viewers?:number;likes?:number;shares?:number;since?:string};
+export type ConnectionInfo = {channel:string;enabled:boolean;state:'off'|'connecting'|'connected'|'retrying'|'error'|'stopped';detail:string;events:number;stats?:PlatformStats};
 export type Connections = Record<Platform,ConnectionInfo>;
 export type DocPage = 'index'|'start'|'connections'|'obs-widgets'|'chat-tts'|'custom-css'|'help';
 export type KickApiStatus = {configured:boolean;clientId:string;loggedIn:boolean;user:{name:string;picture:string}|null;redirect:string;scopes:string};

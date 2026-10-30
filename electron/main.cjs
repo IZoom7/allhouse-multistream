@@ -74,10 +74,12 @@ app.whenReady().then(async()=>{
   const chatPrefsFile=path.join(app.getPath('userData'),'chat-window.json');
   let chatPrefs={};try{chatPrefs=JSON.parse(await fs.readFile(chatPrefsFile,'utf8'))||{}}catch{}
   const saveChatPrefs=()=>{if(!chatWin||chatWin.isDestroyed())return;const b=chatWin.getBounds();chatPrefs={x:b.x,y:b.y,width:b.width,height:b.height,top:chatWin.isAlwaysOnTop()};fs.writeFile(chatPrefsFile,JSON.stringify(chatPrefs)).catch(()=>{})};
-  const chatState=()=>({open:!!chatWin&&!chatWin.isDestroyed(),top:!!chatWin&&!chatWin.isDestroyed()&&chatWin.isAlwaysOnTop()});
+  const chatOpen=()=>!!chatWin&&!chatWin.isDestroyed();
+  // "Keep on top" is set from the main window's Settings, so it is remembered even while the pop-out is closed.
+  const chatState=()=>({open:chatOpen(),top:chatOpen()?chatWin.isAlwaysOnTop():chatPrefs.top===true});
   invoke('open-chat-window',async()=>{
     if(chatWin&&!chatWin.isDestroyed()){if(chatWin.isMinimized())chatWin.restore();chatWin.focus();return chatState()}
-    chatWin=new BrowserWindow({...sanitizeBounds(chatPrefs),minWidth:320,minHeight:480,title:'Allhouse — แชท / Chat',icon:brandIcon,backgroundColor:'#101214',autoHideMenuBar:true,alwaysOnTop:chatPrefs.top===true,webPreferences:webPreferences()});
+    chatWin=new BrowserWindow({...sanitizeBounds(chatPrefs),minWidth:320,minHeight:480,title:'Allhouse — แชท / Chat',icon:brandIcon,backgroundColor:'#101214',autoHideMenuBar:true,alwaysOnTop:chatPrefs.top===true,webPreferences:{...webPreferences(),backgroundThrottling:false}}); // keeps chat live while a game has focus
     hardenWindow(chatWin);
     let saveTimer;const later=()=>{clearTimeout(saveTimer);saveTimer=setTimeout(saveChatPrefs,400)};
     chatWin.on('resize',later);chatWin.on('move',later);chatWin.on('close',saveChatPrefs);chatWin.on('closed',()=>{chatWin=null});
@@ -85,7 +87,7 @@ app.whenReady().then(async()=>{
     return chatState();
   });
   invoke('chat-window-state',()=>chatState());
-  invoke('chat-window-top',flag=>{if(typeof flag!=='boolean')throw new Error('Invalid value');if(chatWin&&!chatWin.isDestroyed()){chatWin.setAlwaysOnTop(flag);saveChatPrefs()}return chatState()});
+  invoke('chat-window-top',flag=>{if(typeof flag!=='boolean')throw new Error('Invalid value');if(chatOpen()){chatWin.setAlwaysOnTop(flag);saveChatPrefs()}else{chatPrefs={...chatPrefs,top:flag};fs.writeFile(chatPrefsFile,JSON.stringify(chatPrefs)).catch(()=>{})}return chatState()});
   // Pop-out → main window: stop / skip / settings changes. Only the main window plays speech and writes state.
   invoke('speech-command',input=>{const cmd=validateSpeechCommand(input);if(!win||win.isDestroyed())throw new Error('The main window is closed');win.webContents.send('house:speech-command',cmd);if(cmd.cmd==='open-settings'){if(win.isMinimized())win.restore();win.focus()}return true});
   // Main window → pop-out: what is being read right now. Accepted only from the main window.

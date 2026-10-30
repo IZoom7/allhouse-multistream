@@ -441,17 +441,6 @@ button.tile:active { transform: translateY(2px); box-shadow: var(--r-inset); }
 .kick-filled { display: flex; align-items: center; gap: 6px; margin: -4px 0 0; font-size: 12.5px; color: var(--text-2); }
 .kick-filled svg { color: #2fb507; flex-shrink: 0; }
 
-/* ---------- Pop-out chat: display settings + avatars ---------- */
-.chatwin-view { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 10px; margin: 0 0 8px; border: 2px solid var(--r-strong); border-radius: 6px;
-  background: var(--surface); box-shadow: var(--r-bevel), 0 2px 0 var(--r-strong); animation: kick-in .2s ease-out both; }
-.chatwin-view .helper { flex-basis: 100%; margin: 2px 0 0; font-size: 12px; }
-.cw-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; font: inherit; font-size: 12.5px; font-weight: 600; border-radius: 4px; cursor: pointer;
-  border: 2px solid var(--r-strong); background: var(--surface-sunken); color: var(--text-3); box-shadow: var(--r-inset); }
-.cw-chip.on { background: var(--surface-raised); color: var(--text); box-shadow: var(--r-bevel), 0 2px 0 var(--r-strong); }
-.cw-led { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--r-strong); background: #8a8577; }
-.cw-chip.on .cw-led { background: #5fdc6a; box-shadow: 0 0 5px #5fdc6a; }
-.cw-select { display: inline-flex; flex-direction: row; align-items: center; gap: 6px; font-size: 12.5px; }
-.cw-select select { min-height: 30px !important; padding: 2px 8px !important; width: auto; font-size: 12.5px !important; }
 .chatwin-msg.has-av { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; align-items: start; }
 .chatwin-msg.has-av > .cw-av { grid-row: 1 / 3; }
 .cw-av { width: 2.1em; height: 2.1em; border-radius: 50%; object-fit: cover; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: .85em;

@@ -765,13 +765,8 @@ input[type='number']::-webkit-inner-spin-button { opacity: 1; }
 }
 .chatwin-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .chatwin-title { font-size: 18px; line-height: 1.4; }
-.chatwin-top .muted-badge { font-size: 11px; }
-.chatwin-tools { margin-left: auto; display: flex; align-items: center; gap: 6px; }
-.chatwin-tools .icon-button { width: 34px; height: 34px; }
-.chatwin-font { font-size: 12px; color: var(--text-3); font-variant-numeric: tabular-nums; min-width: 34px; text-align: center; }
 .chatwin .tts-bar { padding: 10px 12px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border-soft); }
 .chatwin .tts-bar-row.actions .text-button { margin-left: auto; }
-.chatwin-search { margin: 0; }
 .chatwin-feed {
   flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 4px 2px 8px;
   overscroll-behavior: contain;
@@ -791,7 +786,6 @@ input[type='number']::-webkit-inner-spin-button { opacity: 1; }
 }
 @media (max-width: 380px) {
   .chatwin { padding: 8px; gap: 8px; }
-  .chatwin-top .muted-badge { order: 3; }
   .chatwin-meta time { margin-left: 0; }
 }
 .chatwin-tts-strip { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 6px 8px 6px 12px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border-soft); }
@@ -851,3 +845,11 @@ input[type='number']::-webkit-inner-spin-button { opacity: 1; }
 .css-editor textarea { font-family: 'Cascadia Mono', Consolas, monospace; font-size: 13px; line-height: 1.5; min-height: 200px; tab-size: 2; white-space: pre; -webkit-user-select: text; user-select: text; }
 .css-editor .css-selectors { display: flex; flex-wrap: wrap; gap: 6px; }
 .css-editor .css-selectors code { font-family: 'Cascadia Mono', Consolas, monospace; font-size: 12px; padding: 2px 6px; border-radius: 3px; background: var(--surface-sunken); border: 1px solid var(--border-soft); -webkit-user-select: text; user-select: text; }
+
+/* Pop-out chat window: live numbers bar (replaces the old search box) */
+.chatwin-stats { display: flex; flex-direction: column; gap: 4px; padding: 6px 10px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border-soft); }
+.cw-stat-row { display: flex; align-items: center; gap: 6px 14px; flex-wrap: wrap; min-height: 28px; }
+.cw-stat-row .platform-mark { width: 22px; height: 22px; border-radius: 6px; }
+.cw-stat { display: inline-flex; align-items: center; gap: 5px; font-size: 15px; font-variant-numeric: tabular-nums; }
+.cw-stat svg { color: var(--accent); }
+.cw-stat.muted { color: var(--text-3); font-size: 13px; }
