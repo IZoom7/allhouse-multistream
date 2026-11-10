@@ -1,4 +1,4 @@
-/* Allhouse 0.1.0 — app stylesheet. Tokens follow APPINFO.md §9 (Visual design system). */
+/* Allhouse 0.2.0 — app stylesheet. Tokens follow APPINFO.md §9 (Visual design system). */
 :root,
 html[data-theme='dark'] {
   color-scheme: dark;
@@ -837,6 +837,9 @@ input[type='number']::-webkit-inner-spin-button { opacity: 1; }
 :where(.wp-stage) #brand { position: absolute; left: 5%; top: 5%; border-left: 6px solid var(--accent); padding: 18px 30px; background: #101414dd; border-radius: 0 18px 18px 0; color: #fff; }
 :where(.wp-stage) #brand h1 { margin: 0; font-size: 44px; text-shadow: none; letter-spacing: 0; line-height: 1.35; }
 :where(.wp-stage) #brand p { margin: 10px 0 0; font-size: 28px; color: #ccd3d0; }
+:where(.wp-stage) #rot { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+:where(.wp-stage) #pill { display: inline-flex; align-items: center; gap: .45em; max-width: 95%; padding: .3em .8em .3em .3em; border: 4px solid var(--accent); background: var(--bg); color: var(--text); border-radius: 999px; font-size: var(--fs); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+:where(.wp-stage) #pill .pm { width: 1.5em; height: 1.5em; margin: 0; border-radius: 50%; flex: none; vertical-align: 0; }
 :where(.wp-stage) #art { position: absolute; right: 5%; top: 5%; max-width: 30%; max-height: 40%; object-fit: contain; }
 :where(.wp-stage) .minimal #brand, :where(.wp-stage) .wp-scene.minimal #brand { background: transparent; }
 :where(.wp-stage) .wp-scene.neon #brand { box-shadow: 0 0 28px var(--accent); }
@@ -853,3 +856,61 @@ input[type='number']::-webkit-inner-spin-button { opacity: 1; }
 .cw-stat { display: inline-flex; align-items: center; gap: 5px; font-size: 15px; font-variant-numeric: tabular-nums; }
 .cw-stat svg { color: var(--accent); }
 .cw-stat.muted { color: var(--text-3); font-size: 13px; }
+
+/* Chat TTS: step-by-step guide to install the free offline Thai voice */
+.thai-voice-guide > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.thai-voice-guide ol { margin: 0; padding-left: 20px; display: grid; gap: 2px; font-size: 13.5px; line-height: 1.6; }
+.thai-voice-guide .queue-controls { margin-top: 4px; flex-wrap: wrap; }
+
+/* ---------- Chat TTS: offline Thai AI voices + download bar ---------- */
+.thai-ai { margin-top: 16px; }
+.thai-ai-list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.thai-ai-item { padding: 12px 14px; border-radius: var(--radius-card); background: var(--surface-raised); border: 1px solid var(--border-soft); transition: border-color .2s; }
+.thai-ai-item.in-use { border-color: var(--accent); }
+.thai-ai-row { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; }
+.thai-ai-name { flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.thai-ai-name small { color: var(--text-3); font-size: 12.5px; }
+.thai-ai-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.thai-ai-inuse { display: inline-flex; align-items: center; gap: 4px; color: var(--accent); }
+.dl { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.dl-track { position: relative; height: 22px; border-radius: 999px; overflow: hidden; background: var(--surface-sunken, var(--surface)); border: 1px solid var(--border-soft); }
+.dl-fill { position: relative; height: 100%; min-width: 22px; border-radius: inherit; overflow: hidden; transition: width .35s ease-out;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 70%, #ffffff), var(--accent)); }
+.dl-fill::before { content: ''; position: absolute; inset: 0; opacity: .25;
+  background: repeating-linear-gradient(-45deg, #fff 0 8px, transparent 8px 16px); background-size: 22.6px 22.6px; animation: dl-stripes .8s linear infinite; }
+.dl-shine { position: absolute; top: 0; bottom: 0; width: 40%; left: -40%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent); animation: dl-shine 1.8s ease-in-out infinite; }
+.dl-pct { position: absolute; inset: 0; display: grid; place-items: center; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text); text-shadow: 0 1px 2px var(--bg); }
+.dl-track.busy .dl-fill { width: 100% !important; }
+.dl-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12.5px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+@keyframes dl-stripes { to { background-position: 22.6px 0; } }
+@keyframes dl-shine { to { left: 110%; } }
+@media (prefers-reduced-motion: reduce) { .dl-fill::before, .dl-shine { animation: none; } .dl-fill { transition: none; } }
+
+/* Activity pagination */
+.pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-soft); font-size: 13.5px; color: var(--text-2); }
+.pager-size { display: inline-flex !important; flex-direction: row !important; align-items: center; gap: 8px; margin: 0; white-space: nowrap; font-weight: inherit; font-size: inherit; color: inherit; }
+.pager-size select { width: auto; min-height: 34px; padding: 4px 8px; }
+.pager-nav { display: inline-flex; align-items: center; gap: 8px; }
+.pager-nav .button { padding: 4px 10px; }
+.pager-page { min-width: 52px; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* Widget tabs grouped by platform support */
+.widget-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; align-items: stretch; }
+.widget-group { display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; border: 1px dashed var(--border); border-radius: var(--radius-control); background: color-mix(in srgb, var(--surface) 55%, transparent); }
+.widget-group.all { grid-column: 1 / -1; }
+.widget-group.tiktok { border-color: color-mix(in srgb, #25f4ee 55%, var(--border)); background: color-mix(in srgb, #25f4ee 6%, var(--surface)); }
+.widget-group-head { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.widget-group-head strong { display: block; font-size: 14.5px; color: var(--text); }
+.widget-group-head small { display: block; font-size: 12.5px; color: var(--text-3); line-height: 1.4; }
+.widget-group-marks { display: inline-flex; flex-shrink: 0; }
+.widget-group-marks .platform-mark { width: 26px; height: 26px; border: 2px solid var(--surface); box-shadow: 0 1px 2px rgb(0 0 0 / .2); }
+.widget-group-marks .platform-mark + .platform-mark { margin-left: -7px; }
+.widget-group .widget-tabs { margin-bottom: 0; }
+@media (max-width: 760px) { .widget-groups { grid-template-columns: 1fr; } }
+
+/* Social Media Rotator editor */
+.social-items { display: flex; flex-direction: column; gap: 8px; border: 0; padding: 0; margin: 0 0 12px; }
+.social-items legend { font-weight: 600; margin-bottom: 6px; }
+.social-item { display: grid; grid-template-columns: auto minmax(110px, 140px) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.social-item .platform-mark { width: 30px; height: 30px; }
+.social-items > .button { align-self: flex-start; }

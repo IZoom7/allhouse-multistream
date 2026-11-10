@@ -14,7 +14,19 @@ contextBridge.exposeInMainWorld('allhouse', {
   openWidget:(id)=>ipcRenderer.invoke('house:open-widget',String(id)),
   listVoices:(options)=>ipcRenderer.invoke('house:voices',options&&options.refresh===true?{refresh:true}:undefined),
   onlineVoices:()=>ipcRenderer.invoke('house:online-voices'),
+  openSpeechSettings:()=>ipcRenderer.invoke('house:open-speech-settings'),
+  checkUpdate:()=>ipcRenderer.invoke('house:check-update'),
+  openUpdate:()=>ipcRenderer.invoke('house:open-update'),
   synthesizeOnline:(text,options)=>ipcRenderer.invoke('house:speak-online',String(text),{voice:String(options&&options.voice||''),rate:Number(options&&options.rate),volume:Number(options&&options.volume)}),
+  // Offline Thai AI voices (opt-in download)
+  thaiTts:{
+    status:()=>ipcRenderer.invoke('house:thai-tts-status'),
+    install:(id)=>ipcRenderer.invoke('house:thai-tts-install',String(id)),
+    cancel:()=>ipcRenderer.invoke('house:thai-tts-cancel'),
+    remove:(id)=>ipcRenderer.invoke('house:thai-tts-remove',String(id)),
+    speak:(text,options)=>ipcRenderer.invoke('house:speak-thai',String(text),{voice:String(options&&options.voice||''),rate:Number(options&&options.rate),volume:Number(options&&options.volume)}),
+    onProgress:(cb)=>{const h=(_e,p)=>cb(p);ipcRenderer.on('house:thai-tts-progress',h);return()=>ipcRenderer.removeListener('house:thai-tts-progress',h)},
+  },
   // Pop-out chat window + speech relay (speech always plays in the main window).
   openChatWindow:()=>ipcRenderer.invoke('house:open-chat-window'),
   getChatWindowState:()=>ipcRenderer.invoke('house:chat-window-state'),

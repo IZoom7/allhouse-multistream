@@ -9,15 +9,15 @@
 Chat, alerts and OBS widgets from every platform, together in one house.</p>
 
 <p align="center">
-  <a href="https://github.com/IZoom7/allhouse-multistream/releases/download/v0.1.0/Allhouse-Setup-0.1.0.exe">
-    <img src="docs/readme/download-button.svg" alt="ดาวน์โหลด Allhouse สำหรับ Windows (v0.1.0, 131 MB)" width="460">
+  <a href="https://github.com/IZoom7/allhouse-multistream/releases/download/v0.2.0/Allhouse-Setup-0.2.0.exe">
+    <img src="docs/readme/download-button.svg" alt="ดาวน์โหลด Allhouse สำหรับ Windows (v0.2.0, 131 MB)" width="460">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/IZoom7/allhouse-multistream/releases/tag/v0.1.0">รายละเอียดรุ่นนี้ · Release notes</a>
+  <a href="https://github.com/IZoom7/allhouse-multistream/releases/tag/v0.2.0">รายละเอียดรุ่นนี้ · Release notes</a>
   &nbsp;·&nbsp;
-  <a href="https://github.com/IZoom7/allhouse-multistream/releases/download/v0.1.0/Allhouse-Setup-0.1.0.exe.sha256">SHA-256</a>
+  <a href="https://github.com/IZoom7/allhouse-multistream/releases/download/v0.2.0/Allhouse-Setup-0.2.0.exe.sha256">SHA-256</a>
   &nbsp;·&nbsp;
   <a href="https://github.com/IZoom7/allhouse-multistream/releases">ทุกเวอร์ชัน · All releases</a>
   &nbsp;·&nbsp;
@@ -29,7 +29,7 @@ Double-click to install, no admin needed • If SmartScreen appears, choose <b>M
 
 ---
 
-# Allhouse 0.1.0 — local alpha
+# Allhouse 0.2.0 — local alpha
 
 > แอพเดสก์ท็อป Windows สำหรับสตรีมเมอร์: โอเวอร์เลย์สำหรับ OBS, แชท/กิจกรรมตัวอย่าง และบอทอ่านแชทไทย/อังกฤษ
 > A Windows desktop app for streamers: OBS overlays, sample chat/events, and Thai/English chat text-to-speech.
@@ -53,6 +53,8 @@ Double-click to install, no admin needed • If SmartScreen appears, choose <b>M
 | 2 | กล่องแชท | 800 × 1080 |
 | 3 | แจ้งเตือนผู้ติดตาม | 1920 × 1080 |
 | 4 | แจ้งเตือนสมาชิก | 1920 × 1080 |
+| 5 | แจ้งเตือนของขวัญ (TikTok) | 1920 × 1080 |
+| 6 | ป้ายโซเชียลมีเดีย (สลับไอคอน + ชื่อบัญชี) | 800 × 320 |
 
 1. ที่การ์ดของวิดเจ็ตกด **คัดลอก** → ใน OBS กด Sources → **+** → **Browser** → วางลิงก์ แล้วตั้ง Width/Height ตามตัวเลขใหญ่บนการ์ด
 2. **วิดเจ็ตแจ้งเตือน:** ติ๊ก **Control audio via OBS** ถ้าไม่ติ๊ก คนดูจะไม่ได้ยินเสียงแจ้งเตือนที่อัปโหลดไว้
@@ -62,12 +64,15 @@ Double-click to install, no admin needed • If SmartScreen appears, choose <b>M
 ขั้นตอนเต็มพร้อมเช็กลิสต์อยู่ที่ [docs/OBS-TEST.md](docs/OBS-TEST.md) โอเวอร์เลย์เก่าแบบ “ทั้งหมดในหน้าเดียว” ยังมีให้ใช้ในส่วน **ขั้นสูง** แต่อย่าใช้คู่กับวิดเจ็ตแยก เพราะทุกอย่างจะขึ้นซ้ำ
 
 ### รุ่นนี้ทำอะไรได้
-- **วิดเจ็ต OBS แยกชิ้น**: แชท, แจ้งเตือนผู้ติดตาม, แจ้งเตือนสมาชิก, แบนเนอร์ แต่ละตัวมีลิงก์ ขนาด และการตั้งค่าของตัวเอง กด **เผยแพร่** ก่อน OBS จะเห็นของใหม่
+- **วิดเจ็ต OBS แยกชิ้น**: แชท, แจ้งเตือนผู้ติดตาม, แจ้งเตือนสมาชิก, แจ้งเตือนของขวัญ, แบนเนอร์, ป้ายโซเชียลมีเดีย (ใหม่ใน 0.2.0) แต่ละตัวมีลิงก์ ขนาด และการตั้งค่าของตัวเอง กด **เผยแพร่** ก่อน OBS จะเห็นของใหม่
 - ปรับการแจ้งเตือนได้: ข้อความ (`{name}` `{platform}` `{message}`), ระยะเวลา, สี, ขนาดตัวอักษร, ลูกเล่นตอนขึ้นจอ, รูป/GIF และ**อัปโหลดเสียง** (MP3/WAV/OGG) พร้อมปรับความดัง
 - ส่งแชท/การติดตาม/สมาชิก **ตัวอย่าง** (ติดป้าย “ตัวอย่าง” เสมอ) เลือกได้ว่าแสดงเฉพาะในแอพหรือส่งไป OBS
 - คิวการแจ้งเตือน: พัก / เล่นต่อ / ข้าม / ล้าง
 - บอทอ่านแชท: ค่าเริ่มต้นใช้ **เสียงที่ติดตั้งใน Windows** (ทำงานในเครื่อง ไม่ต้องใช้เน็ต) ฟังผ่านลำโพงเครื่องนี้เท่านั้น มีปุ่ม “หยุดเสียง”
-- ตัวเลือกเสริม **เสียงออนไลน์ (Microsoft Edge)**: มีเสียงไทยที่ฟังเป็นธรรมชาติ (Premwadee / Niwat) ใช้ฟรี ไม่ต้องมี API key แต่ต้องต่อเน็ต **ปิดไว้เป็นค่าเริ่มต้น** จะใช้ได้ก็ต่อเมื่อคุณเปิดเองในหน้า บอทอ่านแชท
+- ตัวเลือกเสริม **เสียงออนไลน์ (Microsoft Edge)**: มีเสียงไทยที่ฟังเป็นธรรมชาติ (Premwadee / Niwat) ใช้ฟรี ไม่ต้องมี API key แต่ต้องต่อเน็ต **ปิดไว้เป็นค่าเริ่มต้น** จะใช้ได้ก็ต่อเมื่อคุณเปิดเองในหน้า บอทอ่านแชท
+- ตัวเลือกเสริม **เสียง AI ไทยแบบออฟไลน์** (ใหม่ใน 0.2.0): 3 เสียง ทำงานในเครื่อง ไม่ต้องต่อเน็ตหลังดาวน์โหลด ดาวน์โหลดเมื่อกดเองเท่านั้น (เสียงละ ~115 MB + ตัวประมวลผล ~93 MB ครั้งแรก) ใช้ได้เฉพาะงานที่ไม่ใช่เชิงพาณิชย์ (CC-BY-NC-4.0)
+- **แจ้งเวอร์ชันใหม่**: ตอนเปิดแอพ Allhouse เช็กหน้า Releases บน GitHub (ส่งคำขอไป api.github.com ครั้งเดียว ไม่ส่งข้อมูลของคุณ) ถ้ามีรุ่นใหม่จะขึ้นกล่องชวนไปดาวน์โหลด
+- หน้าแชทและกิจกรรมแบ่งหน้าได้ (10 / 20 / 50 รายการต่อหน้า) และแท็บวิดเจ็ต OBS จัดกลุ่มตามแพลตฟอร์มที่รองรับ
   - ⚠️ เมื่อเปิดใช้ **ข้อความแชทจะถูกส่งไปที่ Microsoft** เพื่อแปลงเป็นเสียง บริการนี้ไม่ใช่บริการทางการของ Microsoft อาจเปลี่ยนหรือหยุดให้บริการเมื่อไหร่ก็ได้
 - ธีมมืด/สว่าง, ไทย/อังกฤษ, บันทึกอัตโนมัติในเครื่อง, สำรอง/นำเข้าไฟล์
 
@@ -81,7 +86,7 @@ Double-click to install, no admin needed • If SmartScreen appears, choose <b>M
 ## How to run (English)
 
 - Double-click `Start Allhouse.cmd`, or run `powershell -ExecutionPolicy Bypass -File scripts\start.ps1`.
-- **OBS:** each widget is its own Browser Source. Add them in this order, so later ones sit on top: banner 1920×1080, chat 800×1080, follow 1920×1080, subscription 1920×1080. For the alert widgets, tick **Control audio via OBS** so viewers hear the alert sound. Drag and resize each one in OBS, then press **Send test** on its card. Full checklist: [docs/OBS-TEST.md](docs/OBS-TEST.md).
+- **OBS:** each widget is its own Browser Source. Add them in this order, so later ones sit on top: banner 1920×1080, chat 800×1080, follow 1920×1080, subscription 1920×1080, gift 1920×1080, social media rotator 800×320. For the alert widgets, tick **Control audio via OBS** so viewers hear the alert sound. Drag and resize each one in OBS, then press **Send test** on its card. Full checklist: [docs/OBS-TEST.md](docs/OBS-TEST.md).
   - `-SkipBuild` runs the existing `dist\`; `-BuildOnly` only builds; `-Test` runs the automated tests.
   - Node.js is found on PATH, then in common install folders (including the Adobe Creative Cloud bundled `node.exe`). Override with `ALLHOUSE_NODE=C:\path\to\node.exe`.
 - With Node/pnpm on PATH the usual scripts also work: `pnpm build`, `pnpm start`, `pnpm test`, `pnpm app` (build + start).
@@ -105,7 +110,9 @@ Double-click to install, no admin needed • If SmartScreen appears, choose <b>M
 
 ### Chat speech
 - **Default:** installed Windows voices. They run locally with no internet, and audio plays through this computer's speakers only.
-- **Optional: Online neural voices (Microsoft Edge).** Good Thai voices (Premwadee / Niwat), free, no API key, needs internet. **Off by default.** It only works after you turn it on in Chat TTS. When it is on, **chat text is sent to Microsoft** to be turned into speech. This is an unofficial Microsoft service that can change or stop at any time.
+- **Optional: Online neural voices (Microsoft Edge).** Good Thai voices (Premwadee / Niwat), free, no API key, needs internet. **Off by default.** It only works after you turn it on in Chat TTS. When it is on, **chat text is sent to Microsoft** to be turned into speech. This is an unofficial Microsoft service that can change or stop at any time.
+- **Update check (new in 0.2.0).** At start-up Allhouse makes one request to api.github.com for this repo’s releases (nothing about you is sent). If a newer version exists, a dialog offers to open its download page.
+- **Optional: Offline Thai AI voices (new in 0.2.0).** Three neural Thai voices that run on this computer. Nothing is downloaded until you press Download (about 115 MB per voice, plus a one-time ~93 MB engine from npm). Voices are CC-BY-NC-4.0: non-commercial use only.
 
 ### What the alpha does not do
 No real platform login or live chat, no Allhouse-managed cloud TTS (the optional Edge voices above are the only online speech), no automatic OBS audio routing, no OBS WebSocket, no installer/signing. A connected overlay page is not proof that you are live. See `FEATURES.md` for the full roadmap.

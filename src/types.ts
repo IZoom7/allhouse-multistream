@@ -8,7 +8,7 @@ export type HouseEvent = {id:string;platform:Platform;type:'chat'|'follow'|'subs
 export type GiftInfo = {name:string;count:number;coins:number;image:string};
 
 // ---- Widgets (docs/WIDGETS-CONTRACT.md, round 4) ----
-export type WidgetId = 'chat'|'follow'|'subscription'|'gift'|'banner';
+export type WidgetId = 'chat'|'follow'|'subscription'|'gift'|'banner'|'social';
 export type Anim = 'fade'|'slide'|'pop'|'none';
 /** customCss* (round 7): optional user CSS applied on the OBS widget page when switched on. */
 export type WidgetBase = {enabled:boolean;width:number;height:number;customCssEnabled?:boolean;customCss?:string};
@@ -19,7 +19,10 @@ export type AlertWidget = WidgetBase & {durationSec:number;template:string;fontS
 export type BannerWidget = WidgetBase & {title:string;subtitle:string;accent:string;template:'studio'|'minimal'|'neon';image:string};
 /** Gift alert (round 6): an alert plus a minimum-coins filter and the TikTok gift picture. */
 export type GiftWidget = AlertWidget & {minCoins:number;showGiftImage:boolean};
-export type Widgets = {chat:ChatWidget;follow:AlertWidget;subscription:AlertWidget;gift:GiftWidget;banner:BannerWidget};
+/** Social Media Rotator: one pill at a time (brand icon + handle), cycling every intervalSec. */
+export type SocialNetwork = Platform|'facebook'|'instagram'|'x'|'threads'|'discord'|'line'|'github'|'spotify'|'patreon';
+export type SocialWidget = WidgetBase & {items:{network:SocialNetwork;handle:string}[];intervalSec:number;fontSize:number;accent:string;textColor:string;bgOpacity:number;animation:Anim};
+export type Widgets = {chat:ChatWidget;follow:AlertWidget;subscription:AlertWidget;gift:GiftWidget;banner:BannerWidget;social:SocialWidget};
 
 /** Chat reading rules (round 9). Optional: older workspaces use DEFAULT_TTS_RULES (ttsRules.ts). */
 export type TtsRules = {platforms:Record<Platform,boolean>;readName:boolean;nameTemplate?:string;skipCommands:boolean;ignoreNames:string;maxChars:number};
@@ -53,7 +56,13 @@ export type KickChannelInfo = {slug:string;title:string;category:KickCategory|nu
   filledFrom?:'live'|'last'|'saved'};
 export type KickApi = {status():Promise<KickApiStatus>;setApp(clientId:string,secret:string):Promise<KickApiStatus>;clear():Promise<KickApiStatus>;login():Promise<KickApiStatus>;logout():Promise<KickApiStatus>;
   channel():Promise<KickChannelInfo>;categories(q:string):Promise<KickCategory[]>;update(input:{title?:string;categoryId?:number;categoryName?:string;categoryThumb?:string;tags?:string[]}):Promise<KickChannelInfo>};
-export type API = {kickApi?:KickApi;openDocs?(page:DocPage,lang?:'th'|'en'):Promise<unknown>;getConnections?():Promise<Connections>;connectPlatform?(platform:Platform,channel:string):Promise<Connections>;disconnectPlatform?(platform:Platform):Promise<Connections>;onConnections?(cb:(c:Connections)=>void):()=>void;onLiveEvent?(cb:(e:HouseEvent)=>void):()=>void;getState():Promise<State>;getHistory?():Promise<HouseEvent[]>;getStatus():Promise<Status>;saveState(s:State):Promise<State>;sendEvent(e:Pick<HouseEvent,'platform'|'type'|'name'|'message'|'target'>):Promise<HouseEvent>;controlQueue(a:QueueAction):Promise<Status>;exportBackup():Promise<boolean>;importBackup():Promise<State|null>;copyText(t:string):Promise<boolean>;openOverlay():Promise<unknown>;openWidget?(id:WidgetId):Promise<unknown>;listVoices?(options?:{refresh?:boolean}):Promise<{name:string;lang:string}[]>;onlineVoices?():Promise<{name:string;lang:string;label:string}[]>;synthesizeOnline?(text:string,options:{voice:string;rate:number;volume:number}):Promise<string>;synthesize?(text:string,options:{voice:string;rate:number;volume:number}):Promise<string>;
+/** Offline Thai AI voices (electron/thaiTts.cjs). */
+export type ThaiVoiceId = 'th_female'|'th_male'|'th_narrator';
+export type ThaiTtsProgress = {voice:ThaiVoiceId;phase:'engine'|'install'|'voice'|'done';received:number;total:number;bytesPerSec:number};
+export type ThaiTtsStatus = {engine:boolean;engineSize:number;license:string;voices:{id:ThaiVoiceId;size:number;installed:boolean}[];job:ThaiTtsProgress|null};
+export type ThaiTts = {status():Promise<ThaiTtsStatus>;install(id:ThaiVoiceId):Promise<ThaiTtsStatus>;cancel():Promise<boolean>;remove(id:ThaiVoiceId):Promise<ThaiTtsStatus>;
+  speak(text:string,options:{voice:string;rate:number;volume:number}):Promise<string>;onProgress(cb:(p:ThaiTtsProgress|null)=>void):()=>void};
+export type API = {checkUpdate?():Promise<{version:string;title:string;current:string}|null>;openUpdate?():Promise<unknown>;kickApi?:KickApi;thaiTts?:ThaiTts;openDocs?(page:DocPage,lang?:'th'|'en'):Promise<unknown>;getConnections?():Promise<Connections>;connectPlatform?(platform:Platform,channel:string):Promise<Connections>;disconnectPlatform?(platform:Platform):Promise<Connections>;onConnections?(cb:(c:Connections)=>void):()=>void;onLiveEvent?(cb:(e:HouseEvent)=>void):()=>void;getState():Promise<State>;getHistory?():Promise<HouseEvent[]>;getStatus():Promise<Status>;saveState(s:State):Promise<State>;sendEvent(e:Pick<HouseEvent,'platform'|'type'|'name'|'message'|'target'>):Promise<HouseEvent>;controlQueue(a:QueueAction):Promise<Status>;exportBackup():Promise<boolean>;importBackup():Promise<State|null>;copyText(t:string):Promise<boolean>;openOverlay():Promise<unknown>;openWidget?(id:WidgetId):Promise<unknown>;listVoices?(options?:{refresh?:boolean}):Promise<{name:string;lang:string}[]>;openSpeechSettings?():Promise<unknown>;onlineVoices?():Promise<{name:string;lang:string;label:string}[]>;synthesizeOnline?(text:string,options:{voice:string;rate:number;volume:number}):Promise<string>;synthesize?(text:string,options:{voice:string;rate:number;volume:number}):Promise<string>;
   openChatWindow?():Promise<ChatWindowState|unknown>;getChatWindowState?():Promise<ChatWindowState>;setChatWindowTop?(flag:boolean):Promise<ChatWindowState>;
   sendSpeechCommand?(cmd:SpeechCommand):Promise<unknown>;reportSpeechStatus?(s:SpeechStatus):Promise<unknown>;
   onSpeechCommand?(cb:(cmd:SpeechCommand)=>void):()=>void;onSpeechStatus?(cb:(s:SpeechStatus)=>void):()=>void};

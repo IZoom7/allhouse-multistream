@@ -2,17 +2,18 @@
 // One card per widget: on/off, its own Browser Source URL, a big W×H hint, a test button and a full editor.
 // One Publish button (in the page heading) publishes every widget at once.
 import React,{useEffect,useRef,useState} from 'react';
-import {ArrowUpRight,Check,Copy,Gift,ImagePlus,Info,MessageSquare,Monitor,Play,Send,Square,Trash2,Upload,UserPlus,Star,Type,Music} from 'lucide-react';
-import {PageHeading,Toggle,WidgetPreview} from './components';
+import {ArrowUpRight,Check,Copy,Gift,ImagePlus,Info,MessageSquare,Monitor,Play,Send,Square,Trash2,Upload,UserPlus,Star,Type,Music,Share2,Plus} from 'lucide-react';
+import {PageHeading,PlatformMark,Toggle,WidgetPreview} from './components';
+import {socialNames} from './platformIcons';
 import {api} from './api';
-import {ANIMS,MAX_ASSET_CHARS,MAX_IMAGE_BYTES,MAX_SOUND_BYTES,MAX_STATE_BYTES,WIDGET_IDS,fillTemplate,normaliseDataUrl,stateBytes} from './widgets';
+import {SOCIAL_NETWORKS,ANIMS,MAX_ASSET_CHARS,MAX_IMAGE_BYTES,MAX_SOUND_BYTES,MAX_STATE_BYTES,WIDGET_IDS,fillTemplate,normaliseDataUrl,stateBytes} from './widgets';
 // The draft preview is Dev B's WidgetPreview (components.tsx): same layout, labels and template rules as /w/<token>/<id>.
-import type {AlertWidget,Anim,BannerWidget,ChatWidget,GiftWidget,HouseEvent,State,Status,WidgetId,Widgets} from './types';
+import type {Platform,SocialNetwork,SocialWidget,AlertWidget,Anim,BannerWidget,ChatWidget,GiftWidget,HouseEvent,State,Status,WidgetId,Widgets} from './types';
 
 type T=(th:string,en:string)=>string;
 type Props={state:State;status:Status|null;t:T;desktop:boolean;busy:boolean;events:HouseEvent[];
   updateWidget:<K extends WidgetId>(id:K,patch:Partial<Widgets[K]>)=>void;publish:()=>void;dirty:boolean;
-  notify:(msg:string,error?:boolean)=>void;copy:(text:string)=>void;openWidget:(id:WidgetId)=>void;openLegacy:()=>void;sendTest:(id:Exclude<WidgetId,'banner'>)=>void;
+  notify:(msg:string,error?:boolean)=>void;copy:(text:string)=>void;openWidget:(id:WidgetId)=>void;openLegacy:()=>void;sendTest:(id:Exclude<WidgetId,'banner'|'social'>)=>void;
   importedLayoutNotice?:React.ReactNode};
 
 
@@ -28,14 +29,17 @@ function Range({label,value,min,max,step,onChange,format}:{label:string;value:nu
 function ColorField({label,value,onChange}:{label:string;value:string;onChange:(v:string)=>void}){return <label>{label}<input type="color" value={value} onChange={e=>onChange(e.target.value)}/></label>}
 
 // Custom CSS (round 7): selectors that exist on each widget's OBS page, and a starter snippet per kind.
-const CSS_SELECTORS:Record<'chat'|'alert'|'banner',string[]>={chat:['#box','#box.top','.chat','.chat b','.chat span','.chat .av','.chat .pf','.chat.inline','.tag','.pm'],alert:['#wrap','#card','#card img.art','#card .gimg','#card small','#card .ph','.tag'],banner:['#brand','#title','#subtitle','#art','#scene.neon','#scene.minimal']};
-const CSS_EXAMPLES:Record<'chat'|'alert'|'banner',string>={
+const CSS_SELECTORS:Record<'chat'|'alert'|'banner'|'social',string[]>={social:['#rot','#pill','#pill img'],chat:['#box','#box.top','.chat','.chat b','.chat span','.chat .av','.chat .pf','.chat.inline','.tag','.pm'],alert:['#wrap','#card','#card img.art','#card .gimg','#card small','#card .ph','.tag'],banner:['#brand','#title','#subtitle','#art','#scene.neon','#scene.minimal']};
+const CSS_EXAMPLES:Record<'chat'|'alert'|'banner'|'social',string>={
+  social:'#pill {\n  border-radius: 12px;\n  box-shadow: 6px 6px 0 #000;\n}\n#pill img {\n  border-radius: 6px;\n}',
   chat:'.chat {\n  border-radius: 0;\n  border-left: 6px solid var(--accent);\n  box-shadow: 4px 4px 0 #000;\n}\n.chat b {\n  text-transform: uppercase;\n  letter-spacing: .05em;\n}',
   alert:'#card {\n  border-radius: 0;\n  border-style: dashed;\n  box-shadow: 8px 8px 0 #000;\n}\n#card .ph {\n  color: #ffd84a;\n  text-shadow: 3px 3px 0 #000;\n}',
   banner:'#brand {\n  border-radius: 0;\n  transform: rotate(-2deg);\n  box-shadow: 6px 6px 0 #000;\n}\n#title {\n  letter-spacing: .08em;\n}'};
-const cssKind=(id:WidgetId):'chat'|'alert'|'banner'=>id==='chat'?'chat':id==='banner'?'banner':'alert';
+const cssKind=(id:WidgetId):'chat'|'alert'|'banner'|'social'=>id==='chat'||id==='banner'||id==='social'?id:'alert';
 const readAsDataUrl=(f:File)=>new Promise<string>((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=()=>reject(new Error('read failed'));r.readAsDataURL(f)});
-const SIZE_PRESETS:Record<WidgetId,[number,number][]>={chat:[[800,1080],[600,1080],[1080,1920],[1920,1080]],follow:[[1920,1080],[1280,720],[1080,1920]],subscription:[[1920,1080],[1280,720],[1080,1920]],gift:[[1920,1080],[1280,720],[1080,1920]],banner:[[1920,1080],[1280,720],[1080,1920]]};
+// Tabs grouped by which platforms can feed each widget (matches the 'gets' lists on the Connections page).
+const WIDGET_GROUPS:{key:string;platforms:Platform[];ids:WidgetId[]}[]=[{key:'all',platforms:['twitch','youtube','kick','tiktok'],ids:['chat','subscription','banner','social']},{key:'some',platforms:['kick','tiktok'],ids:['follow']},{key:'tiktok',platforms:['tiktok'],ids:['gift']}];
+const SIZE_PRESETS:Record<WidgetId,[number,number][]>={social:[[800,320],[1200,320],[1920,320]],chat:[[800,1080],[600,1080],[1080,1920],[1920,1080]],follow:[[1920,1080],[1280,720],[1080,1920]],subscription:[[1920,1080],[1280,720],[1080,1920]],gift:[[1920,1080],[1280,720],[1080,1920]],banner:[[1920,1080],[1280,720],[1080,1920]]};
 
 export function WidgetsPage(p:Props){
   const {state,status,t,desktop}=p;
@@ -43,9 +47,9 @@ export function WidgetsPage(p:Props){
   const [auditioning,setAuditioning]=useState(false);const audition=useRef<HTMLAudioElement|null>(null);
   const stopAudition=()=>{audition.current?.pause();audition.current=null;setAuditioning(false)};
   useEffect(()=>stopAudition,[tab]);
-  const names:Record<WidgetId,string>={chat:t('กล่องแชท','Chat box'),follow:t('แจ้งเตือนผู้ติดตาม','Follow alert'),subscription:t('แจ้งเตือนสมาชิก','Subscription alert'),gift:t('แจ้งเตือนของขวัญ','Gift alert'),banner:t('แบนเนอร์หัวข้อ','Title banner')};
-  const icons:Record<WidgetId,React.ReactNode>={chat:<MessageSquare size={17}/>,follow:<UserPlus size={17}/>,subscription:<Star size={17}/>,gift:<Gift size={17}/>,banner:<Type size={17}/>};
-  const blurbs:Record<WidgetId,string>={chat:t('แชทล่าสุดจากทุกแพลตฟอร์ม เลื่อนขึ้นเรื่อยๆ','Latest chat from every platform, rolling'),follow:t('ขึ้นเมื่อมีคนกดติดตาม','Shows when someone follows'),subscription:t('ขึ้นเมื่อมีคนสมัครสมาชิก','Shows when someone subscribes'),gift:t('ขึ้นเมื่อมีคนส่งของขวัญใน TikTok LIVE (ผ่าน TikFinity)','Shows when someone sends a TikTok LIVE gift (via TikFinity)'),banner:t('หัวข้อ ข้อความรอง และรูปของห้องคุณ','Your title, subtitle and image')};
+  const names:Record<WidgetId,string>={chat:t('กล่องแชท','Chat box'),follow:t('แจ้งเตือนผู้ติดตาม','Follow alert'),subscription:t('แจ้งเตือนสมาชิก','Subscription alert'),gift:t('แจ้งเตือนของขวัญ','Gift alert'),banner:t('แบนเนอร์หัวข้อ','Title banner'),social:t('ป้ายโซเชียลมีเดีย','Social Media Rotator')};
+  const icons:Record<WidgetId,React.ReactNode>={chat:<MessageSquare size={17}/>,follow:<UserPlus size={17}/>,subscription:<Star size={17}/>,gift:<Gift size={17}/>,banner:<Type size={17}/>,social:<Share2 size={17}/>};
+  const blurbs:Record<WidgetId,string>={social:t('ป้ายบอกช่องทางโซเชียลของคุณ สลับทีละช่องทางวนไปเรื่อยๆ','Shows your social handles one at a time, on a loop'),chat:t('แชทล่าสุดจากทุกแพลตฟอร์ม เลื่อนขึ้นเรื่อยๆ','Latest chat from every platform, rolling'),follow:t('ขึ้นเมื่อมีคนกดติดตาม','Shows when someone follows'),subscription:t('ขึ้นเมื่อมีคนสมัครสมาชิก','Shows when someone subscribes'),gift:t('ขึ้นเมื่อมีคนส่งของขวัญใน TikTok LIVE (ผ่าน TikFinity)','Shows when someone sends a TikTok LIVE gift (via TikFinity)'),banner:t('หัวข้อ ข้อความรอง และรูปของห้องคุณ','Your title, subtitle and image')};
   const draft=state.draftWidgets[tab],pub=state.publishedWidgets[tab];
   const widgetDirty=(id:WidgetId)=>JSON.stringify(state.draftWidgets[id])!==JSON.stringify(state.publishedWidgets[id]);
   const url=status?.widgetUrls?.[tab]||'';
@@ -126,21 +130,36 @@ export function WidgetsPage(p:Props){
     <div className="asset-row"><label className="button secondary upload-label"><ImagePlus size={16}/>{b.image?t('เปลี่ยนรูป','Change image'):t('เพิ่มรูป / GIF','Add image / GIF')}<input className="visually-hidden" type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={e=>{const f=e.target.files?.[0];e.target.value='';void pickImage('banner',f)}}/></label>{b.image&&<button className="text-button danger" onClick={()=>set('banner',{image:''})}><Trash2 size={15}/>{t('นำรูปออก','Remove image')}</button>}</div>
   </>;
 
-  const testLabel:Record<Exclude<WidgetId,'banner'>,string>={chat:t('ส่งแชททดสอบไป OBS','Send a test chat to OBS'),follow:t('ส่งการแจ้งเตือนผู้ติดตามทดสอบ','Send a test follow alert'),subscription:t('ส่งการแจ้งเตือนสมาชิกทดสอบ','Send a test subscription alert'),gift:t('ส่งการแจ้งเตือนของขวัญทดสอบ','Send a test gift alert')};
+  const socialEditor=(so:SocialWidget)=>{const items=so.items,setItems=(next:SocialWidget['items'])=>set('social',{items:next});return <>
+    <fieldset className="social-items"><legend>{t('ช่องทาง (สูงสุด 12)','Channels (up to 12)')}</legend>
+      {items.map((it,i)=><div className="social-item" key={i}><PlatformMark platform={it.network}/>
+        <select aria-label={t('แพลตฟอร์ม','Network')} value={it.network} onChange={e=>setItems(items.map((x,j)=>j===i?{...x,network:e.target.value as SocialNetwork}:x))}>{SOCIAL_NETWORKS.map(n=><option key={n} value={n}>{socialNames[n]}</option>)}</select>
+        <input aria-label={t('ชื่อบัญชี','Handle')} maxLength={60} placeholder="@yourname" value={it.handle} onChange={e=>setItems(items.map((x,j)=>j===i?{...x,handle:e.target.value}:x))}/>
+        <button type="button" className="icon-button" aria-label={t('ลบช่องทางนี้','Remove this channel')} title={t('ลบ','Remove')} onClick={()=>setItems(items.filter((_,j)=>j!==i))}><Trash2 size={16}/></button></div>)}
+      <button type="button" className="button secondary compact" disabled={items.length>=12} onClick={()=>setItems([...items,{network:'instagram',handle:''}])}><Plus size={15}/>{t('เพิ่มช่องทาง','Add channel')}</button>
+    </fieldset>
+    <Range label={t('สลับทุก','Switch every')} value={so.intervalSec} min={2} max={60} step={1} onChange={intervalSec=>set('social',{intervalSec})} format={v=>v+t(' วินาที',' s')}/>
+    <Range label={t('ขนาดตัวอักษร','Font size')} value={so.fontSize} min={16} max={120} step={2} onChange={fontSize=>set('social',{fontSize})} format={v=>v+'px'}/>
+    {animOptions(so.animation,animation=>set('social',{animation}))}
+    <div className="field-row"><ColorField label={t('สีขอบ','Accent')} value={so.accent} onChange={accent=>set('social',{accent})}/><ColorField label={t('สีตัวอักษร','Text colour')} value={so.textColor} onChange={textColor=>set('social',{textColor})}/></div>
+    <Range label={t('ความทึบพื้นหลัง','Background opacity')} value={so.bgOpacity} min={0} max={1} step={0.05} onChange={bgOpacity=>set('social',{bgOpacity})} format={v=>Math.round(v*100)+'%'}/>
+  </>};
+
+  const testLabel:Record<Exclude<WidgetId,'banner'|'social'>,string>={chat:t('ส่งแชททดสอบไป OBS','Send a test chat to OBS'),follow:t('ส่งการแจ้งเตือนผู้ติดตามทดสอบ','Send a test follow alert'),subscription:t('ส่งการแจ้งเตือนสมาชิกทดสอบ','Send a test subscription alert'),gift:t('ส่งการแจ้งเตือนของขวัญทดสอบ','Send a test gift alert')};
   return <>
     <PageHeading title={t('วิดเจ็ต OBS','OBS widgets')} description={t('แต่ละส่วนเป็น Browser Source แยกกันใน OBS มีลิงก์ ขนาด และการตั้งค่าของตัวเอง ลากวางและย่อขยายใน OBS ได้อิสระ','Each part is its own Browser Source in OBS, with its own link, size and settings. Move and resize each one freely in OBS.')}
       action={p.dirty?<button className="button primary" onClick={p.publish}><Upload size={16}/>{t('เผยแพร่ทุกวิดเจ็ต','Publish all widgets')}</button>:<button className="button secondary" disabled><Check size={16}/>{t('เผยแพร่แล้ว • ไม่มีอะไรเปลี่ยน','Up to date')}</button>}/>
     {p.importedLayoutNotice}
     {p.dirty&&<div className="notice warning" role="note"><Info size={17}/><p>{t('มีการแก้ไขที่ยังไม่เผยแพร่ OBS ยังแสดงฉบับเดิมอยู่ • กด “เผยแพร่ทุกวิดเจ็ต” เมื่อพร้อม','You have unpublished changes. OBS still shows the previous version • press “Publish all widgets” when ready.')}</p></div>}
     {bytes>MAX_STATE_BYTES*0.8&&<div className="notice warning" role="alert"><Info size={17}/><p>{t(`รูปและเสียงรวมกัน ${(bytes/1048576).toFixed(1)} MB ใกล้ขีดจำกัด 25 MB แล้ว ลองใช้ไฟล์ที่เล็กลง`,`Images and sounds now total ${(bytes/1048576).toFixed(1)} MB, close to the 25 MB limit. Try smaller files.`)}</p></div>}
-    <div className="widget-tabs" role="tablist" aria-label={t('วิดเจ็ต','Widgets')}>{WIDGET_IDS.map(id=><button key={id} role="tab" aria-selected={tab===id} className={'widget-tab'+(tab===id?' active':'')} onClick={()=>setTab(id)}>{icons[id]}<span>{names[id]}</span><span className={'dot'+(state.draftWidgets[id].enabled?'':' off')} aria-label={state.draftWidgets[id].enabled?t('เปิด','on'):t('ปิด','off')}/>{widgetDirty(id)&&<span className="pill amber">{t('ยังไม่เผยแพร่','unpublished')}</span>}</button>)}</div>
+    <div className="widget-groups">{WIDGET_GROUPS.map(g=><section key={g.key} className={'widget-group '+g.key}><header className="widget-group-head"><span className="widget-group-marks">{g.platforms.map(pf=><PlatformMark key={pf} platform={pf}/>)}</span><div><strong>{g.key==='all'?t('ใช้ได้ทุกแพลตฟอร์ม','Every platform'):g.key==='some'?t('บางแพลตฟอร์ม','Some platforms'):t('เฉพาะ TikTok','TikTok only')}</strong><small>{g.key==='all'?t('แชท ซับ/สมาชิก แบนเนอร์ และป้ายโซเชียล ใช้ได้กับทุกช่อง','Chat, subs/members, the banner and social rotator work with every channel'):g.key==='some'?t('Twitch ยังไม่ส่งผู้ติดตาม (เร็วๆ นี้) และ YouTube ไม่ส่งให้','Twitch follows are coming soon; YouTube does not send them'):t('ของขวัญมีเฉพาะใน TikTok LIVE (ผ่าน TikFinity)','Gifts only exist on TikTok LIVE (via TikFinity)')}</small></div></header><div className="widget-tabs" role="tablist" aria-label={g.key==='all'?t('ใช้ได้ทุกแพลตฟอร์ม','Every platform'):g.key==='some'?t('บางแพลตฟอร์ม','Some platforms'):t('เฉพาะ TikTok','TikTok only')}>{g.ids.map(id=><button key={id} role="tab" aria-selected={tab===id} className={'widget-tab'+(tab===id?' active':'')} onClick={()=>setTab(id)}>{icons[id]}<span>{names[id]}</span><span className={'dot'+(state.draftWidgets[id].enabled?'':' off')} aria-label={state.draftWidgets[id].enabled?t('เปิด','on'):t('ปิด','off')}/>{widgetDirty(id)&&<span className="pill amber">{t('ยังไม่เผยแพร่','unpublished')}</span>}</button>)}</div></section>)}</div>
     <section className="panel widget-card" role="tabpanel" aria-label={names[tab]}>
       <div className="panel-heading"><div><h2>{icons[tab]}{names[tab]}</h2><p>{blurbs[tab]}</p></div><div className="widget-head-actions"><span className={pages?'pill':'pill amber'}>{!desktop?t('โหมดเบราว์เซอร์ไม่มี OBS','No OBS in browser mode'):pages?t(`เปิดอยู่ ${pages} หน้า (ยังไม่ใช่การไลฟ์)`,`${pages} page(s) open (not proof you are live)`):t('ยังไม่มีหน้านี้เปิดใน OBS','Not open in OBS yet')}</span><Toggle checked={draft.enabled} onChange={enabled=>set(tab,{enabled} as Partial<Widgets[typeof tab]>)} label={draft.enabled?t('เปิดใช้','On'):t('ปิดอยู่','Off')}/></div></div>
       {!pub.enabled&&<p className="status-message">{t('วิดเจ็ตนี้ปิดอยู่ในฉบับเผยแพร่ หน้าใน OBS จะว่างเปล่า','This widget is off in the published version, so its OBS page stays empty.')}</p>}
       <div className="size-hint" aria-label={t('ขนาดที่ต้องตั้งใน OBS','Size to set in OBS')}><Monitor size={22}/><div><small>{t('ตั้งใน OBS','Set in OBS')}</small><strong>{t(`กว้าง ${pub.width} สูง ${pub.height}`,`Width ${pub.width} · Height ${pub.height}`)}</strong>{(draft.width!==pub.width||draft.height!==pub.height)&&<small>{t(`ฉบับร่างเป็น ${draft.width} × ${draft.height} — เผยแพร่ก่อน แล้วใช้ขนาดนี้แทน`,`Draft is ${draft.width} × ${draft.height} — publish first, then use that size`)}</small>}</div></div>
       <div className="url-field"><input aria-label={t(`ลิงก์ Browser Source ของ${names[tab]}`,`Browser Source URL for ${names[tab]}`)} readOnly value={url||(desktop?t('รอแอพสร้างลิงก์…','Waiting for the app to create the link…'):t('เปิดแอพเดสก์ท็อปเพื่อรับลิงก์ OBS','Open the desktop app to get your OBS link'))}/><button className="button primary" disabled={!url} onClick={()=>p.copy(url)}><Copy size={16}/>{t('คัดลอกลิงก์','Copy link')}</button><button className="icon-button" disabled={!url} aria-label={t('เปิดวิดเจ็ตในเบราว์เซอร์','Open widget in browser')} title={t('เปิดวิดเจ็ตในเบราว์เซอร์','Open widget in browser')} onClick={()=>p.openWidget(tab)}><ArrowUpRight size={20}/></button></div>
-      <ol className="widget-steps"><li>{t('ใน OBS: Sources → + → Browser แล้ววางลิงก์นี้','In OBS: Sources → + → Browser, then paste this link')}</li><li>{t(`ตั้ง Width ${pub.width} และ Height ${pub.height}`,`Set Width ${pub.width} and Height ${pub.height}`)}{tab!=='chat'&&tab!=='banner'&&t(' และติ๊ก “Control audio via OBS” ถ้ามีเสียง',' and tick “Control audio via OBS” if it has a sound')}</li><li>{tab==='banner'?t('กดเผยแพร่ แล้วดูผลใน OBS','Publish, then check it in OBS'):t('กดปุ่มทดสอบด้านล่าง ควรเห็นผลใน OBS ทันที','Press the test button below — it should appear in OBS right away')}</li></ol>
-      {tab!=='banner'&&<div className="queue-controls"><button className="button secondary" disabled={!desktop||p.busy} onClick={()=>p.sendTest(tab)}><Send size={16}/>{testLabel[tab]}<span className="test-tag">TEST</span></button>{!desktop&&<small className="step-note">{t('ใช้ได้ในแอพเดสก์ท็อป','Available in the desktop app')}</small>}{desktop&&status?.paused&&tab!=='chat'&&<small className="step-note warn">{t('คิวการแจ้งเตือนพักอยู่ — จะขึ้นเมื่อกดเล่นต่อ','The alert queue is paused — it will show after you resume')}</small>}</div>}
+      <ol className="widget-steps"><li>{t('ใน OBS: Sources → + → Browser แล้ววางลิงก์นี้','In OBS: Sources → + → Browser, then paste this link')}</li><li>{t(`ตั้ง Width ${pub.width} และ Height ${pub.height}`,`Set Width ${pub.width} and Height ${pub.height}`)}{tab!=='chat'&&tab!=='banner'&&tab!=='social'&&t(' และติ๊ก “Control audio via OBS” ถ้ามีเสียง',' and tick “Control audio via OBS” if it has a sound')}</li><li>{tab==='banner'||tab==='social'?t('กดเผยแพร่ แล้วดูผลใน OBS','Publish, then check it in OBS'):t('กดปุ่มทดสอบด้านล่าง ควรเห็นผลใน OBS ทันที','Press the test button below — it should appear in OBS right away')}</li></ol>
+      {tab!=='banner'&&tab!=='social'&&<div className="queue-controls"><button className="button secondary" disabled={!desktop||p.busy} onClick={()=>p.sendTest(tab)}><Send size={16}/>{testLabel[tab]}<span className="test-tag">TEST</span></button>{!desktop&&<small className="step-note">{t('ใช้ได้ในแอพเดสก์ท็อป','Available in the desktop app')}</small>}{desktop&&status?.paused&&tab!=='chat'&&<small className="step-note warn">{t('คิวการแจ้งเตือนพักอยู่ — จะขึ้นเมื่อกดเล่นต่อ','The alert queue is paused — it will show after you resume')}</small>}</div>}
       <div className="widget-body">
         <div className="widget-preview"><div className="panel-heading"><strong>{t('พรีวิวฉบับร่าง','Draft preview')}</strong><span className="canvas-footer">{draft.width} × {draft.height}</span></div><WidgetPreview widget={draft} kind={tab} event={lastEvent}/><p className="helper">{t('พื้นตาราง = โปร่งใสใน OBS','Checkerboard = transparent in OBS')}</p>
           <section className="css-editor" aria-label={t('CSS กำหนดเอง','Custom CSS')}>
@@ -161,6 +180,7 @@ export function WidgetsPage(p:Props){
           {tab==='chat'&&chatEditor(draft as ChatWidget)}
           {(tab==='follow'||tab==='subscription'||tab==='gift')&&alertEditor(tab,draft as AlertWidget)}
           {tab==='banner'&&bannerEditor(draft as BannerWidget)}
+          {tab==='social'&&socialEditor(draft as SocialWidget)}
         </div>
       </div>
     </section>

@@ -130,6 +130,8 @@ test('widget validation: every limit in the contract is enforced', () => {
     ['follow', { sound: 'data:audio/x-msdownload;base64,AAAA' }], ['follow', { sound: 'data:text/html;base64,PHNjcmlwdD4=' }],
     ['follow', { sound: 'data:audio/mpeg;base64,AAAA<script>' }], ['follow', { sound: 'data:audio/mpeg;base64,' + 'A'.repeat(4000000) }],
     ['banner', { title: 'x'.repeat(121) }], ['banner', { subtitle: 'x'.repeat(201) }], ['banner', { template: 'retro' }], ['banner', { image: 'javascript:alert(1)' }],
+    ['social', { items: [{ network: 'myspace', handle: '@a' }] }], ['social', { items: [{ network: 'x', handle: 'x'.repeat(61) }] }],
+    ['social', { items: Array(13).fill({ network: 'x', handle: '@a' }) }], ['social', { items: 'x' }], ['social', { intervalSec: 1 }], ['social', { intervalSec: 61 }], ['social', { fontSize: 121 }],
   ];
   for (const [id, patch] of bad) assert.throws(() => validateWidgets(mutate(id, patch)), /Invalid widget/, id + ' ' + JSON.stringify(patch).slice(0, 60));
   assert.throws(() => validateWidgets({ ...ok, chat: undefined }));
@@ -161,7 +163,7 @@ test('widget pages: token, id, Host and method rules; transparent, nonce CSP wit
   const { runtime } = await fixture(t);
   const st = runtime.getStatus(), origin = new URL(runtime.url).origin, token = tokenOf(runtime);
   assert.deepEqual(Object.keys(st.widgetUrls), WIDGET_IDS);
-  assert.deepEqual(st.widgetClients, { chat: 0, follow: 0, subscription: 0, gift: 0, banner: 0 });
+  assert.deepEqual(st.widgetClients, { chat: 0, follow: 0, subscription: 0, gift: 0, banner: 0, social: 0 });
   for (const id of WIDGET_IDS) {
     assert.equal(st.widgetUrls[id], `${origin}/w/${token}/${id}`);
     const r = await request(st.widgetUrls[id]);
@@ -183,7 +185,7 @@ test('SSE ?w=: each widget gets only its own published config; draft edits never
   const { runtime } = await fixture(t);
   const streams = {}; for (const id of WIDGET_IDS) streams[id] = await sse(t, runtime, id);
   for (const id of WIDGET_IDS) { assert.equal(streams[id].events[0].kind, 'state'); assert.deepEqual(streams[id].events[0].data, runtime.getState().publishedWidgets[id]); }
-  assert.deepEqual(runtime.getStatus().widgetClients, { chat: 1, follow: 1, subscription: 1, gift: 1, banner: 1 });
+  assert.deepEqual(runtime.getStatus().widgetClients, { chat: 1, follow: 1, subscription: 1, gift: 1, banner: 1, social: 1 });
   let s = runtime.getState(); s.draftWidgets.follow.template = 'DRAFT {name}'; s = await runtime.saveState(s);
   await delay(20);
   for (const id of WIDGET_IDS) assert.equal(streams[id].events.length, 1, 'draft edit is silent for ' + id);
@@ -331,4 +333,11 @@ test('components.tsx WidgetPreview: exported, text-only template fill (same plac
   assert.ok(rt.includes(String.raw`split(/(\\{name\\}|\\{platform\\}|\\{message\\}|\\{gift\\}|\\{count\\}|\\{coins\\})/)`), 'runtime widget page uses the same placeholder set');
   for (const label of ['TEST ALERT · {platformNames[', 'TEST CHAT']) assert.ok(src.includes(label), label);
   assert.match(src, /aspectRatio:`\$\{widget\.width\} \/ \$\{widget\.height\}`/);
+});
+
+test('social rotator: older workspaces without it get the default; unknown item fields are dropped', () => {
+  const w = defaultWidgets(); delete w.social;
+  assert.deepEqual(validateWidgets(w).social, defaultWidgets().social);
+  const v = defaultWidgets(); v.social.items = [{ network: 'discord', handle: 'discord.gg/house', evil: '<script>' }];
+  assert.deepEqual(validateWidgets(v).social.items, [{ network: 'discord', handle: 'discord.gg/house' }]);
 });

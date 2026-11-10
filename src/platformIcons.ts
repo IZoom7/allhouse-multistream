@@ -13,3 +13,19 @@ export const platformIcons:Record<Platform,{path:string;bg:string;fg:string}>={
   kick:{path:pathOf(kick),bg:'#53FC19',fg:'#0B1A03'},
   tiktok:{path:pathOf(tiktok),bg:'#000000',fg:'#FFFFFF'},
 };
+import facebook from './assets/platforms/facebook.svg?raw';
+import instagram from './assets/platforms/instagram.svg?raw';
+import x from './assets/platforms/x.svg?raw';
+import threads from './assets/platforms/threads.svg?raw';
+import discord from './assets/platforms/discord.svg?raw';
+import line from './assets/platforms/line.svg?raw';
+import github from './assets/platforms/github.svg?raw';
+import spotify from './assets/platforms/spotify.svg?raw';
+import patreon from './assets/platforms/patreon.svg?raw';
+import type {SocialNetwork} from './types';
+/** Streaming platforms plus the social networks the Social Media Rotator widget can show (same tiles as runtime.cjs PLATFORM_TILES). */
+export const socialIcons:Record<SocialNetwork,{path:string;bg:string;fg:string}>={...platformIcons,
+  facebook:{path:pathOf(facebook),bg:'#0866FF',fg:'#FFFFFF'},instagram:{path:pathOf(instagram),bg:'#FF0069',fg:'#FFFFFF'},x:{path:pathOf(x),bg:'#000000',fg:'#FFFFFF'},
+  threads:{path:pathOf(threads),bg:'#000000',fg:'#FFFFFF'},discord:{path:pathOf(discord),bg:'#5865F2',fg:'#FFFFFF'},line:{path:pathOf(line),bg:'#00C300',fg:'#FFFFFF'},
+  github:{path:pathOf(github),bg:'#181717',fg:'#FFFFFF'},spotify:{path:pathOf(spotify),bg:'#1ED760',fg:'#000000'},patreon:{path:pathOf(patreon),bg:'#000000',fg:'#FFFFFF'}};
+export const socialNames:Record<SocialNetwork,string>={youtube:'YouTube',twitch:'Twitch',kick:'Kick',tiktok:'TikTok',facebook:'Facebook',instagram:'Instagram',x:'X',threads:'Threads',discord:'Discord',line:'LINE',github:'GitHub',spotify:'Spotify',patreon:'Patreon'};

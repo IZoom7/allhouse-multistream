@@ -1,7 +1,8 @@
-import type {API,SpeechCommand,SpeechStatus,AlertWidget,Anim,BannerWidget,ChatWidget,Delivery,HouseEvent,Scene,State,StateV1,Status,WidgetId,Widgets} from './types';
+import type {API,SpeechCommand,SpeechStatus,AlertWidget,Anim,BannerWidget,SocialWidget,ChatWidget,Delivery,HouseEvent,Scene,State,StateV1,Status,WidgetId,Widgets} from './types';
 
 // ---- Widgets: defaults, v1 → v2 migration, validation (docs/WIDGETS-CONTRACT.md; runtime.cjs is the desktop authority) ----
-export const WIDGET_IDS:WidgetId[]=['chat','follow','subscription','gift','banner'];
+export const WIDGET_IDS:WidgetId[]=['chat','follow','subscription','gift','banner','social'];
+export const SOCIAL_NETWORKS=['youtube','twitch','kick','tiktok','facebook','instagram','x','threads','discord','line','github','spotify','patreon'] as const;
 export const ANIMS:Anim[]=['pop','fade','slide','none'];
 export const MAX_ASSET_CHARS=4*1024*1024;      // encoded data: URL limit per image/sound
 export const MAX_SOUND_BYTES=3*1024*1024;      // file picked by the user
@@ -16,6 +17,7 @@ export function defaultWidgets(accent='#b4f272'):Widgets{
     subscription:alert('{name} subscribed!',accent),
     gift:{...alert('{name} sent {gift} ×{count}',accent),minCoins:1,showGiftImage:true},
     banner:{enabled:true,width:1920,height:1080,title:'WELCOME TO THE HOUSE',subtitle:'พื้นที่ของเรา เรื่องราวของคุณ',accent,template:'studio',image:''},
+    social:{enabled:true,width:800,height:320,items:[{network:'tiktok',handle:'@yourname'},{network:'youtube',handle:'@yourname'},{network:'instagram',handle:'@yourname'}],intervalSec:5,fontSize:44,accent,textColor:'#ffffff',bgOpacity:0.85,animation:'slide'},
   };
 }
 /** v1 scene → widgets: banner ← scene; accents ← scene.accent; chat.enabled ← showChat; alerts.enabled ← showAlert. */
@@ -32,7 +34,7 @@ export function sceneFromWidgets(w:Widgets,prev?:Scene):Scene{
 }
 export function migrateState(input:State|StateV1):State{
   // v2 saved before the gift widget existed (round 6): add the default gift widget.
-  if(input.schemaVersion===2){const s=input as State;const add=(w:Widgets)=>w&&!w.gift?{...w,gift:defaultWidgets(w.follow?.accent||'#b4f272').gift}:w;return s.draftWidgets?.gift&&s.publishedWidgets?.gift?s:{...s,draftWidgets:add(s.draftWidgets),publishedWidgets:add(s.publishedWidgets)}}
+  if(input.schemaVersion===2){const s=input as State;const add=(w:Widgets)=>{if(!w)return w;const d=defaultWidgets(w.follow?.accent||'#b4f272');return {...w,gift:w.gift||d.gift,social:w.social||d.social}};return s.draftWidgets?.gift&&s.publishedWidgets?.gift&&s.draftWidgets?.social&&s.publishedWidgets?.social?s:{...s,draftWidgets:add(s.draftWidgets),publishedWidgets:add(s.publishedWidgets)}}
   const v1=input as StateV1;
   return {...v1,schemaVersion:2,draftWidgets:widgetsFromScene(v1.draft),publishedWidgets:widgetsFromScene(v1.published),widgetsPublishedAt:v1.publishedAt};
 }
@@ -49,7 +51,8 @@ const base=(w:any)=>!!w&&typeof w.enabled==='boolean'&&int(w.width,320,3840)&&in
 export const chatOk=(w:ChatWidget)=>base(w)&&int(w.fontSize,14,72)&&int(w.maxMessages,1,20)&&(w.lifetimeSec===0||int(w.lifetimeSec,5,600))&&typeof w.showPlatformIcon==='boolean'&&num(w.bgOpacity,0,1)&&hex(w.accent)&&hex(w.textColor)&&['bottom','top'].includes(w.newestAt)&&anim(w.animation)&&(w.showAvatar===undefined||typeof w.showAvatar==='boolean')&&(w.showPlatformName===undefined||typeof w.showPlatformName==='boolean')&&(w.nameColor===undefined||['accent','platform','user'].includes(w.nameColor))&&(w.layout===undefined||['stacked','inline'].includes(w.layout));
 export const alertOk=(w:AlertWidget)=>base(w)&&int(w.durationSec,2,30)&&str(w.template,120)&&int(w.fontSize,20,160)&&hex(w.accent)&&hex(w.textColor)&&num(w.bgOpacity,0,1)&&anim(w.animation)&&dataUrl(w.image,IMAGE_RE)&&dataUrl(w.sound,SOUND_RE)&&str(w.soundName,120)&&num(w.volume,0,1);
 export const bannerOk=(w:BannerWidget)=>base(w)&&str(w.title,120)&&str(w.subtitle,200)&&hex(w.accent)&&['studio','minimal','neon'].includes(w.template)&&dataUrl(w.image,IMAGE_RE);
-export const widgetsOk=(w:Widgets)=>!!w&&chatOk(w.chat)&&alertOk(w.follow)&&alertOk(w.subscription)&&alertOk(w.gift)&&int(w.gift.minCoins,0,1000000)&&typeof w.gift.showGiftImage==='boolean'&&bannerOk(w.banner);
+export const socialOk=(w:SocialWidget)=>base(w)&&Array.isArray(w.items)&&w.items.length<=12&&w.items.every(i=>i&&(SOCIAL_NETWORKS as readonly string[]).includes(i.network)&&str(i.handle,60))&&int(w.intervalSec,2,60)&&int(w.fontSize,16,120)&&hex(w.accent)&&hex(w.textColor)&&num(w.bgOpacity,0,1)&&anim(w.animation);
+export const widgetsOk=(w:Widgets)=>!!w&&socialOk(w.social)&&chatOk(w.chat)&&alertOk(w.follow)&&alertOk(w.subscription)&&alertOk(w.gift)&&int(w.gift.minCoins,0,1000000)&&typeof w.gift.showGiftImage==='boolean'&&bannerOk(w.banner);
 
 /** Normalise what a FileReader gives us to the MIME types the contract allows. */
 export function normaliseDataUrl(url:string,kind:'image'|'sound'):string{

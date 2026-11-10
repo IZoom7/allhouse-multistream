@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   // The one place the download link lives. GitHub's /releases/latest skips pre-releases, so this names the version.
-  var DOWNLOAD = 'https://github.com/IZoom7/allhouse-multistream/releases/download/v0.1.0/Allhouse-Setup-0.1.0.exe';
+  var DOWNLOAD = 'https://github.com/IZoom7/allhouse-multistream/releases/download/v0.2.0/Allhouse-Setup-0.2.0.exe';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var lang = function () { return window.allhouseLang ? window.allhouseLang() : 'th'; };
   var L = function (th, en) { return lang() === 'en' ? en : th; };

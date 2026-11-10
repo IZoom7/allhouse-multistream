@@ -1,13 +1,13 @@
 import React,{useEffect,useId,useLayoutEffect,useRef,useState} from 'react';
 import {AlertTriangle,Monitor} from 'lucide-react';
-import type {AlertWidget,BannerWidget,ChatWidget,HouseEvent,Platform,Scene,WidgetId,Widgets,GiftWidget} from './types';
-import {platformIcons} from './platformIcons';
+import type {SocialNetwork,SocialWidget,AlertWidget,BannerWidget,ChatWidget,HouseEvent,Platform,Scene,WidgetId,Widgets,GiftWidget} from './types';
+import {socialIcons,socialNames} from './platformIcons';
 
 /** React's SVG types omit `draggable`; the DOM attribute still works and stops icons being dragged out of the UI. */
 const noDrag={draggable:false} as unknown as React.SVGProps<SVGSVGElement>;
 export const platformNames:Record<Platform,string>={youtube:'YouTube',twitch:'Twitch',kick:'Kick',tiktok:'TikTok'};
 /** Platform icon: Simple Icons glyph on its brand colour (see platformIcons.ts). */
-export function PlatformMark({platform}:{platform:Platform}){const icon=platformIcons[platform];return <span className={'platform-mark '+platform} style={{background:icon.bg,color:icon.fg}} title={platformNames[platform]} aria-label={platformNames[platform]} role="img"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...noDrag}><path d={icon.path} fill="currentColor"/></svg></span>}
+export function PlatformMark({platform}:{platform:SocialNetwork}){const icon=socialIcons[platform];return <span className={'platform-mark '+platform} style={{background:icon.bg,color:icon.fg}} title={socialNames[platform]} aria-label={socialNames[platform]} role="img"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...noDrag}><path d={icon.path} fill="currentColor"/></svg></span>}
 export function PageHeading({title,description,action}:{title:string;description:string;action?:React.ReactNode}){return <div className="page-heading"><div><h1>{title}</h1><p>{description}</p></div>{action}</div>}
 export function Toggle({checked,onChange,label,disabled}:{checked:boolean;onChange:(v:boolean)=>void;label:string;disabled?:boolean}){const id=useId();return <div className="toggle-row"><label htmlFor={id}>{label}</label><button id={id} type="button" role="switch" aria-checked={checked} disabled={disabled} className={'toggle '+(checked?'on':'')} onClick={()=>onChange(!checked)}><span/></button></div>}
 export type ConfirmRequest={title:string;body:string;confirmLabel:string;cancelLabel:string;icon?:React.ReactNode;danger?:boolean;onConfirm:()=>void};
@@ -50,7 +50,7 @@ export const PCOL:Record<Platform,string>={twitch:'#a970ff',youtube:'#ff4e45',ki
 const PAL=['#ff6b6b','#ffa94d','#ffd43b','#69db7c','#38d9a9','#4dabf7','#9775fa','#f783ac'];
 export const hashColor=(n:string)=>{let h=0;for(const ch of n)h=(h*31+ch.codePointAt(0)!)>>>0;return PAL[h%PAL.length]};
 /** Platform glyph sized like the widget page's img.pm. */
-function Pm({platform}:{platform:Platform}){const icon=platformIcons[platform];return <i className="pm" style={{background:icon.bg,color:icon.fg}}><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...noDrag}><path d={icon.path} fill="currentColor"/></svg></i>}
+function Pm({platform}:{platform:SocialNetwork}){const icon=socialIcons[platform];return <i className="pm" style={{background:icon.bg,color:icon.fg}}><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...noDrag}><path d={icon.path} fill="currentColor"/></svg></i>}
 /**
  * User CSS for the preview: parsed by the browser (CSSStyleSheet) and re-serialised rule by rule inside
  * @scope(.wp-stage), so unbalanced braces or `body {}` rules can never escape and restyle the app itself.
@@ -89,6 +89,12 @@ export function WidgetPreview({widget,kind,event}:{widget:Widgets[WidgetId];kind
     body=<Canvas width={b.width} height={b.height} className={b.template} vars={{'--accent':b.accent}}>
       {b.enabled&&<div id="brand"><h1 id="title">{b.title}</h1><p id="subtitle">{b.subtitle}</p></div>}
       {b.enabled&&b.image&&<img id="art" src={b.image} alt="" draggable={false}/>}
+    </Canvas>;
+  }else if(kind==='social'){
+    // Preview shows the first filled item; the OBS page cycles through all of them.
+    const so=widget as SocialWidget,it=so.items.find(i=>i.handle.trim());
+    body=<Canvas width={so.width} height={so.height} vars={{'--accent':so.accent,'--text':so.textColor,'--bg':rgba('#101414',so.bgOpacity),'--fs':so.fontSize+'px'}}>
+      {so.enabled&&it&&<div id="rot"><div id="pill" key={so.animation} className={so.animation==='none'?undefined:'anim-'+so.animation}><Pm platform={it.network}/>{it.handle}</div></div>}
     </Canvas>;
   }else{
     const a=widget as AlertWidget;

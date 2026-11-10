@@ -6,6 +6,8 @@ const speech=require('./speech.cjs');
 const edgeTts=require('./edgeTts.cjs');
 const {createConnections}=require('./connections.cjs');
 const {createKickApi}=require('./kickApi.cjs');
+const {createThaiTts}=require('./thaiTts.cjs');
+const {checkForUpdate}=require('./updates.cjs');
 const {createAvatars,within}=require('./avatars.cjs');
 const {isTrustedSender,validateSpeechCommand,validateSpeechStatus,sanitizeBounds,hardenWindow,CHAT_WINDOW_HASH}=require('./windows.cjs');
 let runtime,win,chatWin=null,quitting=false,connections=null;
@@ -29,6 +31,12 @@ app.whenReady().then(async()=>{
   invoke('voices',options=>speech.listVoices({refresh:!!(options&&options.refresh===true)}));
   invoke('speak',(text,options)=>speech.speak(text,options));
   invoke('online-voices',()=>edgeTts.listVoices());
+  // Windows Settings → Speech (Manage voices → Add voices installs the free offline Thai voice). Fixed URL only.
+  // Update check at start-up (electron/updates.cjs). The renderer never passes a URL: we open only the release page we found.
+  let update=null;
+  invoke('check-update',async()=>{try{update=await checkForUpdate({fetch:(u,o)=>net.fetch(u,o),current:app.getVersion()})}catch{update=null}return update&&{version:update.version,title:update.title,current:app.getVersion()}},{mainOnly:true});
+  invoke('open-update',()=>update?shell.openExternal(update.url):false,{mainOnly:true});
+  invoke('open-speech-settings',()=>shell.openExternal('ms-settings:speech'),{mainOnly:true});
   // Text is only ever sent to Microsoft when the saved workspace has the online engine selected.
   invoke('speak-online',(text,options)=>{if(runtime.getState().tts.engine!=='online')throw new Error('Online voices are not selected. Choose "Online neural voices" on the Chat TTS page first.');return edgeTts.synthesize(text,options)});
   // ---- Live platform connections (unofficial readers for YouTube/Kick, anonymous Twitch IRC, TikFinity for TikTok).
@@ -43,6 +51,13 @@ app.whenReady().then(async()=>{
         const ev=runtime.ingestLive(e);if(ev)toWindows('house:live-event',ev)}).catch(()=>{})},
     onChange:s=>toWindows('house:connections',s)});
   invoke('connections',()=>connections.get());
+  // ---- Offline Thai AI voices: downloaded only when the user presses Download (electron/thaiTts.cjs).
+  const thaiTts=createThaiTts({dataDir:app.getPath('userData'),fetch:(u,o)=>net.fetch(u,o),onProgress:p=>{if(win&&!win.isDestroyed())win.webContents.send('house:thai-tts-progress',p)}});
+  invoke('thai-tts-status',()=>thaiTts.status(),{mainOnly:true});
+  invoke('thai-tts-install',id=>thaiTts.install(String(id)),{mainOnly:true});
+  invoke('thai-tts-cancel',()=>thaiTts.cancel(),{mainOnly:true});
+  invoke('thai-tts-remove',id=>thaiTts.remove(String(id)),{mainOnly:true});
+  invoke('speak-thai',(text,options)=>thaiTts.synthesize(text,{voice:String(options&&options.voice||''),rate:Number(options&&options.rate),volume:Number(options&&options.volume)}),{mainOnly:true});
   // ---- Kick official API (edit stream info). Secret + tokens stay in the main process, encrypted with safeStorage.
   const kick=createKickApi({dataDir:app.getPath('userData'),fetch:(u,o)=>net.fetch(u,o),safeStorage,openExternal:u=>shell.openExternal(u)});
   await kick.load();
@@ -68,7 +83,7 @@ app.whenReady().then(async()=>{
   });
   invoke('open-overlay',()=>shell.openExternal(runtime.url));
   // Opens only a URL the runtime itself issued for a known widget id (never a renderer-supplied URL).
-  invoke('open-widget',id=>{if(!['chat','follow','subscription','banner'].includes(id))throw new Error('Unknown widget');const url=(runtime.getStatus().widgetUrls||{})[id];if(typeof url!=='string'||!url.startsWith('http://127.0.0.1:'))throw new Error('This widget link is not available yet.');return shell.openExternal(url)});
+  invoke('open-widget',id=>{if(!['chat','follow','subscription','gift','banner','social'].includes(id))throw new Error('Unknown widget');const url=(runtime.getStatus().widgetUrls||{})[id];if(typeof url!=='string'||!url.startsWith('http://127.0.0.1:'))throw new Error('This widget link is not available yet.');return shell.openExternal(url)});
   // ---- Pop-out chat window (portrait, reading only). Speech always plays in the main window.
   const indexFile=path.join(__dirname,'../dist/index.html');
   const chatPrefsFile=path.join(app.getPath('userData'),'chat-window.json');

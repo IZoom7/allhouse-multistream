@@ -12,6 +12,7 @@ Each widget page is a **large, transparent canvas** (OBS scales it down cleanly)
 | `follow` | Follow alert | 1920 × 1080 (alert centred, big) |
 | `subscription` | Subscription/member alert | 1920 × 1080 |
 | `banner` | Title/subtitle/image (the old "scene" brand block) | 1920 × 1080 |
+| `social` | Social Media Rotator: brand icon + handle pill, cycles through up to 12 items every `intervalSec` | 800 × 320 |
 
 The old all-in-one `/overlay/<token>` keeps working (it's still a legacy "all in one" option, shown last in the UI).
 
@@ -48,7 +49,8 @@ type AlertWidget = WidgetBase & {
 
 type BannerWidget = WidgetBase & { title:string; subtitle:string; accent:string; template:'studio'|'minimal'|'neon'; image:string };
 
-type Widgets = { chat:ChatWidget; follow:AlertWidget; subscription:AlertWidget; banner:BannerWidget };
+type SocialWidget = WidgetBase & { items:{ network:SocialNetwork; handle:string }[] /* ≤ 12, handle ≤ 60 */; intervalSec:number /* 2–60 */; fontSize:number /* 16–120 */; accent:string; textColor:string; bgOpacity:number; animation:Anim };
+type Widgets = { chat:ChatWidget; follow:AlertWidget; subscription:AlertWidget; gift:GiftWidget; banner:BannerWidget; social:SocialWidget };
 ```
 
 `State` becomes `schemaVersion: 2` with `draftWidgets: Widgets`, `publishedWidgets: Widgets`, `widgetsPublishedAt: string|null`.

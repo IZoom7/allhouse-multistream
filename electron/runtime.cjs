@@ -5,7 +5,8 @@ const crypto = require('node:crypto');
 
 const scene = { title: 'WELCOME TO THE HOUSE', subtitle: 'พื้นที่ของเรา เรื่องราวของคุณ', accent: '#b4f272', template: 'studio', showChat: true, showAlert: true, width: 1920, height: 1080, image: '' };
 // ---- Widgets (schema v2, docs/WIDGETS-CONTRACT.md) ------------------------------------------------------------
-const WIDGET_IDS = ['chat', 'follow', 'subscription', 'gift', 'banner'];
+const WIDGET_IDS = ['chat', 'follow', 'subscription', 'gift', 'banner', 'social'];
+const SOCIAL_NETWORKS = ['youtube', 'twitch', 'kick', 'tiktok', 'facebook', 'instagram', 'x', 'threads', 'discord', 'line', 'github', 'spotify', 'patreon'];
 const ANIMS = ['fade', 'slide', 'pop', 'none'];
 const MAX_MEDIA = 4000000, MAX_STATE = 25000000, MAX_CSS = 20000;
 const CSS_DEFAULTS = { customCssEnabled: false, customCss: '' };
@@ -20,6 +21,7 @@ function rawDefaultWidgets() {
     subscription: alertDefaults('{name} subscribed!'),
     gift: { ...alertDefaults('{name} sent {gift} ×{count}'), minCoins: 1, showGiftImage: true },
     banner: { ...CSS_DEFAULTS, enabled: true, width: 1920, height: 1080, title: scene.title, subtitle: scene.subtitle, accent: scene.accent, template: scene.template, image: '' },
+    social: { ...CSS_DEFAULTS, enabled: true, width: 800, height: 320, items: [{ network: 'tiktok', handle: '@yourname' }, { network: 'youtube', handle: '@yourname' }, { network: 'instagram', handle: '@yourname' }], intervalSec: 5, fontSize: 44, accent: scene.accent, textColor: '#ffffff', bgOpacity: 0.85, animation: 'slide' },
   };
 }
 /** v1 scene → v2 widgets (contract "Migration from v1"). */
@@ -75,7 +77,12 @@ function validateWidgets(w) {
   const gift = alert('gift');
   if (!int(w.gift.minCoins, 0, 1000000) || typeof w.gift.showGiftImage !== 'boolean') bad('gift');
   Object.assign(gift, { minCoins: w.gift.minCoins, showGiftImage: w.gift.showGiftImage });
-  return { chat, follow: alert('follow'), subscription: alert('subscription'), gift, banner };
+  // social (Social Media Rotator): workspaces saved before it existed get the default one.
+  const so = w.social === undefined ? rawDefaultWidgets().social : w.social, social = base(so, 'social');
+  if (!Array.isArray(so.items) || so.items.length > 12 || !so.items.every(i => i && SOCIAL_NETWORKS.includes(i.network) && str(i.handle, 60))
+    || !int(so.intervalSec, 2, 60) || !int(so.fontSize, 16, 120) || !hex(so.accent) || !hex(so.textColor) || !num(so.bgOpacity, 0, 1) || !ANIMS.includes(so.animation)) bad('social');
+  Object.assign(social, { items: so.items.map(i => ({ network: i.network, handle: i.handle })), intervalSec: so.intervalSec, fontSize: so.fontSize, accent: so.accent, textColor: so.textColor, bgOpacity: so.bgOpacity, animation: so.animation });
+  return { chat, follow: alert('follow'), subscription: alert('subscription'), gift, banner, social };
 }
 function defaultState() {
   return { schemaVersion: 2, workspaceName: 'My streaming room', language: 'th', theme: 'dark', onboarded: false,
@@ -139,7 +146,8 @@ function validateState(input) {
       ...(hasEngine ? { engine:t.engine, onlineThaiVoice:t.onlineThaiVoice ?? '', onlineEnglishVoice:t.onlineEnglishVoice ?? '' } : {}), ...(rules ? { rules } : {}), ...(t.singleVoice !== undefined ? { singleVoice: t.singleVoice } : {}) }, history: [] };
 }
 // Simple Icons 16.34.0 glyphs (CC0) from src/assets/platforms, drawn on their brand colour, inlined as data: images.
-const PLATFORM_TILES = { twitch: ['#9146FF', '#FFFFFF'], youtube: ['#FF0000', '#FFFFFF'], kick: ['#53FC19', '#0B1A03'], tiktok: ['#000000', '#FFFFFF'] };
+const PLATFORM_TILES = { twitch: ['#9146FF', '#FFFFFF'], youtube: ['#FF0000', '#FFFFFF'], kick: ['#53FC19', '#0B1A03'], tiktok: ['#000000', '#FFFFFF'],
+  facebook: ['#0866FF', '#FFFFFF'], instagram: ['#FF0069', '#FFFFFF'], x: ['#000000', '#FFFFFF'], threads: ['#000000', '#FFFFFF'], discord: ['#5865F2', '#FFFFFF'], line: ['#00C300', '#FFFFFF'], github: ['#181717', '#FFFFFF'], spotify: ['#1ED760', '#000000'], patreon: ['#000000', '#FFFFFF'] };
 function platformIconUris() {
   const out = {};
   for (const [slug, [bg, fg]] of Object.entries(PLATFORM_TILES)) {
@@ -182,9 +190,11 @@ html,body{margin:0;background:transparent;overflow:hidden;cursor:default;font-fa
 #card img.art{display:block;max-width:100%;max-height:40vh;margin:0 auto .3em}#card small{display:block;color:var(--accent);font-size:.32em;letter-spacing:.08em;margin-bottom:.3em}#card .ph{color:var(--accent)}#card .msg{display:block;font-size:.5em;opacity:.9;margin-top:.3em}#card img.gimg{display:block;width:1.6em;height:1.6em;margin:0 auto .2em}`,
     banner: `#brand{position:absolute;left:5%;top:5%;border-left:6px solid var(--accent);padding:18px 30px;background:#101414dd;border-radius:0 18px 18px 0}
 h1{margin:0;font-size:44px}p{margin:10px 0 0;font-size:28px;color:#ccd3d0}#art{position:absolute;right:5%;top:5%;max-width:30%;max-height:40%}.minimal #brand{background:transparent}.neon #brand{box-shadow:0 0 28px var(--accent)}`,
+    social: `#rot{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+#pill{display:inline-flex;align-items:center;gap:.45em;max-width:95%;padding:.3em .8em .3em .3em;border:4px solid var(--accent);background:var(--bg);border-radius:999px;font-size:var(--fs);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#pill img{width:1.5em;height:1.5em;margin:0;border-radius:50%;flex:none}`,
   };
-  const kind = id === 'chat' ? 'chat' : id === 'banner' ? 'banner' : 'alert';
-  const body = { chat: '<div id="box"></div>', alert: '<div id="wrap" class="hidden"><div id="card"></div></div>', banner: '<div id="brand"><h1 id="title"></h1><p id="subtitle"></p></div><img id="art" alt="" class="hidden">' }[kind];
+  const kind = id === 'chat' || id === 'banner' || id === 'social' ? id : 'alert';
+  const body = { chat: '<div id="box"></div>', alert: '<div id="wrap" class="hidden"><div id="card"></div></div>', banner: '<div id="brand"><h1 id="title"></h1><p id="subtitle"></p></div><img id="art" alt="" class="hidden">', social: '<div id="rot"></div>' }[kind];
   const script = {
     chat: `events.addEventListener('chat',e=>{if(!c||!c.enabled)return;const v=JSON.parse(e.data);const row=document.createElement('div');row.className='chat'+(c.animation==='none'?'':' anim-'+c.animation);const nc=c.nameColor==='platform'?PCOL[v.platform]:c.nameColor==='user'?(v.color||hashColor(v.name)):'';if(nc)row.style.setProperty('--name',nc);if(c.layout==='inline')row.classList.add('inline');if(c.showAvatar){row.classList.add('has-av');row.append(avatar(v))}const b=document.createElement('b');if(c.showPlatformIcon){const pi=icon(v.platform);if(pi)b.append(pi)}b.append(document.createTextNode(v.name));if(c.showPlatformName!==false){const pf=document.createElement('small');pf.className='pf';pf.textContent=' · '+(NAMES[v.platform]||v.platform);b.append(pf)}if(v.sourceMode!=='live'){const tag=document.createElement('i');tag.className='tag';tag.textContent='TEST CHAT';b.append(tag)}const t=document.createElement('span');t.textContent=v.message;row.append(b,t);const box=el('box');box.append(row);while(box.children.length>c.maxMessages)box.firstChild.remove();if(c.lifetimeSec>0)setTimeout(()=>row.remove(),c.lifetimeSec*1000)});
 events.addEventListener('clear',()=>el('box').replaceChildren());
@@ -202,6 +212,8 @@ events.addEventListener('alert',e=>{if(!c||!c.enabled)return;const v=JSON.parse(
 events.addEventListener('hide-alert',stop);events.addEventListener('clear',stop);
 function render(s){el('scene').style.setProperty('--fs',s.fontSize+'px');if(!s.enabled)stop()}`,
     banner: `function render(s){el('scene').className=s.template;el('brand').classList.toggle('hidden',!s.enabled);el('title').textContent=s.title;el('subtitle').textContent=s.subtitle;el('art').src=s.image||'';el('art').classList.toggle('hidden',!s.enabled||!s.image)}`,
+    social: `let rt,ri=0;function show(){const s=c,items=s.enabled?s.items.filter(x=>x.handle.trim()):[];if(!items.length){el('rot').replaceChildren();return}const it=items[ri++%items.length];const p=document.createElement('div');p.id='pill';if(s.animation!=='none')p.className='anim-'+s.animation;const i=icon(it.network);if(i)p.append(i);p.append(document.createTextNode(it.handle));el('rot').replaceChildren(p)}
+function render(s){el('scene').style.setProperty('--fs',s.fontSize+'px');clearInterval(rt);ri=0;show();rt=setInterval(show,s.intervalSec*1000)}`,
   }[kind];
   return `<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="${id==='gift'?CSP_GIFT:id==='chat'?CSP_CHAT:CSP}"><title>Allhouse ${id}</title><style>${common}${css[kind]}</style></head>
 <body><div id="scene" data-widget="${id}">${body}</div>
